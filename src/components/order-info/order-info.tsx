@@ -1,23 +1,40 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
-import { TIngredient } from '@utils-types';
+import { TIngredient, TOrder } from '@utils-types';
+import { useDispatch, useSelector } from '../../../src/services/store';
+import { useParams } from 'react-router-dom';
+import {
+  clearOrderDetails,
+  getOrderDetails
+} from '../../../src/slices/orderDetailsSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+  const orderData = useSelector((state) => state.orderDetails.order);
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.orderDetails);
+  const params = useParams<{ number: string }>();
 
-  const ingredients: TIngredient[] = [];
+  const orderIngredientsId = useSelector(
+    (state) => state.orderDetails.orderIngredients
+  );
+  const allIngredients: TIngredient[] = JSON.parse(
+    localStorage.getItem('ingredients')!
+  );
+  const ingredients: TIngredient[] = orderIngredientsId.map(
+    (id) => allIngredients.find((ing) => ing._id === id)!
+  );
+
+  useEffect(() => {
+    dispatch(getOrderDetails(parseInt(params.number as string)));
+    return () => {
+      dispatch(clearOrderDetails());
+    };
+  }, [dispatch, params.number]);
 
   /* Готовим данные для отображения */
+
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -62,6 +79,9 @@ export const OrderInfo: FC = () => {
   if (!orderInfo) {
     return <Preloader />;
   }
-
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  if (loading) {
+    return <Preloader />;
+  } else {
+    return <OrderInfoUI orderInfo={orderInfo} />;
+  }
 };
