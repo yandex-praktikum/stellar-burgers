@@ -2,7 +2,10 @@ import { useState, useRef, useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
+<<<<<<< HEAD
 
+export const BurgerIngredients: FC = () => {
+=======
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 
 export const BurgerIngredients: FC = () => {
@@ -11,6 +14,7 @@ export const BurgerIngredients: FC = () => {
   const mains = [];
   const sauces = [];
 
+>>>>>>> origin/main
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
   const titleMainRef = useRef<HTMLHeadingElement>(null);
@@ -38,7 +42,10 @@ export const BurgerIngredients: FC = () => {
     }
   }, [inViewBuns, inViewFilling, inViewSauces]);
 
+<<<<<<< HEAD
   /* В можно лучше: скролл к разделу при клике на таб */
+=======
+>>>>>>> origin/main
   const onTabClick = (tab: string) => {
     setCurrentTab(tab as TTabMode);
     if (tab === 'bun')
@@ -49,6 +56,7 @@ export const BurgerIngredients: FC = () => {
       titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+<<<<<<< HEAD
   // return (
   //   <BurgerIngredientsUI
   //     currentTab={currentTab}
@@ -65,6 +73,9 @@ export const BurgerIngredients: FC = () => {
   //   />
   // );
 
+  return null;
+=======
+  return null;
 
   return (
     <BurgerIngredientsUI
@@ -81,4 +92,5 @@ export const BurgerIngredients: FC = () => {
       onTabClick={onTabClick}
     />
   );
+>>>>>>> origin/main
 };

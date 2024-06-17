@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 import { FC } from 'react';
+
+export const ProfileOrders: FC = () =>
+  // return <ProfileOrdersUI orders={orders} />;
+
+  null;
+=======
 import { ProfileOrdersUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC } from 'react';
@@ -9,3 +16,4 @@ export const ProfileOrders: FC = () => {
 
   return <ProfileOrdersUI orders={orders} />;
 };
+>>>>>>> origin/main

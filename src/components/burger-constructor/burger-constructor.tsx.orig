@@ -2,6 +2,7 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 
+<<<<<<< HEAD
 export const BurgerConstructor: FC = () =>
   // const onOrderClick = () => {
   // if (!user) {
@@ -34,7 +35,7 @@ export const BurgerConstructor: FC = () =>
   // );
 
   null;
-
+=======
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const constructorItems = {
@@ -63,6 +64,7 @@ export const BurgerConstructor: FC = () => {
     [constructorItems]
   );
 
+  return null;
 
   return (
     <BurgerConstructorUI
@@ -75,3 +77,4 @@ export const BurgerConstructor: FC = () => {
     />
   );
 };
+>>>>>>> origin/main
