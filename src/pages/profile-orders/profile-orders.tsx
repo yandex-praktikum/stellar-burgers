@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { ProfileOrdersUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
-import { FC } from 'react';
 
 export const ProfileOrders: FC = () => {
   /** TODO: взять переменную из стора */

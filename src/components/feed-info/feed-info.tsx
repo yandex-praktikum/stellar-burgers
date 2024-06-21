@@ -9,16 +9,16 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
     .map((item) => item.number)
     .slice(0, 20);
 
-export const FeedInfo: FC = () =>
-  {
-  // const readyOrders = getOrders(orders, 'done');
+export const FeedInfo: FC = () => {
+  const readyOrders = getOrders([], 'done');
 
-  // const pendingOrders = getOrders(orders, 'pending');
+  const pendingOrders = getOrders([], 'pending');
 
-  // return (
-  //   <FeedInfoUI
-  //     readyOrders={readyOrders}
-  //     pendingOrders={pendingOrders}
-  //     feed={feed}
-  //   />
-}
+  return (
+    <FeedInfoUI
+      readyOrders={readyOrders}
+      pendingOrders={pendingOrders}
+      feed={[]}
+    />
+  );
+};
