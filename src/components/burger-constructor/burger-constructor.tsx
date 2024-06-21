@@ -1,6 +1,11 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { useSelector } from 'react-redux';
+import {
+  selectAddedBunDetails,
+  selectAddedIngredients
+} from '../../Slices/constructorIngredientsSlice';
 
 // export const BurgerConstructor: FC = () =>
 // const onOrderClick = () => {
@@ -37,7 +42,7 @@ import { BurgerConstructorUI } from '@ui';
 
 type TconstructorItems = {
   bun: TBun | null;
-  ingredients: [];
+  ingredients: TConstructorIngredient[];
 };
 
 type TBun = {
@@ -46,9 +51,13 @@ type TBun = {
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
+  const addedIngredients = useSelector(selectAddedIngredients);
+  // const addedBun = useSelector(selectAddedBun)
+  const addedBunDetails = useSelector(selectAddedBunDetails);
+
   const constructorItems: TconstructorItems = {
-    bun: null,
-    ingredients: []
+    bun: addedBunDetails,
+    ingredients: addedIngredients
   };
 
   const orderRequest = false;
