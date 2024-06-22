@@ -40,6 +40,42 @@ export const constructorIngredientsSlice = createSlice({
       state.addedIngredients = state.addedIngredients.filter(
         (item) => item.id !== action.payload.id
       );
+    },
+    moveUpIngredient: (state, action) => {
+      const indexOfObjToMove = state.addedIngredients.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      const indexOfObjToMoveWith = indexOfObjToMove - 1;
+      const swapElements = (
+        arr: TConstructorIngredient[],
+        index1: number,
+        index2: number
+      ) => {
+        [arr[index1], arr[index2]] = [arr[index2], arr[index1]];
+      };
+      swapElements(
+        state.addedIngredients,
+        indexOfObjToMoveWith,
+        indexOfObjToMove
+      );
+    },
+    moveDownIngredient: (state, action) => {
+      const indexOfObjToMove = state.addedIngredients.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      const indexOfObjToMoveWith = indexOfObjToMove + 1;
+      const swapElements = (
+        arr: TConstructorIngredient[],
+        index1: number,
+        index2: number
+      ) => {
+        [arr[index1], arr[index2]] = [arr[index2], arr[index1]];
+      };
+      swapElements(
+        state.addedIngredients,
+        indexOfObjToMove,
+        indexOfObjToMoveWith
+      );
     }
   },
   selectors: {
@@ -56,5 +92,9 @@ export const {
 } = constructorIngredientsSlice.selectors;
 export const constructorIngredientsReducer =
   constructorIngredientsSlice.reducer;
-export const { addIngredient, removeIngredient } =
-  constructorIngredientsSlice.actions;
+export const {
+  addIngredient,
+  removeIngredient,
+  moveUpIngredient,
+  moveDownIngredient
+} = constructorIngredientsSlice.actions;
