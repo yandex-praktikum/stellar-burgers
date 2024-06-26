@@ -76,6 +76,11 @@ export const constructorIngredientsSlice = createSlice({
         indexOfObjToMove,
         indexOfObjToMoveWith
       );
+    },
+    clearConstructor: (state) => {
+      state.addedIngredients = [];
+      state.bun._id = '';
+      state.bun.bunDetails = null;
     }
   },
   selectors: {
@@ -96,5 +101,6 @@ export const {
   addIngredient,
   removeIngredient,
   moveUpIngredient,
-  moveDownIngredient
+  moveDownIngredient,
+  clearConstructor
 } = constructorIngredientsSlice.actions;

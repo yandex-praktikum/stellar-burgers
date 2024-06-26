@@ -1,11 +1,23 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectUserAuthenticated,
+  selectUserData,
+  updateUserDataThunk
+} from '../../Slices/userSlice';
+import { TUser } from '@utils-types';
+import { AppDispatch } from 'src/services/store';
+import { Navigate } from 'react-router-dom';
 
 export const Profile: FC = () => {
+  const userData = useSelector(selectUserData) as TUser;
+  const dispatch = useDispatch<AppDispatch>();
+
   /** TODO: взять переменную из стора */
   const user = {
-    name: '',
-    email: ''
+    name: userData?.name,
+    email: userData?.email
   };
 
   const [formValue, setFormValue] = useState({
@@ -20,7 +32,7 @@ export const Profile: FC = () => {
       name: user?.name || '',
       email: user?.email || ''
     }));
-  }, [user]);
+  }, [userData]);
 
   const isFormChanged =
     formValue.name !== user?.name ||
@@ -29,7 +41,13 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(updateUserDataThunk(formValue));
   };
+
+  const userAuthenticated = useSelector(selectUserAuthenticated);
+  if (!userAuthenticated) {
+    return <Navigate to={'/login'} />;
+  }
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -56,6 +74,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };

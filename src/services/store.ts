@@ -11,10 +11,18 @@ import {
   constructorIngredientsReducer,
   constructorIngredientsSlice
 } from '../Slices/constructorIngredientsSlice';
+import { userReducer, userSlice } from '../Slices/userSlice';
+import { orderBurgerSlice } from '../Slices/orderBurgerSlice';
+import { feedSlice } from '../Slices/feedSlice';
+import { orderSlice } from '../Slices/orderSlice';
 
 const rootReducer = combineReducers({
   [ingredientsSlice.name]: ingredientsSlice.reducer,
-  [constructorIngredientsSlice.name]: constructorIngredientsSlice.reducer
+  [constructorIngredientsSlice.name]: constructorIngredientsSlice.reducer,
+  [userSlice.name]: userSlice.reducer,
+  [orderBurgerSlice.name]: orderBurgerSlice.reducer,
+  [feedSlice.name]: feedSlice.reducer,
+  [orderSlice.name]: orderSlice.reducer
 });
 // Заменить на импорт настоящего редьюсера
 
