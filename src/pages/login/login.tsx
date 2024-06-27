@@ -14,8 +14,6 @@ export const Login: FC = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const userAuthenticated = useSelector(selectUserAuthenticated);
-
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     const userData = {
@@ -24,10 +22,6 @@ export const Login: FC = () => {
     };
     dispatch(loginUserThunk(userData));
   };
-
-  if (userAuthenticated) {
-    return <Navigate to={'/'} />;
-  }
 
   return (
     <LoginUI

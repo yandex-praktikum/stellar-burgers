@@ -14,7 +14,7 @@ import {
   Register,
   ResetPassword
 } from '@pages';
-import { ProtectedRoute } from '../ProtectedRoutes/ProtectedRoute';
+import { ProtectedRouteUnAuth } from '../ProtectedRoutes/ProtectedRouteUnAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/services/store';
 import { TIngredient } from '@utils-types';
@@ -23,6 +23,8 @@ import {
   selectIngredients
 } from '../../Slices/IngrediensSlice';
 import { useEffect } from 'react';
+import { checkUserAuth } from '../../Slices/userSlice';
+import { ProtectedRouteAuth } from '../ProtectedRoutes/ProtectedRouteAuth';
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,11 +32,8 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchIngredients());
+    dispatch(checkUserAuth());
   }, []);
-
-  const modalClose = () => {
-    navigate('/');
-  };
 
   return (
     <div className={styles.app}>
@@ -45,56 +44,57 @@ const App = () => {
         <Route
           path='/login'
           element={
-            <ProtectedRoute>
+            <ProtectedRouteAuth>
               <Login />
-            </ProtectedRoute>
+            </ProtectedRouteAuth>
           }
         />
+
         <Route
           path='/register'
           element={
-            <ProtectedRoute>
+            <ProtectedRouteAuth>
               <Register />
-            </ProtectedRoute>
+            </ProtectedRouteAuth>
           }
         />
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRouteAuth>
               <ForgotPassword />
-            </ProtectedRoute>
+            </ProtectedRouteAuth>
           }
         />
         <Route
           path='/reset-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRouteAuth>
               <ResetPassword />
-            </ProtectedRoute>
+            </ProtectedRouteAuth>
           }
         />
         <Route
           path='/profile'
           element={
-            <ProtectedRoute>
+            <ProtectedRouteUnAuth>
               <Profile />
-            </ProtectedRoute>
+            </ProtectedRouteUnAuth>
           }
         />
         <Route
           path='/profile/orders'
           element={
-            <ProtectedRoute>
+            <ProtectedRouteUnAuth>
               <ProfileOrders />
-            </ProtectedRoute>
+            </ProtectedRouteUnAuth>
           }
         />
         <Route path='*' element={<NotFound404 />} />
         <Route
           path='/feed/:number'
           element={
-            <Modal title={''} onClose={modalClose}>
+            <Modal title={''} onClose={() => navigate('/feed')}>
               <OrderInfo />
             </Modal>
           }
@@ -102,7 +102,7 @@ const App = () => {
         <Route
           path='/ingredients/:id'
           element={
-            <Modal title={''} onClose={modalClose}>
+            <Modal title={'Детали ингредиента'} onClose={() => navigate('/')}>
               <IngredientDetails />
             </Modal>
           }
@@ -110,16 +110,11 @@ const App = () => {
         <Route
           path='/profile/orders/:number'
           element={
-            <ProtectedRoute>
-              <Modal
-                title={''}
-                onClose={function (): void {
-                  throw new Error('Function not implemented.');
-                }}
-              >
+            <ProtectedRouteUnAuth>
+              <Modal title={''} onClose={() => navigate('/profile/orders')}>
                 <OrderInfo />
               </Modal>
-            </ProtectedRoute>
+            </ProtectedRouteUnAuth>
           }
         />
       </Routes>

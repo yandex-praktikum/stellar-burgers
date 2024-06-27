@@ -1,6 +1,7 @@
 import {
   TLoginData,
   TRegisterData,
+  getUserApi,
   loginUserApi,
   logoutApi,
   registerUserApi,
@@ -8,7 +9,7 @@ import {
 } from '@api';
 import { AsyncThunk, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { deleteCookie, setCookie } from '../utils/cookie';
+import { deleteCookie, getCookie, setCookie } from '../utils/cookie';
 
 export interface UserState {
   isAuthChecked: boolean;
@@ -27,6 +28,23 @@ const initialState: UserState = {
   loginUserError: null,
   loginUserRequest: false
 };
+
+export const getUserThunk = createAsyncThunk('user/getUser', async () =>
+  getUserApi()
+);
+
+export const checkUserAuth = createAsyncThunk(
+  'user/checkUserAuth',
+  async (_, { dispatch }) => {
+    if (getCookie('accessToken')) {
+      dispatch(getUserThunk()).finally(() => {
+        dispatch(authCheck());
+      });
+    } else {
+      dispatch(authCheck());
+    }
+  }
+);
 
 export const loginUserThunk = createAsyncThunk(
   'user/login',
@@ -68,10 +86,15 @@ export const updateUserDataThunk = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    authCheck: (state) => {
+      state.isAuthChecked = true;
+    }
+  },
   selectors: {
     selectUserAuthenticated: (state) => state.isAuthenticated,
-    selectUserData: (state) => state.data
+    selectUserData: (state) => state.data,
+    selectIsAuthChecked: (state) => state.isAuthChecked
   },
   extraReducers: (builder) => {
     builder
@@ -101,6 +124,13 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.data = action.payload.user;
       })
+      .addCase(getUserThunk.fulfilled, (state, action) => {
+        state.data = action.payload.user;
+        state.isLoading = false;
+        state.loginUserRequest = false;
+        state.isAuthChecked = true;
+        state.isAuthenticated = true;
+      })
       .addCase(logoutUserThunk.fulfilled, (state, action) => {
         localStorage.clear();
         deleteCookie('accessToken');
@@ -118,4 +148,6 @@ export const userSlice = createSlice({
 });
 
 export const userReducer = userSlice.reducer;
-export const { selectUserAuthenticated, selectUserData } = userSlice.selectors;
+export const { selectUserAuthenticated, selectUserData, selectIsAuthChecked } =
+  userSlice.selectors;
+export const { authCheck } = userSlice.actions;

@@ -17,7 +17,6 @@ export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
   const dispatch = useDispatch<AppDispatch>();
 
-  // const orderData = useSelector(selectOrderData);
   const orderData = useSelector(selectOrder);
 
   const ingredients: TIngredient[] = useSelector(selectIngredients);

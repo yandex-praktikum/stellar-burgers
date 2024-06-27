@@ -21,8 +21,8 @@ export const Profile: FC = () => {
   };
 
   const [formValue, setFormValue] = useState({
-    name: user.name,
-    email: user.email,
+    name: userData ? user.name : '',
+    email: userData ? user.email : '',
     password: ''
   });
 
@@ -44,10 +44,10 @@ export const Profile: FC = () => {
     dispatch(updateUserDataThunk(formValue));
   };
 
-  const userAuthenticated = useSelector(selectUserAuthenticated);
-  if (!userAuthenticated) {
-    return <Navigate to={'/login'} />;
-  }
+  // const userAuthenticated = useSelector(selectUserAuthenticated);
+  // if (!userAuthenticated) {
+  //   return <Navigate to={'/login'} />;
+  // }
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();

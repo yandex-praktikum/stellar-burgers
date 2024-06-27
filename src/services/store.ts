@@ -15,6 +15,7 @@ import { userReducer, userSlice } from '../Slices/userSlice';
 import { orderBurgerSlice } from '../Slices/orderBurgerSlice';
 import { feedSlice } from '../Slices/feedSlice';
 import { orderSlice } from '../Slices/orderSlice';
+import { userOrdersSlice } from '../Slices/userOrdersSlice';
 
 const rootReducer = combineReducers({
   [ingredientsSlice.name]: ingredientsSlice.reducer,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   [userSlice.name]: userSlice.reducer,
   [orderBurgerSlice.name]: orderBurgerSlice.reducer,
   [feedSlice.name]: feedSlice.reducer,
-  [orderSlice.name]: orderSlice.reducer
+  [orderSlice.name]: orderSlice.reducer,
+  [userOrdersSlice.name]: userOrdersSlice.reducer
 });
 // Заменить на импорт настоящего редьюсера
 

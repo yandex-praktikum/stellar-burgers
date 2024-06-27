@@ -10,7 +10,6 @@ import { selectIngredientsLoading } from '../../Slices/IngrediensSlice';
 
 export const ConstructorPage: FC = () => {
   /** TODO: взять переменную из стора */
-  // const isIngredientsLoading = false;
   const isIngredientsLoading = useSelector(selectIngredientsLoading);
 
   return (
