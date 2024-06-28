@@ -14,17 +14,12 @@ import {
   Register,
   ResetPassword
 } from '@pages';
-import { ProtectedRouteUnAuth } from '../ProtectedRoutes/ProtectedRouteUnAuth';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'src/services/store';
-import { TIngredient } from '@utils-types';
-import {
-  fetchIngredients,
-  selectIngredients
-} from '../../Slices/IngrediensSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'src/services/store';
+import { fetchIngredients } from '../../Slices/IngrediensSlice';
 import { useEffect } from 'react';
 import { checkUserAuth } from '../../Slices/userSlice';
-import { ProtectedRouteAuth } from '../ProtectedRoutes/ProtectedRouteAuth';
+import { ProtectedRoute } from '../ProtectedRoutes/ProtectedRoute';
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,50 +39,50 @@ const App = () => {
         <Route
           path='/login'
           element={
-            <ProtectedRouteAuth>
+            <ProtectedRoute onlyUnAuth>
               <Login />
-            </ProtectedRouteAuth>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path='/register'
           element={
-            <ProtectedRouteAuth>
+            <ProtectedRoute onlyUnAuth>
               <Register />
-            </ProtectedRouteAuth>
+            </ProtectedRoute>
           }
         />
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRouteAuth>
+            <ProtectedRoute onlyUnAuth>
               <ForgotPassword />
-            </ProtectedRouteAuth>
+            </ProtectedRoute>
           }
         />
         <Route
           path='/reset-password'
           element={
-            <ProtectedRouteAuth>
+            <ProtectedRoute onlyUnAuth>
               <ResetPassword />
-            </ProtectedRouteAuth>
+            </ProtectedRoute>
           }
         />
         <Route
           path='/profile'
           element={
-            <ProtectedRouteUnAuth>
+            <ProtectedRoute>
               <Profile />
-            </ProtectedRouteUnAuth>
+            </ProtectedRoute>
           }
         />
         <Route
           path='/profile/orders'
           element={
-            <ProtectedRouteUnAuth>
+            <ProtectedRoute>
               <ProfileOrders />
-            </ProtectedRouteUnAuth>
+            </ProtectedRoute>
           }
         />
         <Route path='*' element={<NotFound404 />} />
@@ -110,11 +105,11 @@ const App = () => {
         <Route
           path='/profile/orders/:number'
           element={
-            <ProtectedRouteUnAuth>
+            <ProtectedRoute>
               <Modal title={''} onClose={() => navigate('/profile/orders')}>
                 <OrderInfo />
               </Modal>
-            </ProtectedRouteUnAuth>
+            </ProtectedRoute>
           }
         />
       </Routes>

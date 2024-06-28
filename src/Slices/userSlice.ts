@@ -16,8 +16,9 @@ export interface UserState {
   isAuthenticated: boolean;
   isLoading: boolean;
   data: TUser | null | undefined;
-  loginUserError: string | null;
+  loginUserError: string | undefined;
   loginUserRequest: boolean;
+  registerUserError: string | undefined;
 }
 
 const initialState: UserState = {
@@ -25,8 +26,9 @@ const initialState: UserState = {
   isAuthenticated: false,
   isLoading: false,
   data: null,
-  loginUserError: null,
-  loginUserRequest: false
+  loginUserError: '',
+  loginUserRequest: false,
+  registerUserError: ''
 };
 
 export const getUserThunk = createAsyncThunk('user/getUser', async () =>
@@ -89,21 +91,28 @@ export const userSlice = createSlice({
   reducers: {
     authCheck: (state) => {
       state.isAuthChecked = true;
+    },
+    clearErrors: (state) => {
+      state.loginUserError = '';
+      state.registerUserError = '';
     }
   },
   selectors: {
     selectUserAuthenticated: (state) => state.isAuthenticated,
     selectUserData: (state) => state.data,
-    selectIsAuthChecked: (state) => state.isAuthChecked
+    selectIsAuthChecked: (state) => state.isAuthChecked,
+    selectLoginError: (state) => state.loginUserError,
+    selectRegisterError: (state) => state.registerUserError
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUserThunk.pending, (state) => {
         state.loginUserRequest = true;
         state.isLoading = true;
+        state.loginUserError = '';
       })
       .addCase(loginUserThunk.rejected, (state, action) => {
-        state.loginUserError = 'ОШИБКА ВХОДА';
+        state.loginUserError = action.error.message;
         state.loginUserRequest = false;
         state.isAuthChecked = true;
       })
@@ -113,16 +122,19 @@ export const userSlice = createSlice({
         state.isAuthChecked = true;
         state.data = action.payload;
         state.isAuthenticated = true;
+        state.loginUserError = '';
       })
       .addCase(registerUserThunk.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(registerUserThunk.rejected, (state, action) => {
-        state.loginUserError = 'ОШИБКА';
+      .addCase(registerUserThunk.rejected, (state) => {
+        state.registerUserError = 'Ошибка регистрации';
+        state.data = null;
       })
       .addCase(registerUserThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload.user;
+        state.registerUserError = '';
       })
       .addCase(getUserThunk.fulfilled, (state, action) => {
         state.data = action.payload.user;
@@ -148,6 +160,11 @@ export const userSlice = createSlice({
 });
 
 export const userReducer = userSlice.reducer;
-export const { selectUserAuthenticated, selectUserData, selectIsAuthChecked } =
-  userSlice.selectors;
-export const { authCheck } = userSlice.actions;
+export const {
+  selectUserAuthenticated,
+  selectUserData,
+  selectIsAuthChecked,
+  selectLoginError,
+  selectRegisterError
+} = userSlice.selectors;
+export const { authCheck, clearErrors } = userSlice.actions;

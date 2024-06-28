@@ -1,14 +1,9 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectUserAuthenticated,
-  selectUserData,
-  updateUserDataThunk
-} from '../../Slices/userSlice';
+import { selectUserData, updateUserDataThunk } from '../../Slices/userSlice';
 import { TUser } from '@utils-types';
 import { AppDispatch } from 'src/services/store';
-import { Navigate } from 'react-router-dom';
 
 export const Profile: FC = () => {
   const userData = useSelector(selectUserData) as TUser;
@@ -43,11 +38,6 @@ export const Profile: FC = () => {
     e.preventDefault();
     dispatch(updateUserDataThunk(formValue));
   };
-
-  // const userAuthenticated = useSelector(selectUserAuthenticated);
-  // if (!userAuthenticated) {
-  //   return <Navigate to={'/login'} />;
-  // }
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();

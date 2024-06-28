@@ -1,17 +1,12 @@
-import { ThunkAction, ThunkDispatch, thunk } from 'redux-thunk';
-
 import {
   TypedUseSelectorHook,
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { fetchIngredients, ingredientsSlice } from '../Slices/IngrediensSlice';
-import {
-  constructorIngredientsReducer,
-  constructorIngredientsSlice
-} from '../Slices/constructorIngredientsSlice';
-import { userReducer, userSlice } from '../Slices/userSlice';
+import { ingredientsSlice } from '../Slices/IngrediensSlice';
+import { constructorIngredientsSlice } from '../Slices/constructorIngredientsSlice';
+import { userSlice } from '../Slices/userSlice';
 import { orderBurgerSlice } from '../Slices/orderBurgerSlice';
 import { feedSlice } from '../Slices/feedSlice';
 import { orderSlice } from '../Slices/orderSlice';

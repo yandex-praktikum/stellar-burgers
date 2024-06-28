@@ -1,10 +1,13 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
 import { TRegisterData } from '@api';
 import {
+  clearErrors,
   loginUserThunk,
   registerUserThunk,
-  selectUserAuthenticated
+  selectRegisterError,
+  selectUserAuthenticated,
+  selectUserData
 } from '../../Slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../services/store';
@@ -15,10 +18,15 @@ export const Register: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const userAuthenticated = useSelector(selectUserAuthenticated);
-
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(clearErrors());
+  }, []);
+
+  const userAuthenticated = useSelector(selectUserAuthenticated);
+  const registerErrorText = useSelector(selectRegisterError);
+  const data = useSelector(selectUserData);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -29,17 +37,13 @@ export const Register: FC = () => {
     };
     dispatch(registerUserThunk(userData)).then(() => {
       dispatch(loginUserThunk(userData));
-      navigate('/');
+      return <Navigate to={'/'} />;
     });
   };
 
-  if (userAuthenticated) {
-    return <Navigate to={'/'} />;
-  }
-
   return (
     <RegisterUI
-      errorText=''
+      errorText={registerErrorText}
       email={email}
       userName={userName}
       password={password}

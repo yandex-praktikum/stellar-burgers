@@ -3,11 +3,6 @@ import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectOrderData } from '../../Slices/orderBurgerSlice';
-import {
-  selectAddedBunDetails,
-  selectAddedIngredients
-} from '../../Slices/constructorIngredientsSlice';
 import { gerOrderByNumber, selectOrder } from '../../Slices/orderSlice';
 import { useParams } from 'react-router-dom';
 import { AppDispatch } from 'src/services/store';
