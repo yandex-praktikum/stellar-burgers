@@ -4,10 +4,14 @@ import { TIngredient } from '@utils-types';
 
 type TIngredientsState = {
   ingredients: TIngredient[];
+  isLoading: boolean;
+  error: string | null;
 };
 
 const initialState: TIngredientsState = {
-  ingredients: []
+  ingredients: [],
+  isLoading: true,
+  error: null
 };
 
 export const fetchIngredients = createAsyncThunk(
@@ -20,15 +24,27 @@ const ingredientsSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    selectIngredients: (sliceState) => sliceState.ingredients
+    selectIngredients: (sliceState) => sliceState.ingredients,
+    selectIsLoading: (sliceState) => sliceState.isLoading
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchIngredients.fulfilled, (state, action) => {
-      state.ingredients = action.payload;
-    });
+    builder
+      .addCase(fetchIngredients.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchIngredients.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || null;
+      })
+      .addCase(fetchIngredients.fulfilled, (state, action) => {
+        state.ingredients = action.payload;
+        state.isLoading = false;
+      });
   }
 });
 
-export const { selectIngredients } = ingredientsSlice.selectors;
+export const { selectIngredients, selectIsLoading } =
+  ingredientsSlice.selectors;
 
 export default ingredientsSlice.reducer;
