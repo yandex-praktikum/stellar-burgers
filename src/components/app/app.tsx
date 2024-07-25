@@ -1,14 +1,110 @@
-import { ConstructorPage } from '@pages';
+import {
+  ConstructorPage,
+  Feed,
+  ForgotPassword,
+  Login,
+  NotFound404,
+  Profile,
+  ProfileOrders,
+  Register,
+  ResetPassword
+} from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
-import { AppHeader } from '@components';
+import { AppDispatch } from '../../services/store';
+import { fetchIngredients } from '../../services/ingredients/action';
+import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
+import { getUser } from '../../services/auth/action';
 
-const App = () => (
-  <div className={styles.app}>
-    <AppHeader />
-    <ConstructorPage />
-  </div>
-);
+const App = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const location = useLocation();
+  const backgroundLocation = location.state?.background;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getUser());
+    dispatch(fetchIngredients());
+  }, []);
+
+  return (
+    <div className={styles.app}>
+      <AppHeader />
+      <Routes location={backgroundLocation || location}>
+        <Route path='/' element={<ConstructorPage />} />
+        <Route path='/feed' element={<Feed />} />
+        <Route path='/login' element={<OnlyUnAuth component={<Login />} />} />
+        <Route
+          path='/register'
+          element={<OnlyUnAuth component={<Register />} />}
+        />
+        <Route
+          path='/forgot-password'
+          element={<OnlyUnAuth component={<ForgotPassword />} />}
+        />
+        <Route
+          path='/reset-password'
+          element={<OnlyAuth component={<ResetPassword />} />}
+        />
+        <Route path='/profile' element={<OnlyAuth component={<Profile />} />} />
+        <Route
+          path='/profile/orders'
+          element={<OnlyAuth component={<ProfileOrders />} />}
+        />
+        <Route path='*' element={<NotFound404 />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route
+          path='/profile/orders/:number'
+          element={<OnlyAuth component={<OrderInfo />} />}
+        />
+      </Routes>
+
+      <Routes>
+        {backgroundLocation && (
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal
+                title='Заказ'
+                children={<OrderInfo />}
+                onClose={() => navigate('/feed')}
+              />
+            }
+          />
+        )}
+        {backgroundLocation && (
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal
+                title='Детали ингредиента'
+                children={<IngredientDetails />}
+                onClose={() => navigate('/')}
+              />
+            }
+          />
+        )}
+        {backgroundLocation && (
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <Modal
+                title='Заказ'
+                children={<OnlyAuth component={<OrderInfo />} />}
+                onClose={() => navigate('/profile/orders')}
+              />
+            }
+          />
+        )}
+      </Routes>
+    </div>
+  );
+};
 
 export default App;

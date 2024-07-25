@@ -3,12 +3,23 @@ import { useLocation } from 'react-router-dom';
 
 import { BurgerIngredientUI } from '@ui';
 import { TBurgerIngredientProps } from './type';
+import { useDispatch } from '../../services/store';
+import { addIngredients } from '../../services/constructor/slice';
+import { nanoid } from '@reduxjs/toolkit';
+import { TConstructorIngredient } from '@utils-types';
 
 export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
   ({ ingredient, count }) => {
     const location = useLocation();
-
-    const handleAdd = () => {};
+    const dispatch = useDispatch();
+    const constructorIngredient: TConstructorIngredient = {
+      ...ingredient,
+      id: nanoid() // Добавляем новое свойство id
+    };
+    console.log(constructorIngredient);
+    const handleAdd = () => {
+      dispatch(addIngredients(constructorIngredient));
+    };
 
     return (
       <BurgerIngredientUI
