@@ -1,12 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import {
-  getUser,
-  loginUser,
-  logoutUser,
-  registerUser,
-  updateUser
-} from './action';
+import { loginUser, logoutUser, registerUser, updateUser } from './action';
+import { useSelector } from 'react-redux';
 
 interface IUserState {
   user: TUser | null;
@@ -23,7 +18,14 @@ const initialState: IUserState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setIsAuthChecked: (state, action: PayloadAction<boolean>) => {
+      state.isAuthChecked = action.payload;
+    },
+    setUser: (state, action: PayloadAction<TUser | null>) => {
+      state.user = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -35,6 +37,7 @@ export const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.error = action.error.message;
+        state.isAuthChecked = true;
       });
 
     builder
@@ -44,16 +47,6 @@ export const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
-        state.isAuthChecked = true;
-      });
-
-    builder
-      .addCase(getUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.isAuthChecked = true;
-      })
-      .addCase(getUser.rejected, (state, action) => {
-        state.error = action.error.message;
         state.isAuthChecked = true;
       });
 
@@ -67,7 +60,6 @@ export const authSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
-        state.isAuthChecked = true;
       });
   },
   selectors: {
@@ -79,3 +71,5 @@ export const authSlice = createSlice({
 
 export const { UserSelector, AuthCheckedSelector, UserNameSelector } =
   authSlice.selectors;
+
+export const { setUser, setIsAuthChecked } = authSlice.actions;

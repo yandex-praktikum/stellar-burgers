@@ -21,12 +21,12 @@ export const ProtectedRoute = ({
     return <Preloader />;
   }
   if (onlyUnAuth && user) {
-    const from = location.state ?? { from: { pathname: '/' } };
-    return <Navigate replace to={from} />;
+    const { from } = location.state ?? { from: { pathname: '/' } };
+    return <Navigate to={from} />;
   }
 
   if (!onlyUnAuth && !user) {
-    return <Navigate replace to='/login' state={{ from: location }} />;
+    return <Navigate to='/login' state={{ from: location }} />;
   }
 
   return component;

@@ -62,6 +62,9 @@ export const orderSlice = createSlice({
         state.error = action.error.message;
       });
     builder
+      .addCase(getOrderByNum.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(getOrderByNum.fulfilled, (state, action) => {
         state.isLoading = false;
         state.orderModal = action.payload.orders;

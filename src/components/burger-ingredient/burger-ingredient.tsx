@@ -14,9 +14,9 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     const dispatch = useDispatch();
     const constructorIngredient: TConstructorIngredient = {
       ...ingredient,
-      id: nanoid() // Добавляем новое свойство id
+      id: nanoid()
     };
-    console.log(constructorIngredient);
+
     const handleAdd = () => {
       dispatch(addIngredients(constructorIngredient));
     };

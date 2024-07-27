@@ -19,7 +19,7 @@ import { useEffect } from 'react';
 import { AppDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/ingredients/action';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
-import { getUser } from '../../services/auth/action';
+import { checkUserAuth } from '../../services/auth/action';
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,7 +28,7 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getUser());
+    dispatch(checkUserAuth());
     dispatch(fetchIngredients());
   }, []);
 
@@ -49,7 +49,7 @@ const App = () => {
         />
         <Route
           path='/reset-password'
-          element={<OnlyAuth component={<ResetPassword />} />}
+          element={<OnlyUnAuth component={<ResetPassword />} />}
         />
         <Route path='/profile' element={<OnlyAuth component={<Profile />} />} />
         <Route
@@ -65,8 +65,8 @@ const App = () => {
         />
       </Routes>
 
-      <Routes>
-        {backgroundLocation && (
+      {backgroundLocation && (
+        <Routes>
           <Route
             path='/feed/:number'
             element={
@@ -77,8 +77,6 @@ const App = () => {
               />
             }
           />
-        )}
-        {backgroundLocation && (
           <Route
             path='/ingredients/:id'
             element={
@@ -89,8 +87,6 @@ const App = () => {
               />
             }
           />
-        )}
-        {backgroundLocation && (
           <Route
             path='/profile/orders/:number'
             element={
@@ -101,8 +97,8 @@ const App = () => {
               />
             }
           />
-        )}
-      </Routes>
+        </Routes>
+      )}
     </div>
   );
 };

@@ -3,14 +3,15 @@ import { FeedUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
-import { ordersSelector } from '../../services/order/slice';
+import { isLoadingSelector, ordersSelector } from '../../services/order/slice';
 import { getFeeds } from '../../services/order/action';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
   const orders: TOrder[] = useSelector(ordersSelector);
+  const isLoading = useSelector(isLoadingSelector);
 
-  if (!orders.length) {
+  if (isLoading) {
     return <Preloader />;
   }
   const dispatch = useDispatch();
@@ -22,5 +23,9 @@ export const Feed: FC = () => {
     dispatch(getFeeds());
   }, []);
 
-  <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />;
+  return (
+    <>
+      <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />
+    </>
+  );
 };
