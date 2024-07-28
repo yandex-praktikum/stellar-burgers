@@ -1,5 +1,4 @@
-import { useDispatch } from '../../services/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { isLoadingSelector } from '../../services/ingredients/slice';
 import styles from './constructor-page.module.css';
 

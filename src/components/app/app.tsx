@@ -13,16 +13,14 @@ import '../../index.css';
 import styles from './app.module.css';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-
-import { AppDispatch } from '../../services/store';
+import { useDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/ingredients/action';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
 import { checkUserAuth } from '../../services/auth/action';
 
 const App = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const location = useLocation();
   const backgroundLocation = location.state?.background;
   const navigate = useNavigate();

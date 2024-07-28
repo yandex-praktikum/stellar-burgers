@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { loginUser, logoutUser, registerUser, updateUser } from './action';
-import { useSelector } from 'react-redux';
 
 interface IUserState {
   user: TUser | null;
