@@ -27,7 +27,6 @@ export const OrderInfo: FC = () => {
         setOrderData(order);
       } else {
         dispatch(getOrderByNum(number));
-        // setOrderData(modalData);
       }
     }
   }, [dispatch, number]);
