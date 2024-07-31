@@ -27,11 +27,15 @@ export const OrderInfo: FC = () => {
         setOrderData(order);
       } else {
         dispatch(getOrderByNum(number));
-        setOrderData(modalData);
+        // setOrderData(modalData);
       }
     }
   }, [dispatch, number]);
-
+  useEffect(() => {
+    if (modalData && modalData.number === number) {
+      setOrderData(modalData);
+    }
+  }, [modalData, number]);
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -74,7 +78,7 @@ export const OrderInfo: FC = () => {
   }, [orderData, ingredients]);
 
   if (!orderInfo) {
-    return <Preloader />;
+    return;
   }
 
   return <OrderInfoUI orderInfo={orderInfo} />;
