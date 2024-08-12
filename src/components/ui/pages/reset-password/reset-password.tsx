@@ -33,6 +33,8 @@ export const ResetPasswordUI: FC<ResetPasswordUIProps> = ({
         </div>
         <div className='pb-6'>
           <Input
+            onPointerEnterCapture={() => ''}
+            onPointerLeaveCapture={() => ''}
             type='text'
             placeholder='Введите код из письма'
             onChange={(e) => setToken(e.target.value)}

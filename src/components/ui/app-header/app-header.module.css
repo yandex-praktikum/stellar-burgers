@@ -12,12 +12,16 @@
 .menu_part_left {
   display: flex;
   flex-basis: 35%;
+  padding: 16px 20px 16px 20px;
+  gap: 8px;
+  align-items: center;
 }
 
 .link {
   display: flex;
   text-decoration: none;
   color: var(--text-inactive-color);
+  font-family: 'Jet Brains Mono';
 }
 
 .link_active {
@@ -28,6 +32,9 @@
   display: flex;
   justify-content: flex-end;
   flex-basis: 35%;
+  padding: 16px 20px 16px 20px;
+  gap: 8px;
+  align-items: center;
 }
 
 .logo {
@@ -35,3 +42,5 @@
   align-items: center;
   margin: 0 auto;
 }
+
+
