@@ -27,6 +27,8 @@ export const LoginUI: FC<LoginUIProps> = ({
         <>
           <div className='pb-6'>
             <Input
+              onPointerEnterCapture={() => ''}
+              onPointerLeaveCapture={() => ''}
               type='email'
               placeholder='E-mail'
               onChange={(e) => setEmail(e.target.value)}
