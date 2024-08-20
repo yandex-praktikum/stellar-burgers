@@ -14,3 +14,5 @@ export const rootReducer = combineReducers({
   orders: userOrdersReducer,
   feeds: feedsReducer
 });
+
+export default rootReducer;

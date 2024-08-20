@@ -1,0 +1,58 @@
+{"success": true,
+  "order":{  
+    "_id": "6643ad0b97ede0001d06ac54",
+    "status": "done",
+    "name": "Краторный spicy бургер",
+    "createdAt": "2024-05-14T18:27:23.563Z",
+    "updatedAt": "2024-05-14T18:27:24.162Z",
+    "number": 77777,
+    "ingredients": [
+    {
+      "__v": 0,
+      "_id": "643d69a5c3f7b9001cfa093c",
+      "name": "Краторная булка N-200i",
+      "type": "bun",
+      "proteins": 80,
+      "fat": 24,
+      "carbohydrates": 53,
+      "calories": 420,
+      "price": 1255,
+      "image": "https://code.s3.yandex.net/react/code/bun-02.png",
+      "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+      "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png"      
+    },  
+    {
+      "__v": 0,
+      "_id": "643d69a5c3f7b9001cfa0942",
+      "name": "Соус Spicy-X",
+      "type": "sauce",
+      "proteins": 30,
+      "fat": 20,
+      "carbohydrates": 40,
+      "calories": 30,
+      "price": 90,
+      "image": "https://code.s3.yandex.net/react/code/sauce-02.png",
+      "image_mobile": "https://code.s3.yandex.net/react/code/sauce-02-mobile.png",
+      "image_large": "https://code.s3.yandex.net/react/code/sauce-02-large.png"
+    },
+    {
+      "__v": 0,
+      "_id": "643d69a5c3f7b9001cfa093c",
+      "name": "Краторная булка N-200i",
+      "type": "bun",
+      "proteins": 80,
+      "fat": 24,
+      "carbohydrates": 53,
+      "calories": 420,
+      "price": 1255,
+      "image": "https://code.s3.yandex.net/react/code/bun-02.png",
+      "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+      "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png"
+    }        
+  ],
+  "user":{
+    "email": "1test@1test.ru",
+    "name": "Test"
+  }
+  }        
+}
