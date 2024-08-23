@@ -77,29 +77,6 @@ const App = () => {
           />
           <Route path='*' element={<NotFound404 />} />
         </Routes>
-
-        {/* <Routes>
-          <Route path='/' element={<AppHeader />}>
-
-            <Route
-              path='reset-password'
-              element={
-                <ProtectedRoute>
-                  <ResetPassword />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='profile/orders'
-              element={
-                <ProtectedRoute>
-                  <ProfileOrders />
-                </ProtectedRoute>
-              }
-            />
-            <Route path='*' element={<NotFound404 />} />
-          </Route>
-        </Routes>
         <Routes>
           <Route
             path='/feed/:number'
@@ -111,7 +88,7 @@ const App = () => {
           />
           <Route path='/ingredients/:id' element={<IngredientDetails />} />
           <Route path='/profile/orders/:number' element={<OrderInfo />} />
-        </Routes> */}
+        </Routes>
       </div>
     </>
   );
