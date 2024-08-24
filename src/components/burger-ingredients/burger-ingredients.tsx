@@ -8,7 +8,6 @@ import {
 import { useSelector } from '../../services/store';
 import { TIngredient, TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-// import { RootState } from 'src/services/store';
 
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */

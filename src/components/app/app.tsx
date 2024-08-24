@@ -17,16 +17,24 @@ import {
   Link,
   useNavigate
 } from 'react-router-dom';
+import { useEffect } from 'react';
 import { ProtectedRoute } from '../protected-route/protected-route';
-
+import { getIngredients } from '../../services/slices/ingredientsSlice';
 import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
+import { useDispatch } from '../../services/store';
 
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   function onClose() {
     navigate(-1);
   }
+
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, []);
 
   return (
     <>

@@ -44,10 +44,17 @@ export const ingredientsSlice = createSlice({
     selectMains: (state) =>
       state.ingredients.filter((ingredient) => ingredient.type === 'main'),
     selectSauces: (state) =>
-      state.ingredients.filter((ingredient) => ingredient.type === 'sauce')
+      state.ingredients.filter((ingredient) => ingredient.type === 'sauce'),
+    selectIngredients: (state) => state.ingredients,
+    selectisIngredientsLoading: (state) => state.isLoading
   }
 });
 
-export const { selectBuns, selectMains, selectSauces } =
-  ingredientsSlice.selectors;
+export const {
+  selectBuns,
+  selectMains,
+  selectSauces,
+  selectIngredients,
+  selectisIngredientsLoading
+} = ingredientsSlice.selectors;
 export default ingredientsSlice.reducer;
