@@ -1,0 +1,46 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getOrdersApi } from '../../utils/burger-api';
+import { TConstructorIngredient } from '../../utils/types';
+
+export const getFeedsList = createAsyncThunk(
+  'ingredients/getFeeds',
+  getOrdersApi
+);
+
+type TIngredientsState = {
+  feeds: ;
+  loading: boolean;
+  error: string | null | undefined;
+};
+
+const initialState: TIngredientsState = {
+  ingredients: [],
+  loading: false,
+  error: null
+};
+
+export const ingredientsSlice = createSlice({
+  name: 'constructor',
+  initialState,
+  reducers: {},
+  selectors: {
+    getIngredientsState: (state) => state,
+    getIngredientsLoadingState: (state) => state.loading,
+    getIngredients: (state) => state.ingredients
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getIngredientsList.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getIngredientsList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getIngredientsList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.ingredients = action.payload;
+      });
+  }
+});

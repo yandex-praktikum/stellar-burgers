@@ -3,9 +3,14 @@ import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
+import { getIngredients } from '../../services/slices/ingredients';
+import { useSelector } from 'react-redux';
 
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */
+  const ingredients = useSelector(getIngredients);
+  console.log(ingredients);
+
   const buns = [];
   const mains = [];
   const sauces = [];

@@ -57,7 +57,7 @@ export const fetchWithRefresh = async <T>(
   }
 };
 
-type TIngredientsResponse = TServerResponse<{
+export type TIngredientsResponse = TServerResponse<{
   data: TIngredient[];
 }>;
 

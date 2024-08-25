@@ -2,7 +2,7 @@ export * from './constructor-page';
 export * from './feed';
 export * from './forgot-password';
 export * from './login';
-export * from './not-fount-404';
+export * from './not-found-404';
 export * from './profile';
 export * from './profile-orders';
 export * from './register';
