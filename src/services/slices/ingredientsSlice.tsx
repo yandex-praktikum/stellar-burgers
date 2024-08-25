@@ -6,7 +6,7 @@ import { SerializedError } from '@reduxjs/toolkit';
 type TIngredientsSlice = {
   ingredients: TIngredient[];
   isLoading: boolean;
-  error: SerializedError['message'] | null;
+  error: string | null;
 };
 
 export const initialState: TIngredientsSlice = {
@@ -31,7 +31,7 @@ export const ingredientsSlice = createSlice({
       })
       .addCase(getIngredients.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = 'загрузка товаров не удалась';
+        state.error = action.error.message as string;
       })
       .addCase(getIngredients.fulfilled, (state, action) => {
         state.isLoading = false;
