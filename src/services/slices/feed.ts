@@ -1,24 +1,23 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getFeedsApi } from '../../utils/burger-api';
-import { TOrdersData } from '../../utils/types';
+import { TOrder } from '../../utils/types';
 
-export const getFeedsList = createAsyncThunk(
-  'ingredients/getFeeds',
-  getFeedsApi
+export const getFeedsInfo = createAsyncThunk('orders/all', async () =>
+  getFeedsApi()
 );
 
 type TFeedsState = {
-  feeds: TOrdersData;
+  orders: Array<TOrder>;
+  total: number;
+  totalToday: number;
   loading: boolean;
   error: string | null | undefined;
 };
 
 const initialState: TFeedsState = {
-  feeds: {
-    orders: [],
-    total: 0,
-    totalToday: 0
-  },
+  orders: [],
+  total: 0,
+  totalToday: 0,
   loading: false,
   error: null
 };
@@ -28,29 +27,30 @@ export const feedsSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    getFeedsState: (state) => state,
-    getFeedsLoadingState: (state) => state.loading,
-    getFeeds: (state) => state.feeds,
-    getOrders: (state) => state.feeds.orders
+    getOrdersInfo: (state) => state.orders,
+    getTotalFeeds: (state) => state.total,
+    getTotalTodayFeeds: (state) => state.totalToday
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getFeedsList.pending, (state) => {
+      .addCase(getFeedsInfo.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getFeedsList.rejected, (state, action) => {
+      .addCase(getFeedsInfo.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(getFeedsList.fulfilled, (state, action) => {
+      .addCase(getFeedsInfo.fulfilled, (state, action) => {
         state.loading = false;
-        state.feeds = action.payload;
+        state.orders = action.payload.orders;
+        state.total = action.payload.total;
+        state.totalToday = action.payload.totalToday;
       });
   }
 });
 
-export const { getFeedsState, getFeedsLoadingState, getFeeds, getOrders } =
+export const { getOrdersInfo, getTotalFeeds, getTotalTodayFeeds } =
   feedsSlice.selectors;
 
 export const feedReducer = feedsSlice.reducer;
