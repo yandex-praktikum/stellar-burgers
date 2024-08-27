@@ -18,9 +18,7 @@ export const ProtectedRoute = ({
       const previousPage = location.state?.from || { pathname: '/' };
       return <Navigate replace to={previousPage} />;
     }
-    if (location.pathname !== '/login') {
-      return <Navigate replace to='/login' state={{ from: location }} />;
-    }
+    return <Navigate replace to='/login' state={{ from: location }} />;
   }
   return children;
 };
