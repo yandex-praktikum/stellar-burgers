@@ -22,6 +22,7 @@ import { ProtectedRoute } from '../protected-route/protected-route';
 import { getIngredients } from '../../services/slices/ingredientsSlice';
 import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
 import { useDispatch } from '../../services/store';
+import { OrderDetailsUI } from '../ui/order-details';
 
 const App = () => {
   const location = useLocation();
@@ -89,13 +90,35 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title='Детали заказа' onClose={onClose}>
+              <Modal title='Детали заказа' onClose={() => navigate('/')}>
                 <OrderInfo />
               </Modal>
             }
           />
-          <Route path='/ingredients/:id' element={<IngredientDetails />} />
-          <Route path='/profile/orders/:number' element={<OrderInfo />} />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title='Детали ингредиента' onClose={() => navigate('/')}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <Modal title='Детали заказа' onClose={() => navigate('/')}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          {/* <Route
+            path=''
+            element={
+              <Modal title='' onClose={() => navigate('/feed/:number')}>
+                <OrderDetailsUI orderNumber={1} />
+              </Modal>
+            }
+          /> */}
         </Routes>
       </div>
     </>
