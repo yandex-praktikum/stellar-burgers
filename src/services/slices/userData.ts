@@ -4,15 +4,35 @@ import {
   loginUserApi,
   getUserApi,
   updateUserApi,
-  logoutApi
+  logoutApi,
+  stopSession,
+  TRegisterData,
+  startSession,
+  TLoginData
 } from '../../utils/burger-api';
 import { TUser } from '../../utils/types';
 
-export const registerUser = createAsyncThunk('user/register', registerUserApi);
-export const loginUser = createAsyncThunk('user/loginUser', loginUserApi);
+export const registerUser = createAsyncThunk(
+  'user/register',
+  (data: TRegisterData) =>
+    registerUserApi(data).then((res) => {
+      startSession(res);
+      return res;
+    })
+);
+export const loginUser = createAsyncThunk(
+  'user/loginUser',
+  (data: TLoginData) =>
+    loginUserApi(data).then((res) => {
+      startSession(res);
+      return res;
+    })
+);
 export const getUserData = createAsyncThunk('user/getUserData', getUserApi);
 export const updateUser = createAsyncThunk('user/updateUser', updateUserApi);
-export const logout = createAsyncThunk('user/logout', logoutApi);
+export const logout = createAsyncThunk('user/logout', () =>
+  logoutApi().then(() => stopSession())
+);
 
 type TUserState = {
   isAuthorized: boolean;
@@ -57,16 +77,15 @@ export const userSlice = createSlice({
         state.userData = action.payload.user;
       })
       .addCase(getUserData.rejected, (state, action) => {
-        state.isAuthorized = true;
         state.error = action.error.message;
       })
       .addCase(getUserData.fulfilled, (state, action) => {
-        state.isAuthorized = false;
         state.userData = action.payload.user;
+        localStorage.setItem('name', state.userData.name);
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.error = action.error.message;
         state.isAuthorized = true;
+        state.error = action.error.message;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.error = '';

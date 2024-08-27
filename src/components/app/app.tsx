@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 import { useDispatch } from '../../services/store';
 import { getIngredientsList } from '../../services/slices/ingredients';
 import { resetConstructorState } from '../../services/slices/constructor';
+import { getUserData } from '../../services/slices/userData';
 
 const App = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getIngredientsList());
+    dispatch(getUserData());
   }, []);
 
   return (

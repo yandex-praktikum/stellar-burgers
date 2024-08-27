@@ -1,5 +1,5 @@
-import { setCookie, getCookie } from './cookie';
-import { TIngredient, TOrder, TOrdersData, TUser } from './types';
+import { setCookie, getCookie, deleteCookie } from './cookie';
+import { TIngredient, TOrder, TUser } from './types';
 
 const URL = process.env.BURGER_API_URL;
 
@@ -233,3 +233,13 @@ export const logoutApi = () =>
       token: localStorage.getItem('refreshToken')
     })
   }).then((res) => checkResponse<TServerResponse<{}>>(res));
+
+export const startSession = (auth: TAuthResponse) => {
+  setCookie('accessToken', auth.accessToken);
+  localStorage.setItem('refreshToken', auth.refreshToken);
+};
+
+export const stopSession = () => {
+  deleteCookie('accessToken');
+  localStorage.removeItem('refreshToken');
+};
