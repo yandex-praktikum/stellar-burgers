@@ -11,9 +11,9 @@ export const ProtectedRoute = ({
   isAuthRequired = true,
   children
 }: ProtectedRouteProps) => {
+  const location = useLocation();
   const isUserAuthorized = useSelector(getIsAuthorized);
   if (isUserAuthorized != isAuthRequired) {
-    const location = useLocation();
     if (isUserAuthorized) {
       const previousPage = location.state?.from || { pathname: '/' };
       return <Navigate replace to={previousPage} />;

@@ -15,19 +15,20 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route/protectedRoute';
 import { useEffect } from 'react';
-import { useDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { getIngredientsList } from '../../services/slices/ingredients';
-import { resetConstructorState } from '../../services/slices/burgerConstructor';
-import { getUserData } from '../../services/slices/userData';
+import { getIsAuthorized, getUserData } from '../../services/slices/userData';
 
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const background = location.state?.background;
   const dispatch = useDispatch();
+  const isAuthorized = useSelector(getIsAuthorized);
+
   useEffect(() => {
     dispatch(getIngredientsList());
-    dispatch(getUserData());
+    if (isAuthorized) dispatch(getUserData());
   }, []);
 
   return (

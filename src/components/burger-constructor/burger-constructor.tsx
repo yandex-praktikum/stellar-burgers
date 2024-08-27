@@ -14,9 +14,11 @@ import {
 } from '../../services/slices/order';
 import { useDispatch } from '../../services/store';
 import { getIsAuthorized } from '../../services/slices/userData';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const constructorItems = useSelector(getComponents);
   const orderRequest = useSelector(getOrderRequest);
   const orderModalData = useSelector(getOrder);
@@ -30,6 +32,8 @@ export const BurgerConstructor: FC = () => {
         ...constructorItems.ingredients.map((ingredient) => ingredient._id)
       ];
       dispatch(createOrder(orderData));
+    } else {
+      navigate('/login');
     }
   };
   const closeOrderModal = () => {
