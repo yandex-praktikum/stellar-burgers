@@ -4,7 +4,7 @@ import { BurgerConstructorUI } from '@ui';
 import {
   getComponents,
   resetConstructorState
-} from '../../services/slices/constructor';
+} from '../../services/slices/burgerConstructor';
 import { useSelector } from 'react-redux';
 import {
   createOrder,
@@ -13,20 +13,24 @@ import {
   resetOrder
 } from '../../services/slices/order';
 import { useDispatch } from '../../services/store';
+import { getIsAuthorized } from '../../services/slices/userData';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const constructorItems = useSelector(getComponents);
   const orderRequest = useSelector(getOrderRequest);
   const orderModalData = useSelector(getOrder);
+  const isAuthorized = useSelector(getIsAuthorized);
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
-    const orderData = [
-      constructorItems.bun._id,
-      ...constructorItems.ingredients.map((ingredient) => ingredient._id)
-    ];
-    dispatch(createOrder(orderData));
+    if (isAuthorized) {
+      if (!constructorItems.bun || orderRequest) return;
+      const orderData = [
+        constructorItems.bun._id,
+        ...constructorItems.ingredients.map((ingredient) => ingredient._id)
+      ];
+      dispatch(createOrder(orderData));
+    }
   };
   const closeOrderModal = () => {
     dispatch(resetOrder());

@@ -6,9 +6,7 @@ import { loginUser } from '../../services/slices/userData';
 export const Login: FC = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState(localStorage.getItem('email') || '');
-  const [password, setPassword] = useState(
-    localStorage.getItem('password') || ''
-  );
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

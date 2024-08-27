@@ -3,7 +3,7 @@ import { TIngredientsCategoryProps } from './type';
 import { TIngredient } from '@utils-types';
 import { IngredientsCategoryUI } from '../ui/ingredients-category';
 import { useSelector } from 'react-redux';
-import { getComponents } from '../../services/slices/constructor';
+import { getComponents } from '../../services/slices/burgerConstructor';
 
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,

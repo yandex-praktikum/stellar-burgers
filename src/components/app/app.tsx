@@ -17,7 +17,7 @@ import { ProtectedRoute } from '../protected-route/protectedRoute';
 import { useEffect } from 'react';
 import { useDispatch } from '../../services/store';
 import { getIngredientsList } from '../../services/slices/ingredients';
-import { resetConstructorState } from '../../services/slices/constructor';
+import { resetConstructorState } from '../../services/slices/burgerConstructor';
 import { getUserData } from '../../services/slices/userData';
 
 const App = () => {
@@ -25,8 +25,6 @@ const App = () => {
   const location = useLocation();
   const background = location.state?.background;
   const dispatch = useDispatch();
-  dispatch(resetConstructorState());
-
   useEffect(() => {
     dispatch(getIngredientsList());
     dispatch(getUserData());

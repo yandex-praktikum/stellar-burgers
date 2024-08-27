@@ -12,8 +12,8 @@ const initialState: TConstructorState = {
   ingredients: []
 };
 
-export const constructorSlice = createSlice({
-  name: 'constructor',
+export const burgerConstructorSlice = createSlice({
+  name: 'burgerConstructor',
   initialState,
   reducers: {
     addIngredient: {
@@ -37,7 +37,10 @@ export const constructorSlice = createSlice({
         (item) => item.id !== action.payload.id
       );
     },
-    resetConstructorState: (state) => (state = initialState),
+    resetConstructorState: (state) => {
+      state.bun = null;
+      state.ingredients = [];
+    },
     replaceIngredientHigher: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       if (index > 0 && index < state.ingredients.length) {
@@ -66,9 +69,7 @@ export const {
   resetConstructorState,
   replaceIngredientHigher,
   replaceIngredientLower
-} = constructorSlice.actions;
+} = burgerConstructorSlice.actions;
 
-export const { getComponents } = constructorSlice.selectors;
-
-export const constructorSelector = constructorSlice.selectors;
-export const constructorReducer = constructorSlice.reducer;
+export const { getComponents } = burgerConstructorSlice.selectors;
+export const burgerConstructorReducer = burgerConstructorSlice.reducer;

@@ -32,12 +32,14 @@ export const orderSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createOrder.pending, (state) => {
+        state.orderRequest = true;
         state.error = null;
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.error = action.error.message;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
+        state.orderRequest = false;
         state.order = action.payload.order;
       });
   }

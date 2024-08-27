@@ -37,7 +37,6 @@ export const logout = createAsyncThunk('user/logout', () =>
 type TUserState = {
   isAuthorized: boolean;
   userData: TUser;
-  password: string;
   error: string | null | undefined;
 };
 
@@ -47,7 +46,6 @@ const initialState: TUserState = {
     email: '',
     name: ''
   },
-  password: '',
   error: null
 };
 
@@ -58,7 +56,7 @@ export const userSlice = createSlice({
   selectors: {
     getIsAuthorized: (state) => state.isAuthorized,
     getUser: (state) => state.userData,
-    getName: (state) => state.userData.name
+    getName: (state) => state.userData?.name
   },
   extraReducers: (builder) => {
     builder
@@ -80,8 +78,12 @@ export const userSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(getUserData.fulfilled, (state, action) => {
-        state.userData = action.payload.user;
-        localStorage.setItem('name', state.userData.name);
+        state.userData = state.isAuthorized
+          ? action.payload.user
+          : {
+              email: '',
+              name: ''
+            };
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.isAuthorized = true;

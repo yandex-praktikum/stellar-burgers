@@ -8,11 +8,11 @@ type ProtectedRouteProps = {
 };
 
 export const ProtectedRoute = ({
-  isAuthRequired = false,
+  isAuthRequired = true,
   children
 }: ProtectedRouteProps) => {
   const isUserAuthorized = useSelector(getIsAuthorized);
-  if (isUserAuthorized !== isAuthRequired) {
+  if (isUserAuthorized != isAuthRequired) {
     const location = useLocation();
     if (isUserAuthorized) {
       const previousPage = location.state?.from || { pathname: '/' };
