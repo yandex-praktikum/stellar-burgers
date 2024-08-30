@@ -31,9 +31,9 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
       </div>
       <div className={styles.link_position_last}>
         <ProfileIcon type={'primary'} />
-        <p className='text text_type_main-default ml-2'>
+        <NavLink to='/profile' className='text text_type_main-default ml-2'>
           {userName || 'Личный кабинет'}
-        </p>
+        </NavLink>
       </div>
     </nav>
   </header>

@@ -28,8 +28,8 @@ export const postOrder = createAsyncThunk(
   }
 );
 
-export const fetchOrderById = createAsyncThunk(
-  'order/fetchById',
+export const fetchOrderByNumber = createAsyncThunk(
+  'order/fetchByNumber',
   async (data: number) => getOrderByNumberApi(data)
 );
 
@@ -61,16 +61,16 @@ export const orderSlice = createSlice({
         state.isLoading = false;
         state.orderRequest = false;
       })
-      .addCase(fetchOrderById.rejected, (state, action) => {
+      .addCase(fetchOrderByNumber.rejected, (state, action) => {
         state.orderRequest = false;
         state.isLoading = false;
         state.fetchOrderById = action.error.message as string;
       })
-      .addCase(fetchOrderById.pending, (state) => {
+      .addCase(fetchOrderByNumber.pending, (state) => {
         state.orderRequest = true;
         state.isLoading = true;
       })
-      .addCase(fetchOrderById.fulfilled, (state, action) => {
+      .addCase(fetchOrderByNumber.fulfilled, (state, action) => {
         state.isLoading = false;
         state.orderRequest = true;
         state.orderData = action.payload.orders[0];
