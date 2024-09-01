@@ -14,7 +14,7 @@ import { createAsyncThunk, createSlice, isAction } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 
-export const getUser = createAsyncThunk('user/get', (async) => getUserApi());
+export const getUser = createAsyncThunk('user/get', async () => getUserApi());
 
 export const checkUser = createAsyncThunk('user/check', (_, { dispatch }) => {
   if (getCookie('accessToken')) {
@@ -98,9 +98,12 @@ export const userSlice = createSlice({
       })
       .addCase(getUser.pending, (state) => {
         state.isLoading = true;
+        console.log(state);
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
+        state.isLoading = false;
+        state.isAuthChecked = true;
       })
       // checkUser
       .addCase(checkUser.rejected, (state) => {
