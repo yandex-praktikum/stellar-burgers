@@ -18,19 +18,19 @@ export const Login: FC = () => {
 
   return (
     <>
-      {isLoading ? (
+      {/* {isLoading ? (
         <Preloader />
-      ) : (
-        <LoginUI
-          errorText=''
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
-          handleSubmit={handleSubmit}
-        />
-      )}
-      ;
+      ) : ( */}
+      <LoginUI
+        errorText=''
+        email={email}
+        setEmail={setEmail}
+        password={password}
+        setPassword={setPassword}
+        handleSubmit={handleSubmit}
+      />
+      {/* ) */}
+      {/* } */};
     </>
   );
 };

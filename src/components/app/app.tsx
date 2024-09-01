@@ -55,7 +55,7 @@ const App = () => {
           <Route
             path='register'
             element={
-              <ProtectedRoute onlyUnAuth>
+              <ProtectedRoute>
                 <Register />
               </ProtectedRoute>
             }
@@ -63,7 +63,7 @@ const App = () => {
           <Route
             path='forgot-password'
             element={
-              <ProtectedRoute onlyUnAuth>
+              <ProtectedRoute>
                 <ForgotPassword />
               </ProtectedRoute>
             }
@@ -71,7 +71,7 @@ const App = () => {
           <Route
             path='reset-password'
             element={
-              <ProtectedRoute onlyUnAuth>
+              <ProtectedRoute>
                 <ResetPassword />
               </ProtectedRoute>
             }
@@ -79,7 +79,7 @@ const App = () => {
           <Route
             path='/profile'
             element={
-              <ProtectedRoute onlyUnAuth>
+              <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
             }
@@ -87,7 +87,7 @@ const App = () => {
           <Route
             path='profile/orders'
             element={
-              <ProtectedRoute onlyUnAuth>
+              <ProtectedRoute>
                 <ProfileOrders />
               </ProtectedRoute>
             }

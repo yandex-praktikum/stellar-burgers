@@ -17,7 +17,7 @@ import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 export const getUser = createAsyncThunk('user/get', (async) => getUserApi());
 
 export const checkUser = createAsyncThunk('user/check', (_, { dispatch }) => {
-  if (getCookie('accessTocken')) {
+  if (getCookie('accessToken')) {
     dispatch(getUser()).finally(() => {
       dispatch(authChecked());
     });

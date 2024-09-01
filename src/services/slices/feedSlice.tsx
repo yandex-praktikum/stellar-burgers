@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getOrdersApi } from '../../utils/burger-api';
+import { getFeedsApi } from '../../utils/burger-api';
 import { TOrder } from '../../utils/types';
 
 export const getFeeds = createAsyncThunk('orders/get', async () => {
-  const fetchFeed = getOrdersApi();
-  console.log(getOrdersApi());
+  const fetchFeed = getFeedsApi();
+  console.log(fetchFeed);
   return fetchFeed;
 });
 
@@ -44,7 +44,9 @@ export const feedSlice = createSlice({
       })
       .addCase(getFeeds.fulfilled, (state, action) => {
         state.isLoading = true;
-        state.orders = action.payload;
+        state.orders = action.payload.orders;
+        state.feed.total = action.payload.total;
+        state.feed.totalToday = action.payload.totalToday;
       });
   },
   selectors: {
