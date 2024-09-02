@@ -92,6 +92,22 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path='/feed/:number'
+            element={
+              <ProtectedRoute>
+                <OrderInfo />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <ProtectedRoute>
+                <IngredientDetails />
+              </ProtectedRoute>
+            }
+          />
           <Route path='' element={<NotFound404 />} />
         </Routes>
 
@@ -121,14 +137,6 @@ const App = () => {
                 </Modal>
               }
             />
-            {/* <Route
-            path=''
-            element={
-              <Modal title='' onClose={() => navigate('/feed/:number')}>
-                <OrderDetailsUI orderNumber={1} />
-              </Modal>
-            }
-          /> */}
           </Routes>
         )}
       </div>

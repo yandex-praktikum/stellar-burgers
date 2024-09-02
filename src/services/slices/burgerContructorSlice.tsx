@@ -44,7 +44,8 @@ export const burgerConstructorSlice = createSlice({
       state.ingredients = ingredients;
     },
     emptyConstructor: (state) => {
-      state = initialState;
+      state.bun = null;
+      state.ingredients = [];
     }
   },
   selectors: {

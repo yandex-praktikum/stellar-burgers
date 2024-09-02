@@ -2,7 +2,10 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 // import { selectOrders, getFeeds } from '../../services/slices/feedSlice';
-import { selectConstructorItem } from '../../services/slices/burgerContructorSlice';
+import {
+  selectConstructorItem,
+  emptyConstructor
+} from '../../services/slices/burgerContructorSlice';
 import { useSelector, useDispatch } from '../../services/store';
 import {
   selectOrderData,
@@ -16,10 +19,8 @@ import { selectUser } from '../../services/slices/userSlice';
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора - done*/
   const dispatch = useDispatch();
-
   const constructorItems = useSelector(selectConstructorItem);
   const orderRequest = useSelector(selectOrderRequest);
-  // const orders = useSelector(selectOrders);
   const orderModalData = useSelector(selectOrderData);
   const { user } = useSelector(selectUser);
   const navigate = useNavigate();
@@ -36,12 +37,10 @@ export const BurgerConstructor: FC = () => {
       constructorItems.bun._id
     ];
     dispatch(postOrder(orderIngredients));
-    // dispatch(getFeeds());
-    // console.log(dispatch(postOrder(orderIngredients)));
-    // console.log(orders);
   };
 
   const closeOrderModal = () => {
+    dispatch(emptyConstructor());
     dispatch(clearOrderData());
   };
 
