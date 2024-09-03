@@ -11,4 +11,5 @@ export type ProfileUIProps = {
   handleCancel: (e: SyntheticEvent) => void;
   handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   updateUserError?: string;
+  isUpdating: boolean;  // Добавляем isUpdating в типизацию
 };

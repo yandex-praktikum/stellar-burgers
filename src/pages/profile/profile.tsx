@@ -1,25 +1,33 @@
+import { useSelector, useDispatch } from '../../services/store';
+import { useEffect, useState, SyntheticEvent, FC } from 'react';
+import {
+  fetchUserProfile,
+  updateUserProfile,
+  selectUser,
+  selectIsLoading,
+  selectIsUpdating
+} from '../../services/slices/profileSlice';
 import { ProfileUI } from '@ui-pages';
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
-
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser); // Используем селектор selectUser
+  const isLoading = useSelector(selectIsLoading); // Используем селектор selectIsLoading
+  const isUpdating = useSelector(selectIsUpdating); // Используем селектор selectIsUpdating
   const [formValue, setFormValue] = useState({
-    name: user.name,
-    email: user.email,
+    name: '',
+    email: '',
     password: ''
   });
 
   useEffect(() => {
-    setFormValue((prevState) => ({
-      ...prevState,
-      name: user?.name || '',
-      email: user?.email || ''
-    }));
+    dispatch(fetchUserProfile()); // Загружаем профиль при монтировании компонента
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      setFormValue({ name: user.name, email: user.email, password: '' });
+    }
   }, [user]);
 
   const isFormChanged =
@@ -29,13 +37,20 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(
+      updateUserProfile({
+        name: formValue.name,
+        email: formValue.email,
+        password: formValue.password
+      })
+    );
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
-      name: user.name,
-      email: user.email,
+      name: user?.name || '',
+      email: user?.email || '',
       password: ''
     });
   };
@@ -54,8 +69,7 @@ export const Profile: FC = () => {
       handleCancel={handleCancel}
       handleSubmit={handleSubmit}
       handleInputChange={handleInputChange}
+      isUpdating={isUpdating}
     />
   );
-
-  return null;
 };
