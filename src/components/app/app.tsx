@@ -145,7 +145,7 @@ const App = () => {
               element={
                 <Modal
                   title='Детали заказа'
-                  onClose={() => navigate('/profile/orders/')}
+                  onClose={() => navigate('/profile/orders')}
                 >
                   <OrderInfo />
                 </Modal>

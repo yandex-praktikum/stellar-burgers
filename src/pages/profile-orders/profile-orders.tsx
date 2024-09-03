@@ -13,6 +13,8 @@ export const ProfileOrders: FC = () => {
   const orders: TOrder[] = useSelector(selectPlacedOrders);
   useEffect(() => {
     dispatch(getPlacedOrders());
+    console.log(getPlacedOrders());
+    console.log(dispatch(getPlacedOrders()));
   }, [dispatch]);
 
   return <ProfileOrdersUI orders={orders} />;

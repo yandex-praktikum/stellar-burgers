@@ -22,8 +22,6 @@ export const postOrder = createAsyncThunk(
   'order/post',
   async (data: string[]) => {
     const order = await orderBurgerApi(data);
-    console.log(order); //убрать перед отправкой
-    console.log(order.success); //убрать перед отправкой
     return order;
   }
 );
