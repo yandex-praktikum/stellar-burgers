@@ -95,17 +95,28 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <ProtectedRoute>
+              <Modal title='Детали заказа' onClose={() => navigate('/feed')}>
                 <OrderInfo />
-              </ProtectedRoute>
+              </Modal>
             }
           />
           <Route
             path='/ingredients/:id'
             element={
-              <ProtectedRoute>
+              <Modal title='Детали ингредиента' onClose={() => navigate('/')}>
                 <IngredientDetails />
-              </ProtectedRoute>
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <Modal
+                title='Детали заказа'
+                onClose={() => navigate('/profile/orders')}
+              >
+                <OrderInfo />
+              </Modal>
             }
           />
           <Route path='' element={<NotFound404 />} />
@@ -116,7 +127,7 @@ const App = () => {
             <Route
               path='/feed/:number'
               element={
-                <Modal title='Детали заказа' onClose={() => navigate('/')}>
+                <Modal title='Детали заказа' onClose={() => navigate('/feed')}>
                   <OrderInfo />
                 </Modal>
               }
@@ -132,7 +143,10 @@ const App = () => {
             <Route
               path='/profile/orders/:number'
               element={
-                <Modal title='Детали заказа' onClose={() => navigate('/')}>
+                <Modal
+                  title='Детали заказа'
+                  onClose={() => navigate('/profile/orders/')}
+                >
                   <OrderInfo />
                 </Modal>
               }
