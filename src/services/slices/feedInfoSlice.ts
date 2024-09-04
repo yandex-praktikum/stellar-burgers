@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types'; // Предполагается, что TFeedInfo определен в utils-types
 import { getFeedsApi, getOrdersApi } from '@api'; // Предполагается, что этот API существует
+import { RootState } from '../store';
 
 type TFeedInfoSliceState = {
   orders: TOrder[]; // Для хранения информации о заказах
@@ -50,11 +51,9 @@ export const feedSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message as string;
       });
-  },
-  selectors: {
-    selectOrders: (state) => state.orders, // Селектор для получения заказов из состояния
-    selectFeed: (state) => state.feed // Селектор для получения статистики фида из состояния
   }
 });
 export default feedSlice.reducer;
-export const { selectOrders, selectFeed } = feedSlice.selectors;
+// Селекторы
+export const selectOrders = (state: RootState) => state.ingredients;
+export const selectFeed = (state: RootState) => state.ingredients;
