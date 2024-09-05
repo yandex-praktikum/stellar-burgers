@@ -1,17 +1,38 @@
-import { FC, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { useSelector } from '../../services/store';
+import { FC, useMemo, useEffect } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
-import { TIngredient, TOrder } from '@utils-types';
-
+import { useSelector, useDispatch } from '../../services/store';
+import { TIngredient } from '@utils-types';
+import { useParams } from 'react-router-dom';
+import { selectIngredients } from 'src/services/slices/ingredientsSlice';
+import {
+  selectOrders,
+  retrieveOrderByNumber
+} from 'src/services/slices/ordersSlice';
 export const OrderInfo: FC = () => {
-  const { number } = useParams<{ number: string }>();
-  const orderData = useSelector((state) =>
-    state.orders.items.find((order: TOrder) => order.number === Number(number))
-  );
-  const ingredients = useSelector((state) => state.ingredients.ingredients); // Используем корректное имя свойства "ingredients"
+  /** TODO: взять переменные orderData и ingredients из стора */
+  const dispatch = useDispatch();
+  const param = useParams();
+  const orderData = useSelector(selectOrders);
+  const number = Number(param);
+  useEffect(() => {
+    if (!orderData) {
+      dispatch(retrieveOrderByNumber(number));
+    }
+  }, [dispatch]);
+  // const orderData = {
+  //   createdAt: '',
+  //   ingredients: [],
+  //   _id: '',
+  //   status: '',
+  //   name: '',
+  //   updatedAt: 'string',
+  //   number: 0
+  // };
 
+  const ingredients: TIngredient[] = useSelector(selectIngredients);
+
+  /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -22,11 +43,9 @@ export const OrderInfo: FC = () => {
     };
 
     const ingredientsInfo = orderData.ingredients.reduce(
-      (acc: TIngredientsWithCount, item: string) => {
+      (acc: TIngredientsWithCount, item) => {
         if (!acc[item]) {
-          const ingredient = ingredients.find(
-            (ing: TIngredient) => ing._id === item
-          ); // Явное указание типа ing
+          const ingredient = ingredients.find((ing) => ing._id === item);
           if (ingredient) {
             acc[item] = {
               ...ingredient,
@@ -39,11 +58,11 @@ export const OrderInfo: FC = () => {
 
         return acc;
       },
-      {} as TIngredientsWithCount
+      {}
     );
 
     const total = Object.values(ingredientsInfo).reduce(
-      (acc: number, item) => acc + item.price * item.count,
+      (acc, item) => acc + item.price * item.count,
       0
     );
 

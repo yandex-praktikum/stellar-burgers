@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getIngredientsApi } from '@api';
-import { TIngredient } from '@utils-types';
+import { getIngredientsApi } from '../../utils/burger-api';
+import { TIngredient } from '../../utils/types';
 
 //TIngredientsSlice описывает структуру состояния слайса, который включает массив ингредиентов, флаг загрузки и сообщение об ошибке.
 type TIngredientsSlice = {
@@ -41,10 +41,10 @@ export const ingredientsSlice = createSlice({
   selectors: {
     selectBuns: (state) =>
       state.ingredients.filter((ingredient) => ingredient.type === 'bun'),
-    selectMains: (state) =>
-      state.ingredients.filter((ingredient) => ingredient.type === 'main'),
     selectSauces: (state) =>
       state.ingredients.filter((ingredient) => ingredient.type === 'sauce'),
+    selectMains: (state) =>
+      state.ingredients.filter((ingredient) => ingredient.type === 'main'),
     selectIngredients: (state) => state.ingredients,
     selectIsLoading: (state) => state.isLoading
   }
@@ -52,9 +52,9 @@ export const ingredientsSlice = createSlice({
 
 export const {
   selectBuns,
-  selectMains,
-  selectSauces,
   selectIngredients,
+  selectSauces,
+  selectMains,
   selectIsLoading
 } = ingredientsSlice.selectors;
 export default ingredientsSlice.reducer;

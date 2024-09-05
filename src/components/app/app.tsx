@@ -79,7 +79,7 @@ const App = () => (
           </ProtectedRoute>
         }
       />
-      <Route path='*' element={<NotFound404 />} />
+      <Route path=' ' element={<NotFound404 />} />
     </Routes>
     <ModalRoutes />
   </div>

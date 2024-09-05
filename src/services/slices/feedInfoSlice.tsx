@@ -33,6 +33,10 @@ export const feedSlice = createSlice({
   name: 'feed',
   initialState,
   reducers: {},
+  selectors: {
+    selectOrders: (state) => state.orders,
+    selectFeed: (state) => state.feed
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFeeds.pending, (state) => {
@@ -43,6 +47,7 @@ export const feedSlice = createSlice({
       .addCase(fetchFeeds.fulfilled, (state, action) => {
         // Когда запрос выполнен успешно
         state.feed.total = action.payload.total; // Сохранение информации о заказах
+        state.feed.totalToday = action.payload.totalToday;
         state.isLoading = false;
         state.orders = action.payload.orders;
       })
@@ -54,6 +59,6 @@ export const feedSlice = createSlice({
   }
 });
 export default feedSlice.reducer;
+// export const feedSliceName = feedSlice.name;
 // Селекторы
-export const selectOrders = (state: RootState) => state.ingredients;
-export const selectFeed = (state: RootState) => state.ingredients;
+export const { selectOrders, selectFeed } = feedSlice.selectors;
