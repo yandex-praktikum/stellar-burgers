@@ -7,6 +7,7 @@ import {
   ordersSelector,
   fetchAllFeeds
 } from '../../services/slices/feedsSlice';
+import { log } from 'console';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
@@ -17,7 +18,7 @@ export const Feed: FC = () => {
     dispatch(fetchAllFeeds());
   }, []);
 
-  console.log(orders);
+  // console.log(orders);
 
   if (!orders.length) {
     return <Preloader />;
@@ -27,5 +28,5 @@ export const Feed: FC = () => {
     dispatch(fetchAllFeeds());
   };
 
-  <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />;
+  return <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />;
 };

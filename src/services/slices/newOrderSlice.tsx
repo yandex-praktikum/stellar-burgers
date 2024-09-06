@@ -23,7 +23,7 @@ export const newOrderSlice = createSlice({
   name: 'newOrder',
   initialState,
   reducers: {
-    resetOrder: (state) => initialState
+    resetOrder: (state) => (state = initialState)
   },
   selectors: {
     orderRequestSelector: (state) => state.orderRequest,
