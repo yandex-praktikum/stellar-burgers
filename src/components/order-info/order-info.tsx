@@ -4,11 +4,11 @@ import { OrderInfoUI } from '../ui/order-info';
 import { useSelector, useDispatch } from '../../services/store';
 import { TIngredient } from '@utils-types';
 import { useParams } from 'react-router-dom';
-import { selectIngredients } from 'src/services/slices/ingredientsSlice';
+import { selectIngredients } from '../../services/slices/ingredientsSlice';
 import {
   selectOrders,
   retrieveOrderByNumber
-} from 'src/services/slices/ordersSlice';
+} from '../../services/slices/ordersSlice';
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
   const dispatch = useDispatch();

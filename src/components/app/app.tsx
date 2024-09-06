@@ -1,34 +1,114 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
-import ProtectedRoute from '../protected-route/protected-route';
 import {
   ConstructorPage,
   Feed,
+  NotFound404,
   Login,
   Register,
   ForgotPassword,
   ResetPassword,
-  Profile,
   ProfileOrders,
-  NotFound404
+  Profile
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  NavigateFunction
+} from 'react-router-dom';
+import { useEffect } from 'react';
+import { ProtectedRoute } from '../protected-route/protected-route';
+import { getIngredients } from '../../services/slices/ingredientsSlice';
+import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
+import { useDispatch } from '../../services/store';
+import { checkUser } from '../../services/slices/profileSlice';
 
-import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-
-const closeModal = () => {
-  // Логика закрытия модального окна
-};
-
-const ModalRoutes = () => {
+const App = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const backgroundLocation = location.state?.background;
+
+  useEffect(() => {
+    dispatch(checkUser());
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
-    <Routes location={location}>
+    <div className={styles.app}>
+      <AppHeader />
+      <Routes location={backgroundLocation || location}>
+        <Route path='/' element={<ConstructorPage />} />
+        <Route path='/feed' element={<Feed />} />
+        <Route
+          path='/login'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <Login />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/register'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <Register />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/forgot-password'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <ForgotPassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/reset-password'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <ResetPassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/profile/orders'
+          element={
+            <ProtectedRoute>
+              <ProfileOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route path='' element={<NotFound404 />} />
+      </Routes>
+
+      {backgroundLocation && <ModalRoutes navigate={navigate} />}
+    </div>
+  );
+};
+
+interface ModalRoutesProps {
+  navigate: NavigateFunction; // Define the type for navigate prop
+}
+
+const ModalRoutes: React.FC<ModalRoutesProps> = ({ navigate }) => {
+  return (
+    <Routes>
       <Route
         path='/feed/:number'
         element={
-          <Modal title='Детали заказа' onClose={closeModal}>
+          <Modal title='Детали заказа' onClose={() => navigate('/feed')}>
             <OrderInfo />
           </Modal>
         }
@@ -36,7 +116,7 @@ const ModalRoutes = () => {
       <Route
         path='/ingredients/:id'
         element={
-          <Modal title='Детали ингридиета' onClose={closeModal}>
+          <Modal title='Детали ингредиента' onClose={() => navigate('/')}>
             <IngredientDetails />
           </Modal>
         }
@@ -44,7 +124,10 @@ const ModalRoutes = () => {
       <Route
         path='/profile/orders/:number'
         element={
-          <Modal title='Детали заказа' onClose={closeModal}>
+          <Modal
+            title='Детали заказа'
+            onClose={() => navigate('/profile/orders')}
+          >
             <OrderInfo />
           </Modal>
         }
@@ -52,37 +135,5 @@ const ModalRoutes = () => {
     </Routes>
   );
 };
-
-const App = () => (
-  <div className={styles.app}>
-    <AppHeader />
-    <Routes>
-      <Route path='/' element={<ConstructorPage />} />
-      <Route path='/feed' element={<Feed />} />
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
-      <Route path='/forgot-password' element={<ForgotPassword />} />
-      <Route path='/reset-password' element={<ResetPassword />} />
-      <Route
-        path='/profile'
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path='/profile/orders'
-        element={
-          <ProtectedRoute>
-            <ProfileOrders />
-          </ProtectedRoute>
-        }
-      />
-      <Route path=' ' element={<NotFound404 />} />
-    </Routes>
-    <ModalRoutes />
-  </div>
-);
 
 export default App;

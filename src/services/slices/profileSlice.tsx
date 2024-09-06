@@ -3,10 +3,10 @@ import { TUser, TRegisterData } from '@utils-types';
 import {
   getUserApi,
   updateUserApi,
-  TLoginData,
   loginUserApi,
   logoutApi,
-  registerUserApi
+  registerUserApi,
+  TLoginData
 } from '../../utils/burger-api';
 import { setCookie, deleteCookie, getCookie } from '../../utils/cookie';
 
@@ -16,148 +16,150 @@ type TProfileState = {
   isAuthChecked: boolean;
   error: string | null;
   isLoading: boolean;
-  isUpdating: boolean;
 };
 
 // Начальное состояние
-export const initialState: TProfileState = {
+const initialState: TProfileState = {
   user: null,
   isAuthChecked: false,
   error: null,
-  isLoading: false,
-  isUpdating: false
+  isLoading: false
 };
 
-// Общая функция для обработки ошибок в асинхронных действиях
-const handleError = (state: TProfileState, action: any, message: string) => {
-  state.isLoading = false;
-  state.isUpdating = false;
-  state.error = action.error?.message || message;
-};
-
-// Общая функция для обработки начала асинхронного действия
-const startLoading = (state: TProfileState) => {
+// Общая функция для обработки состояния загрузки и ошибок
+const handlePending = (state: TProfileState) => {
   state.isLoading = true;
   state.error = null;
 };
 
-// Асинхронный thunk для получения данных пользователя
-export const fetchUserProfile = createAsyncThunk('profile/getUser', async () =>
-  getUserApi().then((res) => res.user)
+const handleRejected = (
+  state: TProfileState,
+  action: PayloadAction<string | undefined>
+) => {
+  state.isLoading = false;
+  state.error = action.payload || 'Ошибка выполнения';
+};
+
+// Создание асинхронных действий
+export const getUser = createAsyncThunk('user/get', async () => getUserApi());
+
+export const checkUser = createAsyncThunk(
+  'user/check',
+  async (_, { dispatch }) => {
+    if (getCookie('accessToken')) {
+      await dispatch(getUser());
+    }
+    dispatch(authChecked());
+  }
 );
 
-// Асинхронный thunk для обновления данных пользователя
-export const updateUserProfile = createAsyncThunk(
-  'profile/updateUser',
-  async (user: Partial<TRegisterData>) => (await updateUserApi(user)).user
+export const updateUser = createAsyncThunk(
+  'user/update',
+  async (user: Partial<TRegisterData>, { rejectWithValue }) => {
+    try {
+      const updatedUser = await updateUserApi(user);
+      return updatedUser; // Возвращаем обновленные данные пользователя
+    } catch (error) {
+      return rejectWithValue('Обновление пользователя не удалось'); // Возвращаем сообщение об ошибке
+    }
+  }
 );
 
-// Асинхронный thunk для регистрации пользователя
 export const userRegister = createAsyncThunk(
-  'profile/register',
-  async ({ email, name, password }: TRegisterData) => {
-    const res = await registerUserApi({ email, name, password });
-    setCookie('accessToken', res.accessToken);
-    localStorage.setItem('refreshToken', res.refreshToken);
-    return res.user;
+  'user/register',
+  async ({ email, name, password }: TRegisterData, { rejectWithValue }) => {
+    const data = await registerUserApi({ email, name, password });
+    if (!data?.success) {
+      return rejectWithValue('Регистрация не удалась');
+    }
+    setCookie('accessToken', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    return data;
   }
 );
 
-// Асинхронный thunk для входа пользователя
 export const userLogin = createAsyncThunk(
-  'profile/login',
-  async ({ email, password }: TLoginData) => {
-    const res = await loginUserApi({ email, password });
-    setCookie('accessToken', res.accessToken);
-    localStorage.setItem('refreshToken', res.refreshToken);
-    return res.user;
+  'user/login',
+  async ({ email, password }: TLoginData, { rejectWithValue }) => {
+    const data = await loginUserApi({ email, password });
+    if (!data?.success) {
+      return rejectWithValue('Вход не удался');
+    }
+    setCookie('accessToken', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    return data.user;
   }
 );
 
-// Асинхронный thunk для выхода пользователя
-export const userLogout = createAsyncThunk('profile/logout', async () => {
+export const userLogout = createAsyncThunk('user/logout', async () => {
   await logoutApi();
   deleteCookie('accessToken');
-  localStorage.removeItem('refreshToken');
+  localStorage.clear();
 });
 
-// Создание слайса
+// Создание среза
 export const profileSlice = createSlice({
-  name: 'profile',
+  name: 'user',
   initialState,
   reducers: {
-    // Устанавливаем флаг проверки авторизации
     authChecked: (state) => {
       state.isAuthChecked = true;
-    },
-    // Сброс ошибки
-    clearError: (state) => {
-      state.error = null;
     }
   },
   extraReducers: (builder) => {
-    // Обработка получения профиля пользователя
-    builder.addCase(fetchUserProfile.pending, (state) => startLoading(state));
-    builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
-      state.user = action.payload;
-      state.isLoading = false;
-      state.isAuthChecked = true;
-    });
-    builder.addCase(fetchUserProfile.rejected, (state, action) =>
-      handleError(state, action, 'Не удалось загрузить профиль')
-    );
-
-    // Обработка обновления профиля
-    builder.addCase(updateUserProfile.pending, (state) => {
-      state.isUpdating = true;
-      state.error = null;
-    });
-    builder.addCase(updateUserProfile.fulfilled, (state, action) => {
-      state.user = action.payload;
-      state.isUpdating = false;
-    });
-    builder.addCase(updateUserProfile.rejected, (state, action) =>
-      handleError(state, action, 'Не удалось обновить профиль')
-    );
-
-    // Обработка регистрации
-    builder.addCase(userRegister.pending, (state) => startLoading(state));
-    builder.addCase(userRegister.fulfilled, (state, action) => {
-      state.user = action.payload;
-      state.isLoading = false;
-    });
-    builder.addCase(userRegister.rejected, (state, action) =>
-      handleError(state, action, 'Регистрация не удалась')
-    );
-
-    // Обработка входа
-    builder.addCase(userLogin.pending, (state) => startLoading(state));
-    builder.addCase(userLogin.fulfilled, (state, action) => {
-      state.user = action.payload;
-      state.isLoading = false;
-      state.isAuthChecked = true;
-    });
-    builder.addCase(userLogin.rejected, (state, action) =>
-      handleError(state, action, 'Вход не удался')
-    );
-
-    // Обработка выхода
-    builder.addCase(userLogout.fulfilled, (state) => {
-      state.user = null;
-      state.isAuthChecked = false;
-    });
+    builder
+      .addCase(getUser.pending, handlePending)
+      .addCase(
+        getUser.fulfilled,
+        (state, action: PayloadAction<{ user: TUser }>) => {
+          state.user = action.payload.user;
+          state.isLoading = false;
+          state.isAuthChecked = true;
+        }
+      )
+      .addCase(checkUser.pending, handlePending)
+      .addCase(checkUser.rejected, (state) => {
+        state.isLoading = false;
+        state.isAuthChecked = false;
+        state.error = 'Пользователь не зарегистрирован';
+      })
+      .addCase(checkUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isAuthChecked = true;
+      })
+      .addCase(updateUser.pending, handlePending)
+      .addCase(
+        updateUser.fulfilled,
+        (state, action: PayloadAction<{ user: TUser }>) => {
+          state.isLoading = false;
+          state.user = action.payload.user; // здесь должно возвращаться соответствующее значение
+        }
+      )
+      .addCase(userRegister.pending, handlePending)
+      .addCase(
+        userRegister.fulfilled,
+        (state, action: PayloadAction<{ user: TUser }>) => {
+          state.isLoading = false;
+          state.user = action.payload.user;
+        }
+      )
+      .addCase(userLogin.pending, handlePending)
+      .addCase(userLogin.fulfilled, (state, action: PayloadAction<TUser>) => {
+        state.isLoading = false;
+        state.isAuthChecked = true;
+        state.user = action.payload;
+      })
+      .addCase(userLogout.pending, handlePending)
+      .addCase(userLogout.fulfilled, (state) => {
+        state.isLoading = false;
+        state.user = null;
+      });
   }
 });
 
-// Экспортируем actions для использования в компонентах
-export const { authChecked, clearError } = profileSlice.actions;
-
-// Экспортируем селекторы для доступа к данным из слайса
-export const selectUser = (state: TProfileState) => state.user;
-export const selectIsLoading = (state: TProfileState) => state.isLoading;
-export const selectIsUpdating = (state: TProfileState) => state.isUpdating;
-export const selectIsAuthChecked = (state: TProfileState) =>
-  state.isAuthChecked;
-export const selectError = (state: TProfileState) => state.error;
-
+// Экспорт действий и редюсера
+export const { authChecked } = profileSlice.actions;
 export default profileSlice.reducer;
+
+// Селектор для получения пользователя
+export const selectUser = (state: { user: TProfileState }) => state.user;

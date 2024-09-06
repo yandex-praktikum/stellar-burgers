@@ -72,8 +72,9 @@ export const ordersSlice = createSlice({
   },
   selectors: {
     selectOrders: (state) => state.orderSummary,
-    selectquery: (state) => state.isLoading
+    selectquery: (state) => state.orderClaim
   }
 });
 export default ordersSlice.reducer;
 export const { selectOrders, selectquery } = ordersSlice.selectors;
+export const { clearOrders } = ordersSlice.actions;
