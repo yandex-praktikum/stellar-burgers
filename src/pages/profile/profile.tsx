@@ -1,6 +1,7 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import {
+  apiGetUser,
   getUserSelector,
   logout,
   updateUser
@@ -23,6 +24,10 @@ export const Profile: FC = () => {
     password: ''
   });
 
+  // useEffect(() => {
+  //   dispatch(apiGetUser());
+  // }, [dispatch]);
+
   useEffect(() => {
     setFormValue((prevState) => ({
       ...prevState,
@@ -39,6 +44,7 @@ export const Profile: FC = () => {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(updateUser(formValue));
+    console.log(formValue);
   };
 
   const handleCancel = (e: SyntheticEvent) => {
