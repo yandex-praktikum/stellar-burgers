@@ -11,9 +11,10 @@ export const ProfileOrders: FC = () => {
   /** TODO: взять переменную из стора */
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchUserOrders);
+    dispatch(fetchUserOrders());
   });
   const orders: TOrder[] = useSelector(getOrdersSelector);
+  console.log(orders);
 
   return <ProfileOrdersUI orders={orders} />;
 };

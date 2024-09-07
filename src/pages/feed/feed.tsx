@@ -7,7 +7,6 @@ import {
   ordersSelector,
   fetchAllFeeds
 } from '../../services/slices/feedsSlice';
-import { log } from 'console';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
@@ -17,8 +16,6 @@ export const Feed: FC = () => {
   useEffect(() => {
     dispatch(fetchAllFeeds());
   }, []);
-
-  // console.log(orders);
 
   if (!orders.length) {
     return <Preloader />;

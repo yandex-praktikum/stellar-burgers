@@ -13,9 +13,9 @@ export const Profile: FC = () => {
   const user = useSelector(getUserSelector);
   const dispatch = useDispatch();
 
-  if (!user) {
-    return <Navigate replace to='/login' />;
-  }
+  // if (!user) {
+  //   return <Navigate replace to='/login' />;
+  // }
 
   const [formValue, setFormValue] = useState({
     name: user.name,
