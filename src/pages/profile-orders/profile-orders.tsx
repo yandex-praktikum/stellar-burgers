@@ -14,7 +14,6 @@ export const ProfileOrders: FC = () => {
     dispatch(fetchUserOrders());
   });
   const orders: TOrder[] = useSelector(getOrdersSelector);
-  console.log(orders);
 
   return <ProfileOrdersUI orders={orders} />;
 };

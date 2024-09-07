@@ -3,15 +3,28 @@ import {
   loginUserApi,
   logoutApi,
   registerUserApi,
+  TRegisterData,
   updateUserApi
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
+import { setCookie } from '../../utils/cookie';
 
 export const apiGetUser = createAsyncThunk('user/getUser', getUserApi);
 export const updateUser = createAsyncThunk('user/update', updateUserApi);
 export const registerFetch = createAsyncThunk('user/register', registerUserApi);
-export const login = createAsyncThunk('user/login', loginUserApi);
+// export const login = createAsyncThunk('user/login', loginUserApi);
+export const login = createAsyncThunk(
+  'user/login',
+  async ({ email, password }: Omit<TRegisterData, 'name'>) => {
+    const data = await loginUserApi({ email, password });
+
+    setCookie('accessToken', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+
+    return data.user;
+  }
+);
 export const logout = createAsyncThunk('user/logout', logoutApi);
 
 export interface TUserState {
@@ -55,7 +68,8 @@ export const userSlice = createSlice({
     builder
       .addCase(login.fulfilled, (state, action) => {
         state.isAuthChecked = true;
-        state.user = action.payload.user;
+        // state.user = action.payload.user;
+        state.user = action.payload;
         state.error = '';
       })
       .addCase(login.rejected, (state, action) => {

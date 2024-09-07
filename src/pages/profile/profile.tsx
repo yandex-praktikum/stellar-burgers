@@ -13,7 +13,6 @@ export const Profile: FC = () => {
   /** TODO: взять переменную из стора */
   const user = useSelector(getUserSelector);
   const dispatch = useDispatch();
-
   // if (!user) {
   //   return <Navigate replace to='/login' />;
   // }
@@ -43,8 +42,13 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(updateUser(formValue));
-    console.log(formValue);
+    dispatch(
+      updateUser({
+        name: formValue.name,
+        email: formValue.email,
+        password: formValue.password
+      })
+    );
   };
 
   const handleCancel = (e: SyntheticEvent) => {
