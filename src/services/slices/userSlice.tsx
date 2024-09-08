@@ -8,7 +8,7 @@ import {
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { setCookie } from '../../utils/cookie';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 
 export const apiGetUser = createAsyncThunk('user/getUser', getUserApi);
 export const updateUser = createAsyncThunk('user/update', updateUserApi);
@@ -25,7 +25,13 @@ export const login = createAsyncThunk(
     return data.user;
   }
 );
-export const logout = createAsyncThunk('user/logout', logoutApi);
+// export const logout = createAsyncThunk('user/logout', logoutApi);
+export const logout = createAsyncThunk('user/logout', () => {
+  logoutApi().then(() => {
+    localStorage.clear();
+    deleteCookie('accessToken');
+  });
+});
 
 export interface TUserState {
   isAuthChecked: boolean;
@@ -68,7 +74,6 @@ export const userSlice = createSlice({
     builder
       .addCase(login.fulfilled, (state, action) => {
         state.isAuthChecked = true;
-        // state.user = action.payload.user;
         state.user = action.payload;
         state.error = '';
       })

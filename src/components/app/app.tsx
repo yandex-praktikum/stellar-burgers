@@ -18,6 +18,7 @@ import { ProtectedRoute } from '../protected-route';
 import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
 import { getIngredientsList } from '../../services/slices/ingredientsSlice';
+import { apiGetUser } from '../../services/slices/userSlice';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,10 @@ const App = () => {
   useEffect(() => {
     dispatch(getIngredientsList());
   }, []);
+
+  useEffect(() => {
+    dispatch(apiGetUser());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>

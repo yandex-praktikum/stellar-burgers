@@ -27,13 +27,18 @@ export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
     }
 
     const handleMoveDown = () => {
+      // dispatch(
+      //   updateConstructor(swapElement(constructorItems.ingredients, index, 1))
+      // );
       dispatch(
         updateConstructor(swapElement(constructorItems.ingredients, index, 1))
       );
     };
 
     const handleMoveUp = () => {
-      updateConstructor(swapElement(constructorItems.ingredients, index, -1));
+      dispatch(
+        updateConstructor(swapElement(constructorItems.ingredients, index, -1))
+      );
     };
 
     const handleClose = () => {

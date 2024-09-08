@@ -7,25 +7,22 @@ import {
   updateUser
 } from '../../services/slices/userSlice';
 import { useDispatch, useSelector } from '../../services/store';
-import { Navigate } from 'react-router-dom';
+import { Preloader } from '@ui';
 
 export const Profile: FC = () => {
   /** TODO: взять переменную из стора */
   const user = useSelector(getUserSelector);
   const dispatch = useDispatch();
-  // if (!user) {
-  //   return <Navigate replace to='/login' />;
-  // }
+
+  if (!user) {
+    <Preloader />;
+  }
 
   const [formValue, setFormValue] = useState({
     name: user.name,
     email: user.email,
     password: ''
   });
-
-  // useEffect(() => {
-  //   dispatch(apiGetUser());
-  // }, [dispatch]);
 
   useEffect(() => {
     setFormValue((prevState) => ({
