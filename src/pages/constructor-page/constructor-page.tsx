@@ -11,22 +11,18 @@ import styles from './constructor-page.module.css';
 import { BurgerIngredients, BurgerConstructor } from '../../components';
 import { Preloader } from '@ui';
 export const ConstructorPage: FC = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // Используем селекторы для получения данных из состояния
-  const buns = useSelector(selectBuns);
-  const mains = useSelector(selectMains);
-  const sauces = useSelector(selectSauces);
-  const isLoading = useSelector(selectIsLoading);
-
+  const isLoadingIngredients = useSelector(selectIsLoading);
   // Загружаем ингредиенты при монтировании компонента
-  useEffect(() => {
-    dispatch(getIngredients()); // Используем getIngredients, как определено в вашем слайсе
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getIngredients()); // Используем getIngredients, как определено в вашем слайсе
+  // }, [dispatch]);
 
   return (
     <>
-      {isLoading ? (
+      {isLoadingIngredients ? (
         <Preloader /> // Показываем индикатор загрузки, пока данные не будут загружены
       ) : (
         <main className={styles.containerMain}>

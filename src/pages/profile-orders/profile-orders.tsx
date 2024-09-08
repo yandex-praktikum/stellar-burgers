@@ -8,6 +8,7 @@ import {
 import { TOrder } from '@utils-types';
 
 export const ProfileOrders: FC = () => {
+  /** TODO: взять переменную из стора */
   const dispatch = useDispatch();
   const orders: TOrder[] = useSelector(selectSubmittedOrders); // Используем селектор selectOrders
 

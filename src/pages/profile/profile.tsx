@@ -1,6 +1,6 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { selectUser } from '../../services/slices/profileSlice';
+import { selectUser, updateUser } from '../../services/slices/profileSlice';
 import { useDispatch, useSelector } from '../../services/store';
 
 export const Profile: FC = () => {
@@ -29,6 +29,7 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(updateUser(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {

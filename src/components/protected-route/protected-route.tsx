@@ -1,38 +1,38 @@
 import React from 'react';
-import { useSelector } from '../../services/store';
-import { useLocation, Navigate } from 'react-router-dom';
-import { selectUser } from '../../services/slices/profileSlice';
 import { Preloader } from '../../components/ui/preloader/preloader';
+import { useLocation, Navigate } from 'react-router-dom';
+import { useSelector } from '../../services/store';
+import { selectUser } from '../../services/slices/profileSlice';
 
 type ProtectedRouteProps = {
-  onlyUnAuth?: boolean;
+  anonymous?: boolean;
   children: React.ReactElement;
 };
 
-export const ProtectedRoute = ({
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
-  onlyUnAuth
-}: ProtectedRouteProps) => {
+  anonymous
+}) => {
   const location = useLocation();
-  const { user, isAuthChecked } = useSelector(selectUser);
+  const { user, isDataLoading } = useSelector(selectUser);
 
-  if (!isAuthChecked) {
-    return <Preloader />;
-  }
+  const renderContent = () => {
+    if (!isDataLoading) {
+      return <Preloader />;
+    }
 
-  if (onlyUnAuth && user) {
-    return <Navigate replace to={location.state?.from || { pathname: '/' }} />;
-  }
-  if (!onlyUnAuth && !user) {
-    return (
-      <Navigate
-        replace
-        to='/login'
-        state={{
-          from: location
-        }}
-      />
-    );
-  }
-  return children;
+    if (anonymous && user) {
+      return <Navigate replace to={location.state?.from || '/'} />;
+    }
+
+    if (!anonymous && !user) {
+      return <Navigate replace to='/login' state={{ from: location }} />;
+    }
+
+    return children;
+  };
+
+  return renderContent();
 };
+
+export default ProtectedRoute;

@@ -7,6 +7,7 @@ import { TOrder } from '@utils-types';
 import { fetchFeeds, selectOrders } from '../../services/slices/feedInfoSlice';
 
 export const Feed: FC = () => {
+  /** TODO: взять переменную из стора - done */
   const dispatch = useDispatch();
   const orders: TOrder[] = useSelector(selectOrders);
 
@@ -17,7 +18,6 @@ export const Feed: FC = () => {
   if (!orders.length) {
     return <Preloader />;
   }
-
   return (
     <FeedUI
       orders={orders}

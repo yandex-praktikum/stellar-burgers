@@ -1,5 +1,5 @@
-import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
+import { FC, useMemo } from 'react';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
 import {
@@ -18,11 +18,8 @@ import { useNavigate } from 'react-router-dom';
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const dispatch = useDispatch();
-
   const constructorItems = useSelector(selectConstructorItem);
-
   const orderRequest = useSelector(selectquery);
-
   const orderModalData = useSelector(selectOrders);
   const { user } = useSelector(selectUser);
   const navigate = useNavigate;

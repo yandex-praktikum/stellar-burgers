@@ -13,7 +13,7 @@ import { setCookie, deleteCookie, getCookie } from '../../utils/cookie';
 // Определение типа для состояния профиля пользователя
 type TProfileState = {
   user: TUser | null;
-  isAuthChecked: boolean;
+  isDataLoading: boolean;
   error: string | null;
   isLoading: boolean;
 };
@@ -21,7 +21,7 @@ type TProfileState = {
 // Начальное состояние
 const initialState: TProfileState = {
   user: null,
-  isAuthChecked: false,
+  isDataLoading: false,
   error: null,
   isLoading: false
 };
@@ -43,7 +43,7 @@ const handleRejected = (
 // Создание асинхронных действий
 export const getUser = createAsyncThunk('user/get', async () => getUserApi());
 
-export const checkUser = createAsyncThunk(
+export const verifyUser = createAsyncThunk(
   'user/check',
   async (_, { dispatch }) => {
     if (getCookie('accessToken')) {
@@ -67,8 +67,8 @@ export const updateUser = createAsyncThunk(
 
 export const userRegister = createAsyncThunk(
   'user/register',
-  async ({ email, name, password }: TRegisterData, { rejectWithValue }) => {
-    const data = await registerUserApi({ email, name, password });
+  async (user: TRegisterData, { rejectWithValue }) => {
+    const data = await registerUserApi(user);
     if (!data?.success) {
       return rejectWithValue('Регистрация не удалась');
     }
@@ -103,7 +103,7 @@ export const profileSlice = createSlice({
   initialState,
   reducers: {
     authChecked: (state) => {
-      state.isAuthChecked = true;
+      state.isDataLoading = true;
     }
   },
   extraReducers: (builder) => {
@@ -114,18 +114,18 @@ export const profileSlice = createSlice({
         (state, action: PayloadAction<{ user: TUser }>) => {
           state.user = action.payload.user;
           state.isLoading = false;
-          state.isAuthChecked = true;
+          state.isDataLoading = true;
         }
       )
-      .addCase(checkUser.pending, handlePending)
-      .addCase(checkUser.rejected, (state) => {
+      .addCase(verifyUser.pending, handlePending)
+      .addCase(verifyUser.rejected, (state) => {
         state.isLoading = false;
-        state.isAuthChecked = false;
+        state.isDataLoading = false;
         state.error = 'Пользователь не зарегистрирован';
       })
-      .addCase(checkUser.fulfilled, (state) => {
+      .addCase(verifyUser.fulfilled, (state) => {
         state.isLoading = false;
-        state.isAuthChecked = true;
+        state.isDataLoading = true;
       })
       .addCase(updateUser.pending, handlePending)
       .addCase(
@@ -146,7 +146,7 @@ export const profileSlice = createSlice({
       .addCase(userLogin.pending, handlePending)
       .addCase(userLogin.fulfilled, (state, action: PayloadAction<TUser>) => {
         state.isLoading = false;
-        state.isAuthChecked = true;
+        state.isDataLoading = true;
         state.user = action.payload;
       })
       .addCase(userLogout.pending, handlePending)
