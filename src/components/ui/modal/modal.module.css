@@ -15,7 +15,7 @@
     0px 0px 1px rgba(0, 0, 0, 0.04);
 }
 
-.header {
+/* .header {
   display: flex;
   align-items: center;
   min-height: 64px;
@@ -30,6 +30,31 @@
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0);
   margin-left: auto;
+  padding: 0;
+} */
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  min-height: 64px;
+}
+
+.title {
+  margin: 0;
+}
+
+.button {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
   padding: 0;
 }
 

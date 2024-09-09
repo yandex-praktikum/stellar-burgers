@@ -15,34 +15,29 @@ import {
   getLoading,
   getOrder
 } from '../../services/ordersSlice';
+import { getAuthUser } from '../../services/authSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const constructorItems = useSelector(getBurger);
-
   const orderRequest = useSelector(getLoading);
-
   const orderModalData = useSelector(getOrder);
-
-  // const burgerIngredients = (state: IConstructorState): string[] => {
-  //   const ingredients: string[] = [];
-  //   if (state.bun) {
-  //     ingredients.push(state.bun.id);
-  //   }
-  //   state.ingredients.forEach((ingredient) => {
-  //     ingredients.push(ingredient.id);
-  //   });
-
-  //   return ingredients;
-  // };
+  const user = useSelector(getAuthUser);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const burgerIngredients: string[] = useSelector(getAllIngredients);
 
   const onOrderClick = () => {
+    // console.log('user' + user);
     if (!constructorItems.bun || orderRequest) return;
+    if (!user) {
+      navigate('/login', { replace: true, state: { from: location } });
+      return;
+    }
     dispatch(createOrder(burgerIngredients));
-    console.log(burgerIngredients);
   };
 
   const closeOrderModal = () => {

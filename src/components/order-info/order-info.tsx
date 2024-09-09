@@ -9,9 +9,7 @@ import { getOrderByNumberApi } from '@api';
 
 export const OrderInfo: FC = () => {
   const [orderData, setOrderData] = useState<TOrder | null>(null);
-
   const id = Number(useParams().number);
-
   const ingredients: TIngredient[] = useSelector(getIngredients);
 
   useEffect(() => {

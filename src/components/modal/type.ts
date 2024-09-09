@@ -4,4 +4,5 @@ export type TModalProps = {
   title: string;
   onClose: () => void;
   children?: ReactNode;
+  titleClassName?: string;
 };
