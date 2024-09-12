@@ -2,7 +2,7 @@ import React from 'react';
 import { Preloader } from '../../components/ui/preloader/preloader';
 import { useLocation, Navigate } from 'react-router-dom';
 import { useSelector } from '../../services/store';
-import { selectUser } from '../../services/slices/profileSlice';
+import { selectProfileUser } from '../../services/slices/profileUserSlice';
 
 type ProtectedRouteProps = {
   anonymous?: boolean;
@@ -14,7 +14,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   anonymous
 }) => {
   const location = useLocation();
-  const { user, isDataLoading } = useSelector(selectUser);
+  const { user, isDataLoading } = useSelector(selectProfileUser);
 
   const renderContent = () => {
     if (!isDataLoading) {

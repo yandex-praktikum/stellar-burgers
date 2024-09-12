@@ -1,4 +1,3 @@
-// Данный файл выполнен верно
 import { configureStore } from '@reduxjs/toolkit';
 
 import {

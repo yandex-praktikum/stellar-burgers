@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
-// import { TIngredient } from '@utils-types';
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useSelector } from '../../services/store';
@@ -11,7 +10,7 @@ import {
 } from '../../services/slices/ingredientsSlice';
 
 export const BurgerIngredients: FC = () => {
-  // Фильтрация ингредиентов по категориям
+  /** TODO: взять переменные из стора */
   const buns = useSelector(selectBuns);
   const mains = useSelector(selectMains);
   const sauces = useSelector(selectSauces);

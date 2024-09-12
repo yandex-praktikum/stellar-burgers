@@ -4,7 +4,7 @@ import { useEffect, FC } from 'react';
 import {
   fetchSubmitOrders,
   selectSubmittedOrders
-} from '../../services/slices/submittedOrdersSlice';
+} from '../../services/slices/activeOrdersSlice';
 import { TOrder } from '@utils-types';
 
 export const ProfileOrders: FC = () => {

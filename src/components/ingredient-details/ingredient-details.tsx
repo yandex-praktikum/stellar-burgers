@@ -6,8 +6,8 @@ import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
 
 export const IngredientDetails: FC = () => {
-  const { id } = useParams();
   const ingredient = useSelector(selectIngredients);
+  const { id } = useParams();
   const ingredientData = ingredient.find((item) => item._id === id);
 
   if (!ingredientData) {

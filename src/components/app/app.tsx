@@ -12,23 +12,40 @@ import {
   Profile
 } from '@pages';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
 import { ProtectedRoute } from '../protected-route/protected-route';
-import { getIngredients } from '../../services/slices/ingredientsSlice';
+import { useEffect } from 'react';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
 import { useDispatch } from '../../services/store';
-import { verifyUser } from '../../services/slices/profileSlice';
+import { verifyUser } from '../../services/slices/profileUserSlice';
 
 const App = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const backgroundPosition = location.state?.background;
 
   useEffect(() => {
+    dispatch(fetchIngredients());
     dispatch(verifyUser());
-    dispatch(getIngredients());
   }, [dispatch]);
+
+  // Функция для создания маршрутов модальных окон
+  const renderModalRoute = (
+    path: string,
+    title: string,
+    onClose: () => void,
+    children: JSX.Element
+  ) => (
+    <Route
+      path={path}
+      element={
+        <Modal title={title} onClose={onClose}>
+          {children}
+        </Modal>
+      }
+    />
+  );
 
   return (
     <div className={styles.app}>
@@ -84,65 +101,49 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route
-          path='/feed/:number'
-          element={
-            <Modal title='Детали заказа' onClose={() => navigate('/feed')}>
-              <OrderInfo />
-            </Modal>
-          }
-        />
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal title='Детали ингредиента' onClose={() => navigate('/')}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-        <Route
-          path='/profile/orders/:number'
-          element={
-            <Modal
-              title='Детали заказа'
-              onClose={() => navigate('/profile/orders')}
-            >
-              <OrderInfo />
-            </Modal>
-          }
-        />
+
+        {renderModalRoute(
+          '/feed/:number',
+          'Детали заказа',
+          () => navigate('/feed'),
+          <OrderInfo />
+        )}
+        {renderModalRoute(
+          '/ingredients/:id',
+          'Детали ингредиента',
+          () => navigate('/'),
+          <IngredientDetails />
+        )}
+        {renderModalRoute(
+          '/profile/orders/:number',
+          'Детали заказа',
+          () => navigate('/profile/orders'),
+          <OrderInfo />
+        )}
+
         <Route path='*' element={<NotFound404 />} />
       </Routes>
 
       {backgroundPosition && (
         <Routes>
-          <Route
-            path='/feed/:number'
-            element={
-              <Modal title='Детали заказа' onClose={() => navigate('/feed')}>
-                <OrderInfo />
-              </Modal>
-            }
-          />
-          <Route
-            path='/ingredients/:id'
-            element={
-              <Modal title='Детали ингредиента' onClose={() => navigate('/')}>
-                <IngredientDetails />
-              </Modal>
-            }
-          />
-          <Route
-            path='/profile/orders/:number'
-            element={
-              <Modal
-                title='Детали заказа'
-                onClose={() => navigate('/profile/orders')}
-              >
-                <OrderInfo />
-              </Modal>
-            }
-          />
+          {renderModalRoute(
+            '/feed/:number',
+            'Детали заказа',
+            () => navigate('/feed'),
+            <OrderInfo />
+          )}
+          {renderModalRoute(
+            '/ingredients/:id',
+            'Детали ингредиента',
+            () => navigate('/'),
+            <IngredientDetails />
+          )}
+          {renderModalRoute(
+            '/profile/orders/:number',
+            'Детали заказа',
+            () => navigate('/profile/orders'),
+            <OrderInfo />
+          )}
         </Routes>
       )}
     </div>

@@ -3,26 +3,26 @@ import { FC, useMemo } from 'react';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
 import {
-  emptyConstructor,
-  selectConstructorItem
+  clearConstructor,
+  getConstructorState
 } from '../../services/slices/burgerConstructorSlice';
 import {
   clearOrders,
   fetchOrders,
   selectOrders,
   selectquery
-} from '../../services/slices/ordersSlice';
-import { selectUser } from '../../services/slices/profileSlice';
+} from '../../services/slices/ordersHistorySlice';
+import { selectProfileUser } from '../../services/slices/profileUserSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const dispatch = useDispatch();
-  const constructorItems = useSelector(selectConstructorItem);
+  const constructorItems = useSelector(getConstructorState);
   const orderRequest = useSelector(selectquery);
   const orderModalData = useSelector(selectOrders);
-  const { user } = useSelector(selectUser);
   const navigate = useNavigate;
+  const { user } = useSelector(selectProfileUser);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
@@ -38,7 +38,7 @@ export const BurgerConstructor: FC = () => {
     dispatch(fetchOrders(orderIngredients));
   };
   const closeOrderModal = () => {
-    dispatch(emptyConstructor());
+    dispatch(clearConstructor());
     dispatch(clearOrders());
   };
 
@@ -51,8 +51,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  // return null;
 
   return (
     <BurgerConstructorUI

@@ -1,29 +1,16 @@
-import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from '../../services/store';
-import {
-  getIngredients,
-  selectBuns,
-  selectMains,
-  selectSauces,
-  selectIsLoading
-} from '../../services/slices/ingredientsSlice';
 import styles from './constructor-page.module.css';
+import { FC } from 'react';
+import { useSelector } from '../../services/store';
+import { selectIsLoading } from '../../services/slices/ingredientsSlice';
 import { BurgerIngredients, BurgerConstructor } from '../../components';
 import { Preloader } from '@ui';
 export const ConstructorPage: FC = () => {
-  // const dispatch = useDispatch();
-
-  // Используем селекторы для получения данных из состояния
+  /** TODO: взять переменную из стора - done*/
   const isLoadingIngredients = useSelector(selectIsLoading);
-  // Загружаем ингредиенты при монтировании компонента
-  // useEffect(() => {
-  //   dispatch(getIngredients()); // Используем getIngredients, как определено в вашем слайсе
-  // }, [dispatch]);
-
   return (
     <>
       {isLoadingIngredients ? (
-        <Preloader /> // Показываем индикатор загрузки, пока данные не будут загружены
+        <Preloader />
       ) : (
         <main className={styles.containerMain}>
           <h1

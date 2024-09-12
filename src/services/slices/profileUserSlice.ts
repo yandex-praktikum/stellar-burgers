@@ -34,10 +34,11 @@ const handlePending = (state: TProfileState) => {
 
 const handleRejected = (
   state: TProfileState,
-  action: PayloadAction<string | undefined>
+  action: PayloadAction<unknown>
 ) => {
   state.isLoading = false;
-  state.error = action.payload || 'Ошибка выполнения';
+  state.error =
+    typeof action.payload === 'string' ? action.payload : 'Ошибка выполнения';
 };
 
 // Создание асинхронных действий
@@ -78,7 +79,7 @@ export const userRegister = createAsyncThunk(
   }
 );
 
-export const userLogin = createAsyncThunk(
+export const profileLogin = createAsyncThunk(
   'user/login',
   async ({ email, password }: TLoginData, { rejectWithValue }) => {
     const data = await loginUserApi({ email, password });
@@ -97,7 +98,6 @@ export const userLogout = createAsyncThunk('user/logout', async () => {
   localStorage.clear();
 });
 
-// Создание среза
 export const profileSlice = createSlice({
   name: 'user',
   initialState,
@@ -117,6 +117,7 @@ export const profileSlice = createSlice({
           state.isDataLoading = true;
         }
       )
+      .addCase(getUser.rejected, handleRejected)
       .addCase(verifyUser.pending, handlePending)
       .addCase(verifyUser.rejected, (state) => {
         state.isLoading = false;
@@ -132,9 +133,10 @@ export const profileSlice = createSlice({
         updateUser.fulfilled,
         (state, action: PayloadAction<{ user: TUser }>) => {
           state.isLoading = false;
-          state.user = action.payload.user; // здесь должно возвращаться соответствующее значение
+          state.user = action.payload.user;
         }
       )
+      .addCase(updateUser.rejected, handleRejected)
       .addCase(userRegister.pending, handlePending)
       .addCase(
         userRegister.fulfilled,
@@ -143,12 +145,17 @@ export const profileSlice = createSlice({
           state.user = action.payload.user;
         }
       )
-      .addCase(userLogin.pending, handlePending)
-      .addCase(userLogin.fulfilled, (state, action: PayloadAction<TUser>) => {
-        state.isLoading = false;
-        state.isDataLoading = true;
-        state.user = action.payload;
-      })
+      .addCase(userRegister.rejected, handleRejected)
+      .addCase(profileLogin.pending, handlePending)
+      .addCase(
+        profileLogin.fulfilled,
+        (state, action: PayloadAction<TUser>) => {
+          state.isLoading = false;
+          state.isDataLoading = true;
+          state.user = action.payload;
+        }
+      )
+      .addCase(profileLogin.rejected, handleRejected)
       .addCase(userLogout.pending, handlePending)
       .addCase(userLogout.fulfilled, (state) => {
         state.isLoading = false;
@@ -162,4 +169,4 @@ export const { authChecked } = profileSlice.actions;
 export default profileSlice.reducer;
 
 // Селектор для получения пользователя
-export const selectUser = (state: { user: TProfileState }) => state.user;
+export const selectProfileUser = (state: { user: TProfileState }) => state.user;
