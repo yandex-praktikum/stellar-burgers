@@ -23,9 +23,6 @@ export const submittedOrdersSlice = createSlice({
   name: 'submittedOrders',
   initialState,
   reducers: {},
-  selectors: {
-    selectSubmittedOrders: (state) => state.orders
-  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchSubmitOrders.pending, (state) => {
@@ -35,7 +32,7 @@ export const submittedOrdersSlice = createSlice({
       })
       .addCase(fetchSubmitOrders.rejected, (state, action) => {
         state.fetchingStatus = false;
-        state.error = action.error.message as string;
+        state.error = action.error.message || 'Произошла ошибка';
       })
       .addCase(fetchSubmitOrders.fulfilled, (state, action) => {
         state.fetchingStatus = false;
@@ -43,5 +40,9 @@ export const submittedOrdersSlice = createSlice({
       });
   }
 });
+
+export const selectSubmittedOrders = (state: {
+  submittedOrders: TSubmittedOrdersSlice;
+}) => state.submittedOrders.orders;
+
 export default submittedOrdersSlice.reducer;
-export const { selectSubmittedOrders } = submittedOrdersSlice.selectors;

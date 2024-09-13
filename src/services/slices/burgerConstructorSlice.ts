@@ -33,20 +33,25 @@ export const burgerConstructorSlice = createSlice({
         }
       }
     },
-    deleteIngredientFromConstructor: (state, action) => {
-      state.ingredients = state.ingredients.filter(
-        (ingredient) => ingredient.id !== action.payload
+    deleteIngredientFromConstructor: (state, action: PayloadAction<string>) => {
+      const ingredientIndex = state.ingredients.findIndex(
+        (ingredient) => ingredient.id === action.payload
       );
+
+      if (ingredientIndex >= 0) {
+        state.ingredients.splice(ingredientIndex, 1); // Удаляем элемент по индексу
+      }
     },
     moveIngredientInConstructor: (
       state,
       action: PayloadAction<{ from: number; to: number }>
     ) => {
       const { from, to } = action.payload;
-      const ingredients = [...state.ingredients];
-      const [movedIngredient] = ingredients.splice(from, 1);
-      ingredients.splice(to, 0, movedIngredient);
-      state.ingredients = ingredients;
+
+      if (from !== to) {
+        const [movedIngredient] = state.ingredients.splice(from, 1); // Удаляем элемент из original массива
+        state.ingredients.splice(to, 0, movedIngredient); // Вставляем его на новое место
+      }
     },
     clearConstructor: (state) => {
       // Очистка конструктора

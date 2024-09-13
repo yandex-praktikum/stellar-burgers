@@ -38,22 +38,29 @@ export const feedSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchFeeds.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(fetchFeeds.fulfilled, (state, action) => {
-        state.feed.total = action.payload.total;
-        state.feed.totalToday = action.payload.totalToday;
-        state.isLoading = false;
-        state.orders = action.payload.orders;
-      })
-      .addCase(fetchFeeds.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message as string;
-      });
+      .addCase(fetchFeeds.pending, handleFetchFeedsPending)
+      .addCase(fetchFeeds.fulfilled, handleFetchFeedsFulfilled)
+      .addCase(fetchFeeds.rejected, handleFetchFeedsRejected);
   }
 });
+
+// Обработчики для каждого состояния
+const handleFetchFeedsPending = (state: TFeedSliceState) => {
+  state.isLoading = true;
+  state.error = null;
+};
+
+const handleFetchFeedsFulfilled = (state: TFeedSliceState, action: any) => {
+  state.feed.total = action.payload.total;
+  state.feed.totalToday = action.payload.totalToday;
+  state.isLoading = false;
+  state.orders = action.payload.orders;
+};
+
+const handleFetchFeedsRejected = (state: TFeedSliceState, action: any) => {
+  state.isLoading = false;
+  state.error = action.error.message as string;
+};
 
 // Селекторы с использованием createSelector
 const selectFeedState = (state: { feed: TFeedSliceState }) => state.feed;
