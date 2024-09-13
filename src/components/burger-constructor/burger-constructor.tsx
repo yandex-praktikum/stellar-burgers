@@ -16,18 +16,17 @@ import { selectProfileUser } from '../../services/slices/profileUserSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const dispatch = useDispatch();
   const constructorItems = useSelector(getConstructorState);
   const orderRequest = useSelector(selectquery);
   const orderModalData = useSelector(selectOrders);
-  const navigate = useNavigate;
+  const navigate = useNavigate();
   const { user } = useSelector(selectProfileUser);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
     if (!user) {
-      navigate(), { replace: true };
+      navigate('/login', { replace: true });
       return;
     }
     const orderIngredients = [
@@ -37,6 +36,7 @@ export const BurgerConstructor: FC = () => {
     ];
     dispatch(fetchOrders(orderIngredients));
   };
+
   const closeOrderModal = () => {
     dispatch(clearConstructor());
     dispatch(clearOrders());
