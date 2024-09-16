@@ -24,14 +24,13 @@ const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const backgroundLocation = location.state?.background;
+  const goBack = () => navigate(-1);
 
   useEffect(() => {
     dispatch(getAllIngredients());
     dispatch(getUser());
   }, [dispatch]);
-
-  const backgroundLocation = location.state?.backgroundLocation;
-  const goBack = () => navigate(-1);
 
   return (
     <div className={styles.app}>
