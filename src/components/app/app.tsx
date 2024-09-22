@@ -12,8 +12,8 @@ import {
 import '../../index.css';
 import { AppHeader } from '@components';
 import { useEffect } from 'react';
-import { getAllIngredients } from '../../services/ingredientsSlice';
-import { getUser } from '../../services/userSlice';
+import { getAllIngredients } from '../../services/ingredientSlice/ingredientsSlice';
+import { getUser } from '../../services/userSlice/userSlice';
 import styles from './app.module.css';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';

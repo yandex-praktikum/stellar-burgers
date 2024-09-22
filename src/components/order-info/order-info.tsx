@@ -4,7 +4,7 @@ import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useSelector, useDispatch } from '../../services/store';
-import { getOrderByNumber } from '../../services/orderSlice';
+import { getOrderByNumber } from '../../services/orderSlice/orderSlice';
 
 interface TOrderInfoProps {
   title?: boolean;

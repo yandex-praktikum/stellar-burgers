@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { TUser, TOrder } from '../utils/types';
+import { TUser, TOrder } from '../../utils/types';
 import {
   getUserApi,
   registerUserApi,
@@ -9,8 +9,8 @@ import {
   logoutApi,
   updateUserApi,
   getOrdersApi
-} from '../utils/burger-api';
-import { setCookie, getCookie, deleteCookie } from '../utils/cookie';
+} from '../../utils/burger-api';
+import { setCookie, getCookie, deleteCookie } from '../../utils/cookie';
 
 type TUserState = {
   isAuthChecked: boolean;
@@ -21,7 +21,7 @@ type TUserState = {
   userOrders: TOrder[];
 };
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   isAuthChecked: false,
   error: '',
   request: false,
@@ -179,3 +179,4 @@ export const userSlice = createSlice({
 
 export const { resetError, setUser, setIsAuthChecked, clearUser } =
   userSlice.actions;
+export default userSlice.reducer;

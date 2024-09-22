@@ -3,7 +3,10 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
-import { orderBurger, resetModalData } from '../../services/constructorSlice';
+import {
+  orderBurger,
+  resetModalData
+} from '../../services/constructoSlice/constructorSlice';
 import { RootState } from '../../services/store';
 
 export const BurgerConstructor: FC = () => {

@@ -4,8 +4,8 @@ import {
   nanoid,
   createAsyncThunk
 } from '@reduxjs/toolkit';
-import { TIngredient, TConstructorIngredient, TOrder } from '../utils/types';
-import { orderBurgerApi } from '@api';
+import { TIngredient, TConstructorIngredient, TOrder } from '../../utils/types';
+import { orderBurgerApi } from '../../utils/burger-api';
 
 type TConstuctorState = {
   constructorItems: {
@@ -17,7 +17,7 @@ type TConstuctorState = {
   error: string | null;
 };
 
-const initialState: TConstuctorState = {
+export const initialState: TConstuctorState = {
   constructorItems: {
     bun: null,
     ingredients: []

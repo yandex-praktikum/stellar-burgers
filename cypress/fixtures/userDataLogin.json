@@ -1,0 +1,9 @@
+{
+    "success": true,
+    "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTZkNWJhMTE5ZDQ1MDAxYjUwNzFmOSIsImlhdCI6MTcyNjkxNjkxOSwiZXhwIjoxNzI2OTE4MTE5fQ.VlhBSFA0jdMO2IdlQQA4x1KwRXiCX4iltU6DJupT36M",
+    "refreshToken": "9bf8a5fda8ff28d9aa626b881439b511f3848f8682c4af10874256afe8f21fcca42929b29d364770",
+    "user": {
+      "email": "nomad.aleks777@gmail.com",
+        "name": "Дмитрий982"
+    }
+  }
