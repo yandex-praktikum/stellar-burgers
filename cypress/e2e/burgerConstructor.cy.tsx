@@ -1,3 +1,7 @@
+const headerSelector = 'h3';
+const listSelector = 'ul';
+const divSelector = 'div';
+
 beforeEach(() => {
   cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' }).as(
     'ingredients'
@@ -10,7 +14,7 @@ beforeEach(() => {
   cy.setCookie('accessToken', 'mocAccessToken');
   window.localStorage.setItem('refreshToken', 'mockRefreshToken');
   
-  cy.visit('http://localhost:4000/');
+  cy.visit('/');
 });
 
 afterEach(() => {
@@ -23,9 +27,9 @@ afterEach(() => {
 
 describe('should check constructor work', () => {
   it('should add a bun in constructor', () => {
-    cy.get('h3')
+    cy.get(headerSelector)
       .contains('Булки')
-      .next('ul')
+      .next(listSelector)
       .children()
       .first()
       .contains('Добавить')
@@ -37,9 +41,9 @@ describe('should check constructor work', () => {
   });
 
   it('should add a filling in constructor', () => {
-    cy.get('h3')
+    cy.get(headerSelector)
       .contains('Начинки')
-      .next('ul')
+      .next(listSelector)
       .children()
       .first()
       .contains('Добавить')
@@ -59,7 +63,7 @@ describe('should check modal for ingredients', () => {
 
   it('should open modal with ingredient data', () => {
     // клик на карточку
-    cy.get('h3').contains('Начинки').next('ul').children().first().click();
+    cy.get(headerSelector).contains('Начинки').next(listSelector).children().first().click();
     // Данные, которые ожидаем
     const expectedData = {
       name: 'Биокотлета из марсианской Магнолии',
@@ -79,17 +83,17 @@ describe('should check modal for ingredients', () => {
   });
 
   it('should close modal by click to the button', function () {
-    cy.get('h3').contains('Начинки').next('ul').children().first().click();
+    cy.get(headerSelector).contains('Начинки').next(listSelector).children().first().click();
     cy.get('#modal').find('button').click();
     cy.get('#modal').should('not.exist');
-    cy.get('div').contains('Ингредиент подробно').should('not.exist');
+    cy.get(divSelector).contains('Ингредиент подробно').should('not.exist');
   });
 
   it('should close modal by click to esc', function () {
-    cy.get('h3').contains('Начинки').next('ul').children().first().click();
+    cy.get(headerSelector).contains('Начинки').next(listSelector).children().first().click();
     cy.get('body').type('{esc}');
     cy.get('#modal').should('not.exist');
-    cy.get('div').contains('Ингредиент подробно').should('not.exist');
+    cy.get(divSelector).contains('Ингредиент подробно').should('not.exist');
   });
 });
 
@@ -102,9 +106,9 @@ describe('should check order', () => {
 
   it('should open modal with orderData after sending', () => {
     // Накликали ингредиент
-    cy.get('h3')
+    cy.get(headerSelector)
       .contains('Булки')
-      .next('ul')
+      .next(listSelector)
       .children()
       .first()
       .contains('Добавить')
@@ -119,9 +123,9 @@ describe('should check order', () => {
 
   it('should close modal with orderData by click to the button + check constructor is empty', () => {
     // Накликали ингредиент
-    cy.get('h3')
+    cy.get(headerSelector)
       .contains('Булки')
-      .next('ul')
+      .next(listSelector)
       .children()
       .first()
       .contains('Добавить')
@@ -138,12 +142,12 @@ describe('should check order', () => {
 
     // Проверка на отсутствие
     cy.get('#modal').should('not.exist');
-    cy.get('div').contains('47214').should('not.exist');
+    cy.get(divSelector).contains('47214').should('not.exist');
 
     // Проверка на пустой конструктор
 
-    cy.get('div').contains('Выберите булки')
-    cy.get('div').contains('Выберите начинку')
+    cy.get(divSelector).contains('Выберите булки')
+    cy.get(divSelector).contains('Выберите начинку')
   });
 });
 
