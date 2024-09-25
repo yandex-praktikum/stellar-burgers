@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import store from './services/store';
 import { getIngredientsApi } from '@api';
 
-
 const container = document.getElementById('root') as HTMLElement;
 const root = ReactDOMClient.createRoot(container!);
 

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/store';
 import {
   getIngredientsList,
   getIngredientsState
@@ -54,13 +54,15 @@ export const BurgerIngredients: FC = () => {
       titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  if (error) {
-    return <p>Упс... что-то пошло не так...</p>;
-  }
+  // if (error) {
+  //   return <p>Упс... что-то пошло не так...</p>;
+  // }
 
   if (loading) {
     return <Preloader />;
   }
+
+  // console.log({ ingredients, loading, error });
 
   return (
     <BurgerIngredientsUI

@@ -20,6 +20,11 @@ export const Feed: FC = () => {
     dispatch(getAllFeeds);
   };
   return (
-    <FeedUI orders={orders} handleGetFeeds={() => {handleGetAllFeeds}} />
+    <FeedUI
+      orders={orders}
+      handleGetFeeds={() => {
+        handleGetAllFeeds;
+      }}
+    />
   );
 };

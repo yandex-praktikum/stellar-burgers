@@ -84,7 +84,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: 'bundle.js',
-    publicPatch: '/'
+    publicPath: '/'
   },
   devServer: {
     static: path.join(__dirname, './dist'),

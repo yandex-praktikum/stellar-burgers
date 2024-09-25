@@ -6,7 +6,7 @@ import { getUser, updateUser } from '../../services/slices/user';
 export const Profile: FC = () => {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
-  const [formValue, setFormValue] = useState ({
+  const [formValue, setFormValue] = useState({
     name: user.name,
     email: user.email,
     password: ''
