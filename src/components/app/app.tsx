@@ -30,20 +30,42 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const background = location.state?.background;
-
+  const url = window.location.href;
+  const feedNumber = url.substring(url.lastIndexOf('/') + 1);
   useEffect(() => {
     dispatch(getIngredientsList());
     dispatch(apiGetUser());
   }, []);
-
   return (
     <div className={styles.app}>
       <AppHeader />
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route
+          path='/ingredients/:id'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p className={`text text_type_main-large ${styles.detailHeader}`}>
+                Детали ингредиента
+              </p>
+              <IngredientDetails />
+            </div>
+          }
+        />
         <Route path='/feed' element={<Feed />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route
+          path='/feed/:number'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p
+                className={`text text_type_digits-default ${styles.detailHeader}`}
+              >
+                #{feedNumber && feedNumber.padStart(6, '0')}
+              </p>
+              <OrderInfo />
+            </div>
+          }
+        />
         <Route
           path='/login'
           element={
@@ -107,7 +129,10 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title={''} onClose={() => navigate(-1)}>
+              <Modal
+                title={`#${feedNumber && feedNumber.padStart(6, '0')}`}
+                onClose={() => navigate('/feed')}
+              >
                 <OrderInfo />
               </Modal>
             }
@@ -115,7 +140,7 @@ const App = () => {
           <Route
             path='/ingredients/:id'
             element={
-              <Modal title={'Детали ингредиента'} onClose={() => navigate(-1)}>
+              <Modal title={'Детали ингредиента'} onClose={() => navigate('/')}>
                 <IngredientDetails />
               </Modal>
             }
@@ -123,7 +148,10 @@ const App = () => {
           <Route
             path='/profile/orders/:number'
             element={
-              <Modal title={''} onClose={() => navigate(-1)}>
+              <Modal
+                title={'Детали Заказа'}
+                onClose={() => navigate('/profile/orders')}
+              >
                 <ProtectedRoute>
                   <OrderInfo />
                 </ProtectedRoute>
