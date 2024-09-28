@@ -90,7 +90,18 @@ const config: Config = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    '@pages': ['<rootDir>/src/pages'],
+    '@components': ['<rootDir>/src/components'],
+    '@ui': ['<rootDir>/src/components/ui'],
+    '@ui-pages': ['<rootDir>/src/components/ui/pages'],
+    '@utils-types': ['<rootDir>/src/utils/types'],
+    '@api': ['<rootDir>/src/utils/burger-api.ts'],
+    '@slices': ['<rootDir>/src/services/slices'],
+    '@hooks': ['<rootDir>/src/hooks'],
+    '@store': ['<rootDir>/src/services/store.ts'],
+    '@selectors': ['<rootDir>/src/services/selectors']
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -102,7 +113,7 @@ const config: Config = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: 'ts-jest'
+  preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -123,7 +134,7 @@ const config: Config = {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  // rootDir: undefined,
+  rootDir: undefined
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [

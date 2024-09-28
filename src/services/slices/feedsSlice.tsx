@@ -12,7 +12,7 @@ export interface TFeedsState {
   error: string | null | undefined;
 }
 
-const initialState: TFeedsState = {
+export const initialState: TFeedsState = {
   orders: [],
   total: 0,
   totalToday: 0,

@@ -12,7 +12,7 @@ export interface TOrderState {
   isLoading: boolean;
 }
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   orders: [],
   isLoading: false
 };
