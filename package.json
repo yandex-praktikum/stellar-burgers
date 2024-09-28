@@ -34,6 +34,7 @@
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
+    "@jest/globals": "^29.7.0",
     "@storybook/addon-essentials": "^7.6.10",
     "@storybook/addon-interactions": "^7.6.10",
     "@storybook/addon-links": "^7.6.10",
@@ -83,7 +84,7 @@
     "storybook": "^7.6.10",
     "storybook-addon-react-router-v6": "^2.0.10",
     "style-loader": "^3.3.3",
-    "ts-jest": "^29.1.1",
+    "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "url-loader": "^4.1.1"
@@ -95,7 +96,8 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier ./src --write",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "test": "jest --verbose"
   },
   "eslintConfig": {
     "extends": [
