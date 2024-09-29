@@ -4,10 +4,10 @@ import { BurgerConstructorElementProps } from './type';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   constructorSelector,
-  removeIngredient,
-  updateConstructor
+  moveIngredientDown,
+  moveIngredientUp,
+  removeIngredient
 } from '../../services/slices/constructorSlice';
-import { TConstructorIngredient } from '@utils-types';
 
 export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
   ({ ingredient, index, totalItems }) => {
@@ -16,29 +16,12 @@ export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
       constructorSelector.constructorSelector
     );
 
-    function swapElement(
-      state: TConstructorIngredient[],
-      index: number,
-      step: number
-    ) {
-      const copy = [...state];
-      copy[index] = copy.splice(index + step, 1, copy[index])[0];
-      return copy;
-    }
-
     const handleMoveDown = () => {
-      // dispatch(
-      //   updateConstructor(swapElement(constructorItems.ingredients, index, 1))
-      // );
-      dispatch(
-        updateConstructor(swapElement(constructorItems.ingredients, index, 1))
-      );
+      dispatch(moveIngredientDown(index));
     };
 
     const handleMoveUp = () => {
-      dispatch(
-        updateConstructor(swapElement(constructorItems.ingredients, index, -1))
-      );
+      dispatch(moveIngredientUp(index));
     };
 
     const handleClose = () => {

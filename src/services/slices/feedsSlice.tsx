@@ -25,7 +25,11 @@ export const feedsSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    ordersSelector: (state) => state.orders,
+    ordersSelector: (state) => {
+      console.log(state);
+
+      return state.orders;
+    },
     totalOrdersSelector: (state) => state.total,
     totalTodayOrdersSelector: (state) => state.totalToday
   },
