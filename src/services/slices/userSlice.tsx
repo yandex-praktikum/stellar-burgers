@@ -13,7 +13,6 @@ import { deleteCookie, setCookie } from '../../utils/cookie';
 export const apiGetUser = createAsyncThunk('user/getUser', getUserApi);
 export const updateUser = createAsyncThunk('user/update', updateUserApi);
 export const registerFetch = createAsyncThunk('user/register', registerUserApi);
-// export const login = createAsyncThunk('user/login', loginUserApi);
 export const login = createAsyncThunk(
   'user/login',
   async ({ email, password }: Omit<TRegisterData, 'name'>) => {
@@ -25,7 +24,7 @@ export const login = createAsyncThunk(
     return data.user;
   }
 );
-// export const logout = createAsyncThunk('user/logout', logoutApi);
+
 export const logout = createAsyncThunk('user/logout', () => {
   logoutApi().then(() => {
     localStorage.clear();
