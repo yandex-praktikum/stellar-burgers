@@ -1,5 +1,7 @@
 const ingredient = '[data-cy="ingredient-link-item"]';
-// const firstFilling = '[data-cy="ingredient-link-643d69a5c3f7b9001cfa0941"]';
+const modal = '[data-cy="modal"]';
+const modalOverlay = '[data-cy="modal-overlay"';
+const constructor = '[data-cy="constructor"]';
 
 describe('burger constructor, create order', () => {
   beforeEach(() => {
@@ -16,7 +18,7 @@ describe('burger constructor, create order', () => {
     window.localStorage.setItem('refreshToken', JSON.stringify('123456'));
     cy.setCookie('accessToken', JSON.stringify('654321'));
 
-    cy.visit('http://localhost:4000');
+    cy.visit('');
     cy.wait('@getIngredients');
     cy.wait('@getUser');
   });
@@ -29,13 +31,13 @@ describe('burger constructor, create order', () => {
   describe('constructor', () => {
     it('get ingredients', () => {
       cy.get(ingredient).first().next().click();
-      cy.get('[data-cy="constructor"]').as('constructor');
+      cy.get(constructor).as('constructor');
       cy.get('@constructor').should('contain', 'Краторная булка N-200i');
     });
 
     it('open and close ingredient modal', () => {
       cy.get(ingredient).first().click();
-      cy.get('[data-cy="modal"]').as('modal');
+      cy.get(modal).as('modal');
       cy.get('@modal').should('exist');
       cy.get('[data-cy="close-button"]').click();
       cy.get('@modal').should('not.exist');
@@ -43,24 +45,24 @@ describe('burger constructor, create order', () => {
 
     it('open and close ingredient modal by overlay', () => {
       cy.get(ingredient).first().click();
-      cy.get('[data-cy="modal"]').as('modal');
+      cy.get(modal).as('modal');
       cy.get('@modal').should('exist');
-      cy.get('[data-cy="modal-overlay"').click('top', { force: true });
+      cy.get(modalOverlay).click('top', { force: true });
       cy.get('@modal').should('not.exist');
     });
 
     it('create order', () => {
-      cy.get('[data-cy="constructor"]').as('constructor');
+      cy.get(constructor).as('constructor');
       cy.get(ingredient).first().next().click();
       cy.get(ingredient).eq(2).next().click();
       cy.get('[data-cy="getOrder-button"]').click();
       cy.wait('@createOrder');
-      cy.get('[data-cy="modal"]').as('modal');
+      cy.get(modal).as('modal');
       cy.get('@modal').should('exist');
       cy.get('@modal').should('contain', '555');
 
       cy.get('@modal').should('exist');
-      cy.get('[data-cy="modal-overlay"').click('top', { force: true });
+      cy.get(modalOverlay).click('top', { force: true });
       cy.get('@modal').should('not.exist');
 
       cy.get('@constructor').should('contain', '');
