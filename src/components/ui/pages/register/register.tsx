@@ -29,6 +29,8 @@ export const RegisterUI: FC<RegisterUIProps> = ({
         <>
           <div className='pb-6'>
             <Input
+              onPointerEnterCapture={() => ''}
+              onPointerLeaveCapture={() => ''}
               type='text'
               placeholder='Имя'
               onChange={(e) => setUserName(e.target.value)}
@@ -41,6 +43,8 @@ export const RegisterUI: FC<RegisterUIProps> = ({
           </div>
           <div className='pb-6'>
             <Input
+              onPointerEnterCapture={() => ''}
+              onPointerLeaveCapture={() => ''}
               type='email'
               placeholder='E-mail'
               onChange={(e) => setEmail(e.target.value)}
