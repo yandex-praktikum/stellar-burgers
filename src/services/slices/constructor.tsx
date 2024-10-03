@@ -1,14 +1,13 @@
-import { getFeedsApi, getIngredientsApi } from '@api';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { v4 as uuidv4 } from 'uuid';
 
-type TConstructorState = {
+export type TConstructorState = {
   bun: TConstructorIngredient | null;
   ingredients: TConstructorIngredient[];
 };
 
-const initialState: TConstructorState = {
+export const initialState: TConstructorState = {
   bun: null,
   ingredients: []
 };
@@ -36,6 +35,13 @@ export const constructorSlice = createSlice({
       );
     },
     clearAll: (state) => (state = initialState),
+    swapIngredient: (state, action) => {
+      const { index, step } = action.payload;
+      [state.ingredients[index], state.ingredients[index + step]] = [
+        state.ingredients[index + step],
+        state.ingredients[index]
+      ];
+    },
     updateAll: (state, action: PayloadAction<TConstructorIngredient[]>) => {
       state.ingredients = action.payload;
     }
@@ -45,6 +51,6 @@ export const constructorSlice = createSlice({
   }
 });
 
-export const { addItem, deleteItem, clearAll, updateAll } =
+export const { addItem, deleteItem, clearAll, updateAll, swapIngredient } =
   constructorSlice.actions;
 export const constructorSelector = constructorSlice.selectors;
