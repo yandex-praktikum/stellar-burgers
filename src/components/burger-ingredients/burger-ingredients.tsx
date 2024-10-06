@@ -15,6 +15,7 @@ export const BurgerIngredients: FC = () => {
   const ingredientStore: TIngredient[] = useSelector(
     (state: RootState) => state.ingredientsReducer.data
   );
+  // console.log(ingredientStore);
 
   const buns = ingredientStore.filter((item) => item.type === 'bun');
   const mains = ingredientStore.filter((item) => item.type === 'main');
