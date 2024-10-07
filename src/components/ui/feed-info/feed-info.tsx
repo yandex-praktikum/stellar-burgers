@@ -6,7 +6,7 @@ import { FeedInfoUIProps, HalfColumnProps, TColumnProps } from './type';
 
 export const FeedInfoUI: FC<FeedInfoUIProps> = memo(
   ({ feed, readyOrders, pendingOrders }) => {
-    const { total, totalToday } = feed;
+    const { costOrder, finalSum } = feed;
 
     return (
       <section>
@@ -18,8 +18,8 @@ export const FeedInfoUI: FC<FeedInfoUIProps> = memo(
           />
           <HalfColumn orders={pendingOrders} title={'В работе'} />
         </div>
-        <Column title={'Выполнено за все время'} content={total} />
-        <Column title={'Выполнено за сегодня'} content={totalToday} />
+        <Column title={'Выполнено за все время'} content={costOrder} />
+        <Column title={'Выполнено за сегодня'} content={finalSum} />
       </section>
     );
   }
