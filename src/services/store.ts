@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import ingredientsReducer from './slices/ingredientsSlice';
+import constructorReducer from './slices/constructorSlice';
 
 import {
   TypedUseSelectorHook,
@@ -8,7 +9,8 @@ import {
 } from 'react-redux';
 
 const rootReducer = combineReducers({
-  ingredientsReducer: ingredientsReducer
+  ingredientsReducer: ingredientsReducer,
+  constructorReducer: constructorReducer
 }); // Заменить на импорт настоящего редьюсера
 
 const store = configureStore({

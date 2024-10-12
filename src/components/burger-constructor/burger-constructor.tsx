@@ -1,15 +1,32 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../services/store';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
+  let constructorItems = useSelector(
+    (state: RootState) => state.constructorReducer
+  );
+  if (!constructorItems.bun) {
+    constructorItems = {
+      bun: {
+        _id: '',
+        name: '',
+        type: '',
+        proteins: 0,
+        fat: 0,
+        carbohydrates: 0,
+        calories: 0,
+        price: 0,
+        image: '',
+        image_large: '',
+        image_mobile: ''
+      },
+      ingredients: constructorItems.ingredients
+    };
+  }
 
   const orderRequest = false;
 
@@ -19,6 +36,7 @@ export const BurgerConstructor: FC = () => {
     if (!constructorItems.bun || orderRequest) return;
   };
   const closeOrderModal = () => {};
+  // console.log(constructorItems);
 
   const price = useMemo(
     () =>

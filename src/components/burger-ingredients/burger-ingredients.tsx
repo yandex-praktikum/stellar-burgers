@@ -12,7 +12,7 @@ export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */
   const dispatch = useDispatch<AppDispatch>();
 
-  const ingredientStore: TIngredient[] = useSelector(
+  const ingredientStore = useSelector(
     (state: RootState) => state.ingredientsReducer.data
   );
   // console.log(ingredientStore);

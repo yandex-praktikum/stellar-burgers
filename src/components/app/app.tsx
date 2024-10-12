@@ -11,7 +11,7 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state;
-  console.log(state);
+  // console.log(state);
 
   function handleModalClose() {
     navigate(-1);
