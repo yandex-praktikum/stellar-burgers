@@ -1,14 +1,24 @@
 import { FC, memo } from 'react';
-import { BurgerConstructorElementUI } from '@ui';
+import { useDispatch } from 'react-redux';
+import { moveItem } from '../orderSlice';
 import { BurgerConstructorElementProps } from './type';
+import { BurgerConstructorElementUI } from '@ui';
 
 export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
   ({ ingredient, index, totalItems }) => {
-    const handleMoveDown = () => {};
+    const dispatch = useDispatch();
 
-    const handleMoveUp = () => {};
+    const handleMoveDown = () => {
+      if (index < totalItems - 1) {
+        dispatch(moveItem({ fromIndex: index, toIndex: index + 1 }));
+      }
+    };
 
-    const handleClose = () => {};
+    const handleMoveUp = () => {
+      if (index > 0) {
+        dispatch(moveItem({ fromIndex: index, toIndex: index - 1 }));
+      }
+    };
 
     return (
       <BurgerConstructorElementUI
@@ -17,7 +27,9 @@ export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
         totalItems={totalItems}
         handleMoveUp={handleMoveUp}
         handleMoveDown={handleMoveDown}
-        handleClose={handleClose}
+        handleClose={function (): void {
+          throw new Error('Function not implemented.');
+        }}
       />
     );
   }

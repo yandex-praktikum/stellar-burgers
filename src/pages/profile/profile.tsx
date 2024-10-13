@@ -1,13 +1,13 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { apiGetUser, updateUser } from '../../components/userSlice'; // Import API actions
+import { getUserSelector } from '../../components/userSlice'; // Import selector for user data
+import { AppDispatch } from 'src/services/store';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
-
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector(getUserSelector); // Get user data from the Redux store
   const [formValue, setFormValue] = useState({
     name: user.name,
     email: user.email,
@@ -15,6 +15,12 @@ export const Profile: FC = () => {
   });
 
   useEffect(() => {
+    // Fetch user data on component mount
+    dispatch(apiGetUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Update form value when user data changes
     setFormValue((prevState) => ({
       ...prevState,
       name: user?.name || '',
@@ -27,8 +33,10 @@ export const Profile: FC = () => {
     formValue.email !== user?.email ||
     !!formValue.password;
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    // Dispatch the update user action
+    await dispatch(updateUser(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
@@ -56,6 +64,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };

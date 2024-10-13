@@ -1,18 +1,26 @@
 import React, { FC, memo } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addItem } from '../../orderSlice'; // Используйте новое действие из orderSlice
 import styles from './burger-ingredient.module.css';
-
 import {
   Counter,
   CurrencyIcon,
   AddButton
 } from '@zlden/react-developer-burger-ui-components';
-
-import { TBurgerIngredientUIProps } from './type';
+import { TBurgerIngredientUIProps } from '../burger-ingredient/type';
+import { v4 as uuidv4 } from 'uuid'; // Импортируйте uuid
 
 export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
-  ({ ingredient, count, handleAdd, locationState }) => {
+  ({ ingredient, count, locationState }) => {
     const { image, price, name, _id } = ingredient;
+    const dispatch = useDispatch();
+
+    // Обработчик добавления ингредиента в конструктор бургера
+    const handleAdd = () => {
+      const ingredientWithId = { ...ingredient, id: uuidv4() }; // Добавьте id к ингредиенту
+      dispatch(addItem(ingredientWithId)); // Передайте добавленный ингредиент в действие
+    };
 
     return (
       <li className={styles.container}>
@@ -31,7 +39,7 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
         </Link>
         <AddButton
           text='Добавить'
-          onClick={handleAdd}
+          onClick={handleAdd} // Привязываем обработчик добавления
           extraClass={`${styles.addButton} mt-8`}
         />
       </li>

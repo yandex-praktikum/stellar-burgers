@@ -11,6 +11,8 @@ export const fetchIngredients = createAsyncThunk(
 );
 
 interface IngredientsState {
+  ingredients: any;
+  all: any;
   items: TIngredient[];
   loading: boolean;
   error: string | null;
@@ -19,13 +21,20 @@ interface IngredientsState {
 const initialState: IngredientsState = {
   items: [],
   loading: false,
-  error: null
+  error: null,
+  all: undefined,
+  ingredients: undefined
 };
 
 const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {},
+  selectors: {
+    getIngredientsState: (state) => state,
+    getIngredientsLoadingState: (state) => state.loading,
+    getIngredients: (state) => state.ingredients
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchIngredients.pending, (state) => {
@@ -38,9 +47,14 @@ const ingredientsSlice = createSlice({
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || null;
+        state.error = 'Ингридиент не найден';
       });
   }
 });
+export const {
+  getIngredientsState,
+  getIngredientsLoadingState,
+  getIngredients
+} = ingredientsSlice.selectors;
 
-export default ingredientsSlice.reducer;
+export default ingredientsSlice;

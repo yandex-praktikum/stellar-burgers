@@ -1,46 +1,59 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getOrdersApi } from '../utils/burger-api'; // Импортируйте API
-import { TOrder } from '../utils/types'; // Импортируйте TOrder
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { TConstructorIngredient } from '@utils-types';
+import { v4 as uuidv4 } from 'uuid';
 
-export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
-  const response = await getOrdersApi();
-  return response;
-});
-
-// Обновите интерфейс состояния
-interface OrdersState {
-  items: TOrder[];
-  loading: boolean;
-  error: string | null;
-}
-
-const initialState: OrdersState = {
-  items: [],
-  loading: false,
-  error: null
+type TConstructorState = {
+  bun: TConstructorIngredient | null;
+  ingredients: TConstructorIngredient[];
 };
 
-const ordersSlice = createSlice({
-  name: 'orders',
+const initialState: TConstructorState = {
+  bun: null,
+  ingredients: []
+};
+
+export const orderSlice = createSlice({
+  name: 'orderSlice',
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchOrders.pending, (state) => {
-        state.loading = true; // Устанавливаем лоадер
-        state.error = null; // Обнуляем ошибку при новом запросе
-      })
-      .addCase(fetchOrders.fulfilled, (state, action) => {
-        state.loading = false; // Скрываем лоадер
-        state.items = action.payload; // Сохраняем данные
-      })
-      .addCase(fetchOrders.rejected, (state, action) => {
-        state.loading = false; // Скрываем лоадер
-        state.error = action.error.message
-          ? action.error.message
-          : 'Unknown error'; // Проверяем наличие сообщения об ошибке
-      });
+  reducers: {
+    addItem: {
+      reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
+        if (action.payload.type === 'bun') {
+          state.bun = action.payload;
+        } else {
+          state.ingredients.push(action.payload);
+        }
+      },
+      prepare: (ingredient: TConstructorIngredient) => {
+        const id = uuidv4();
+        return { payload: { ...ingredient, id } };
+      }
+    },
+    deleteItem: (state, action: PayloadAction<TConstructorIngredient>) => {
+      state.ingredients = state.ingredients.filter(
+        (item) => item.id !== action.payload.id
+      );
+    },
+    clearAll: (state) => (state = initialState),
+    updateAll: (state, action: PayloadAction<TConstructorIngredient[]>) => {
+      state.ingredients = action.payload;
+    },
+    moveItem: (
+      state,
+      action: PayloadAction<{ fromIndex: number; toIndex: number }>
+    ) => {
+      const { fromIndex, toIndex } = action.payload;
+      const movedItem = state.ingredients[fromIndex];
+      state.ingredients.splice(fromIndex, 1);
+      state.ingredients.splice(toIndex, 0, movedItem);
+    }
+  },
+  selectors: {
+    selectItems: (state: TConstructorState) => state
   }
 });
 
-export default ordersSlice.reducer;
+export const { addItem, deleteItem, clearAll, updateAll, moveItem } =
+  orderSlice.actions;
+export const orderSelector = orderSlice.selectors;
+export default orderSlice;

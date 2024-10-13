@@ -16,7 +16,7 @@
     "noEmit": false,
     "jsx": "react-jsx",
     "types": ["node", "jest"],
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@pages": ["src/pages"],
       "@components": ["src/components"],
@@ -25,8 +25,9 @@
       "@utils-types": ["src/utils/types"],
       "@api": ["src/utils/burger-api.ts"],
       "@slices": ["src/services/slices"],
-      "@selectors": ["src/services/selectors"]
+      "@selectors": ["src/services/selectors"],
+      "src/*": ["src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "src/components/feedSlice.tsx", "src/components/ingredientsSlice.tsx", "orderSlice.tsx"]
 }
