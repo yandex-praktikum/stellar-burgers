@@ -12,7 +12,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({
   userName,
   onOrdersClick,
   onConstructorClick,
-  onProfileClick // Добавляем обработчик для профиля
+  onProfileClick
 }) => (
   <header className={styles.header}>
     <nav className={`${styles.menu} p-4`}>
@@ -41,7 +41,6 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({
       </div>
       <div className={styles.link_position_last}>
         <ProfileIcon type={'primary'} onClick={onProfileClick} />{' '}
-        {/* Добавляем обработчик клика для профиля */}
         <p
           className='text text_type_main-default ml-2'
           onClick={onProfileClick}

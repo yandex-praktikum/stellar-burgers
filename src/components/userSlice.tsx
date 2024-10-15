@@ -108,7 +108,6 @@ const userSlice = createSlice({
   }
 });
 
-// Selectors
 export const isAuthCheckedSelector = (state: { user: TUserState }) =>
   state.user.isAuthChecked;
 export const getUserSelector = (state: { user: TUserState }) => state.user.user;
@@ -117,5 +116,4 @@ export const getUserNameSelector = (state: { user: TUserState }) =>
 export const getErrorSelector = (state: { user: TUserState }) =>
   state.user.error;
 
-// Экспортируем объект слайса
 export default userSlice;

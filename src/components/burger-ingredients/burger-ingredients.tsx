@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import { fetchIngredients } from '../ingredientsSlice';
-import { RootState, AppDispatch } from 'src/services/store';
+import { RootState, AppDispatch } from 'src/services/store'; // Проверьте, правильный ли путь
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { TIngredient, TTabMode } from '@utils-types';
 
@@ -10,7 +10,7 @@ export const BurgerIngredients: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { items, loading, error } = useSelector(
     (state: RootState) => state.ingredients
-  );
+  ); // Убедитесь, что используете RootState
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);

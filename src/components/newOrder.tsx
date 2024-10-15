@@ -1,7 +1,7 @@
 import { orderBurgerApi } from '@api';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-import { RootState } from '../services/store'; // Импортируем RootState
+import { RootState } from '../services/store';
 
 export const newOrder = createAsyncThunk('order/createOrder', orderBurgerApi);
 
@@ -39,10 +39,8 @@ export const newOrderSlice = createSlice({
   }
 });
 
-// Экспортируем экшн для сброса состояния
 export const { resetOrder } = newOrderSlice.actions;
 
-// Селекторы для доступа к состоянию
 export const newOrderLoad = (state: RootState) => state.newOrder.loading;
 export const newOrderData = (state: RootState) => state.newOrder.order;
 

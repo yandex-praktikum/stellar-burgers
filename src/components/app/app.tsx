@@ -92,7 +92,6 @@ const AppContent = () => {
           }
         />
 
-        {/* Защищенные маршруты для авторизованных пользователей */}
         <Route
           path='/profile'
           element={
