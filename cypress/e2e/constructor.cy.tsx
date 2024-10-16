@@ -1,9 +1,11 @@
 describe('Тесты для конструктора бургера без перетаскивания', () => {
   beforeEach(() => {
     // Перехватываем запросы к API ингредиентов и заказов
+    cy.fixture('ingredients.json');
     cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' }).as(
       'getIngredients'
     );
+    cy.fixture('post_order.json');
     cy.intercept('POST', '/api/orders', { fixture: 'post_order.json' }).as(
       'postOrder'
     );
@@ -44,21 +46,19 @@ describe('Тесты для конструктора бургера без пе�
   });
 
   it('Открытие и закрытие модального окна ингредиента', () => {
-    // // Ожидаем загрузки ингредиентов
-    // cy.wait('@getIngredients');
+    // Ожидаем загрузки ингредиентов
+    cy.wait('@getIngredients');
 
     // Открываем модальное окно ингредиента
-    cy.contains('булка').click();
+    cy.contains('Флюоресцентная булка R2-D3').click();
     cy.get('[data-cy="modal"]').should('be.visible'); // Проверяем, что модальное окно открылось
 
     // Закрываем по крестику
-    cy.get('[data-cy="modal"]').click();
+    cy.get('[data-cy="modal-close"]').click();
     cy.get('[data-cy="modal"]').should('not.exist'); // Проверяем, что модальное окно закрылось
-    cy.get('body').type('{esc}'); //Закрываем клавишей Esc
+
     // Открываем снова и закрываем по клику на оверлей
-    cy.get('[data-cy="ingredients-module"]')
-      .contains('Флюоресцентная булка R2-D3')
-      .click();
+    cy.contains('Флюоресцентная булка R2-D3').click();
     cy.get('[data-cy="modal"]').should('exist');
     cy.get('[data-cy="modalOverlay"]').click({ force: true });
     cy.get('[data-cy="modal"]').should('not.exist');
@@ -80,22 +80,33 @@ describe('Тесты для конструктора бургера без пе�
       .find('button')
       .click({ force: true });
 
-    // Нажимаем кнопку оформления заказа
-    cy.get('[data-cy="order-button"]').click();
+     // Кликаем по кнопке "Оформить заказ" внутри секции constructor-module
+    cy.get(`[data-cy='constructor-module']`)
+    .children()
+    .last()
+    .find('button')
+    .click({ force: true });
 
-    // Ожидаем успешного создания заказа
-    cy.wait('@postOrder').its('response.statusCode').should('eq', 200);
+  // Ожидаем успешного создания заказа
+  cy.wait('@postOrder').its('response.statusCode').should('eq', 200);
 
-    // Проверяем, что открылось модальное окно с номером заказа
-    cy.get('[data-cy="modal"]').should('exist');
-    cy.get('[data-cy="order-number"]').should('contain', '12345'); // Проверяем номер заказа
+  // Проверяем, что открылось модальное окно с номером заказа
+  cy.get('[data-cy="modal"]').should('exist');
+  cy.get('[data-cy="order-number"]').should('contain', '12345'); // Проверяем номер заказа
 
-    // Закрываем модальное окно
-    cy.get('[data-cy="modal-close"]').click();
-    cy.get('[data-cy="modal"]').should('not.exist');
+  // Закрываем модальное окно
+  cy.get('[data-cy="modal-close"]').click();
+  cy.get('[data-cy="modal"]').should('not.exist');
 
-    // Проверяем, что конструктор пуст после оформления заказа
-    cy.get('[data-cy="constructor-bun"]').should('not.exist');
-    cy.get('[data-cy="constructor-filling"]').should('not.exist');
-  });
+  // Проверяем, что конструктор пуст после оформления заказа
+  cy.get(`[data-cy='constructor-module']`)
+    .children()
+    .first()
+    .should('contain.text', 'Выберите булки');
+  cy.get(`[data-cy='constructor-module']`)
+    .children()
+    .first()
+    .next()
+    .should('contain.text', 'Выберите начинку');
+});
 });
