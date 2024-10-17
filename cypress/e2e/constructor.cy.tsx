@@ -65,9 +65,19 @@ describe('Тесты для конструктора бургера без пе�
   });
 
   it('Оформление заказа', () => {
+    // Перехват запроса авторизации и получения пользователя
+    cy.intercept('POST', '/api/auth/login').as('login');
+    cy.intercept('GET', '/api/auth/user').as('user');
+  
     // Ожидаем загрузки ингредиентов
+    cy.visit('/login');
+    cy.get('input[name=email]').type('user@mail.com');
+    cy.get('input[name=password]').type('password');
+    cy.get('button[type=submit]').click();
+    cy.wait('@login');
+    cy.wait('@user');
     cy.wait('@getIngredients');
-
+  
     // Добавляем булку и начинку
     cy.get('[data-cy="ingredients-module"]')
       .contains('Флюоресцентная булка R2-D3')
@@ -79,34 +89,34 @@ describe('Тесты для конструктора бургера без пе�
       .parent()
       .find('button')
       .click({ force: true });
-
-     // Кликаем по кнопке "Оформить заказ" внутри секции constructor-module
+  
+    // Кликаем по кнопке "Оформить заказ" внутри секции constructor-module
     cy.get(`[data-cy='constructor-module']`)
-    .children()
-    .last()
-    .find('button')
-    .click({ force: true });
-
-  // Ожидаем успешного создания заказа
-  cy.wait('@postOrder').its('response.statusCode').should('eq', 200);
-
-  // Проверяем, что открылось модальное окно с номером заказа
-  cy.get('[data-cy="modal"]').should('exist');
-  cy.get('[data-cy="order-number"]').should('contain', '12345'); // Проверяем номер заказа
-
-  // Закрываем модальное окно
-  cy.get('[data-cy="modal-close"]').click();
-  cy.get('[data-cy="modal"]').should('not.exist');
-
-  // Проверяем, что конструктор пуст после оформления заказа
-  cy.get(`[data-cy='constructor-module']`)
-    .children()
-    .first()
-    .should('contain.text', 'Выберите булки');
-  cy.get(`[data-cy='constructor-module']`)
-    .children()
-    .first()
-    .next()
-    .should('contain.text', 'Выберите начинку');
-});
-});
+      .children()
+      .last()
+      .find('button')
+      .click({ force: true });
+  
+    // Ожидаем успешного создания заказа
+    cy.wait('@postOrder').its('response.statusCode').should('eq', 200);
+  
+    // Проверяем, что открылось модальное окно с номером заказа
+    cy.get('[data-cy="modal"]').should('exist');
+    cy.get('[data-cy="order-number"]').should('contain', '12345'); // Проверяем номер заказа
+  
+    // Закрываем модальное окно
+    cy.get('[data-cy="modal-close"]').click();
+    cy.get('[data-cy="modal"]').should('not.exist');
+  
+    // Проверяем, что конструктор пуст после оформления заказа
+    cy.get(`[data-cy='constructor-module']`)
+      .children()
+      .first()
+      .should('contain.text', 'Выберите булки');
+    cy.get(`[data-cy='constructor-module']`)
+      .children()
+      .first()
+      .next()
+      .should('contain.text', 'Выберите начинку');
+  });
+  });
