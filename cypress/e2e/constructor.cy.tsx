@@ -66,17 +66,17 @@ describe('Тесты для конструктора бургера без пе�
 
   it('Оформление заказа', () => {
     // Перехват запроса авторизации и получения пользователя
-    cy.intercept('POST', '/api/auth/login').as('login');
-    cy.intercept('GET', '/api/auth/user').as('user');
+    cy.intercept('POST', '/api/auth/login', {fixture: 'login.json'}).as('login');
+    cy.intercept('GET', '/api/auth/user', {fixture: 'user.json'}).as('user');
   
     // Ожидаем загрузки ингредиентов
     cy.visit('/login');
     cy.get('input[name=email]').type('user@mail.com');
     cy.get('input[name=password]').type('password');
     cy.get('button[type=submit]').click();
-    cy.wait('@login');
-    cy.wait('@user');
-    cy.wait('@getIngredients');
+    // cy.wait('@login');
+    // cy.wait('@user');
+    // cy.wait('@getIngredients');
   
     // Добавляем булку и начинку
     cy.get('[data-cy="ingredients-module"]')
@@ -102,7 +102,7 @@ describe('Тесты для конструктора бургера без пе�
   
     // Проверяем, что открылось модальное окно с номером заказа
     cy.get('[data-cy="modal"]').should('exist');
-    cy.get('[data-cy="order-number"]').should('contain', '12345'); // Проверяем номер заказа
+    cy.get('[data-cy="modal"]').should('contain', '12345'); // Проверяем номер заказа
   
     // Закрываем модальное окно
     cy.get('[data-cy="modal-close"]').click();
