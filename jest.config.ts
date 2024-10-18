@@ -13,7 +13,7 @@ const config: Config = {
   // bail: 0,
 
   // The directory where Jest should store its cached dependency information
-  // cacheDirectory: "C:\\Users\\artem\\AppData\\Local\\Temp\\jest",
+  // cacheDirectory: "C:\\Users\\Евгения\\AppData\\Local\\Temp\\jest",
 
   // Automatically clear mock calls, instances, contexts and results before every test
   // clearMocks: false,
@@ -90,17 +90,7 @@ const config: Config = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  moduleNameMapper: {
- '^@pages(.*)$': '<rootDir>/src/pages$1',
-    '^@components(.*)$': '<rootDir>/src/components$1',
-    '^@ui(.*)$': '<rootDir>/src/components/ui$1',
-    '^@ui-pages(.*)$': '<rootDir>/src/components/ui/pages$1',
-    '^@utils-types(.*)$': '<rootDir>/src/utils/types$1',
-    '^@api(.*)$': '<rootDir>/src/utils/burger-api.ts$1',
-    '^@slices(.*)$': '<rootDir>/src/services/slices$1',
-    '^@selectors(.*)$': '<rootDir>/src/services/selectors$1',
-  
-  },
+  // moduleNameMapper: {},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -112,7 +102,7 @@ const config: Config = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -156,7 +146,7 @@ const config: Config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-node",
+  testEnvironment: "jsdom",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},

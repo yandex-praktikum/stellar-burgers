@@ -1,10 +1,11 @@
 import { ingredientsSlice, fetchIngredients } from './ingredientsSlice';
+import { expect, test } from '@jest/globals';
 
 describe('ingredientsSlice', () => {
   const initialState = {
     ingredients: [],
     isLoading: false,
-    error: null
+    error: null,
   };
 
   test('изменяет состояние на isLoading при запросе ингредиентов', () => {

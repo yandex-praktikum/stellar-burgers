@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 describe('Тесты для конструктора бургера без перетаскивания', () => {
   beforeEach(() => {
     // Перехватываем запросы к API ингредиентов и заказов
@@ -10,8 +11,18 @@ describe('Тесты для конструктора бургера без пе�
       'postOrder'
     );
 
+    // Устанавливаем фейковые токены в localStorage и cookie
+    localStorage.setItem('refreshToken', 'fake-refresh-token');
+    cy.setCookie('accessToken', 'fake-access-token');
+
     // Переходим на главную страницу
     cy.visit('/');
+  });
+
+  afterEach(() => {
+    // Очищаем localStorage и cookie после каждого теста
+    localStorage.removeItem('refreshToken');
+    cy.clearCookie('accessToken');
   });
 
   it('Добавление ингредиента в конструктор через кнопку', () => {
@@ -69,14 +80,12 @@ describe('Тесты для конструктора бургера без пе�
     cy.intercept('POST', '/api/auth/login', {fixture: 'login.json'}).as('login');
     cy.intercept('GET', '/api/auth/user', {fixture: 'user.json'}).as('user');
   
-    // Ожидаем загрузки ингредиентов
-    cy.visit('/login');
-    cy.get('input[name=email]').type('user@mail.com');
-    cy.get('input[name=password]').type('password');
-    cy.get('button[type=submit]').click();
-    // cy.wait('@login');
-    // cy.wait('@user');
-    // cy.wait('@getIngredients');
+    // // Ожидаем загрузки ингредиентов
+    // cy.visit('/login');
+    // cy.get('input[name=email]').type('user@mail.com');
+    // cy.get('input[name=password]').type('password');
+    // cy.get('button[type=submit]').click();
+   
   
     // Добавляем булку и начинку
     cy.get('[data-cy="ingredients-module"]')
@@ -119,4 +128,4 @@ describe('Тесты для конструктора бургера без пе�
       .next()
       .should('contain.text', 'Выберите начинку');
   });
-  });
+});

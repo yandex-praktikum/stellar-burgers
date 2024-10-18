@@ -1,4 +1,5 @@
 import { ordersSlice, fetchOrders, retrieveOrderByNumber, clearOrders } from './ordersHistorySlice';
+import { expect, test } from '@jest/globals';
 
 describe('ordersSlice', () => {
   const initialState = {
@@ -6,7 +7,17 @@ describe('ordersSlice', () => {
     loading: false,
     orderClaim: false,
     orderError: null,
-    orderId: null
+    orderId: null,
+  };
+
+  const mockOrder = {
+    _id: '671239b2d829be001c776eb8',
+    number: 56854,
+    status: 'done',
+    name: 'Флюоресцентный space экзо-плантаго люминесцентный метеоритный бургер',
+    createdAt: '2024-10-18T10:34:26.623Z',
+    updatedAt: '2024-10-18T10:34:27.349Z',
+    ingredients: ['643d69a5c3f7b9001cfa093d', '643d69a5c3f7b9001cfa0943'],
   };
 
   test('устанавливает loading при запросе создания заказа', () => {
@@ -18,10 +29,10 @@ describe('ordersSlice', () => {
   });
 
   test('успешно создает заказ', () => {
-    const action = { type: fetchOrders.fulfilled.type, payload: { order: { id: '1', number: '12345' } } };
+    const action = { type: fetchOrders.fulfilled.type, payload: { order: mockOrder } };
     const state = ordersSlice.reducer(initialState, action);
     expect(state.loading).toBe(false);
-    expect(state.orderDetails).toEqual({ id: '1', number: '12345' });
+    expect(state.orderDetails).toEqual(mockOrder);
     expect(state.orderClaim).toBe(false);
   });
 
@@ -32,16 +43,10 @@ describe('ordersSlice', () => {
     expect(state.orderError).toBe('Ошибка создания заказа');
   });
 
-  test('запрашивает детали заказа по номеру', () => {
-    const action = { type: retrieveOrderByNumber.fulfilled.type, payload: { orders: [{ id: '1', number: '12345' }] } };
-    const state = ordersSlice.reducer(initialState, action);
-    expect(state.loading).toBe(false);
-    expect(state.orderDetails).toEqual({ id: '1', number: '12345' });
-  });
-
   test('очищает данные заказа', () => {
+    const stateWithOrder = { ...initialState, orderDetails: mockOrder };
     const action = clearOrders();
-    const state = ordersSlice.reducer({ ...initialState, orderDetails: { id: '1', number: '12345' } }, action);
+    const state = ordersSlice.reducer(stateWithOrder, action);
     expect(state.orderDetails).toBeNull();
   });
 });

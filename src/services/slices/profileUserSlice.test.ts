@@ -1,11 +1,12 @@
 import { profileSlice, getUser, updateUser, profileLogin, userLogout } from './profileUserSlice';
+import { expect, test } from '@jest/globals';
 
 describe('profileUserSlice', () => {
   const initialState = {
     user: null,
     isDataLoading: false,
     error: null,
-    isLoading: false
+    isLoading: false,
   };
 
   test('обрабатывает экшен getUser.pending', () => {
@@ -23,9 +24,9 @@ describe('profileUserSlice', () => {
   });
 
   test('обрабатывает экшен getUser.rejected', () => {
-    const action = { type: getUser.rejected.type, error: { message: 'Ошибка' } };
+    const action = { type: getUser.rejected.type, error: { message: 'Ошибка выполнения' } };
     const state = profileSlice.reducer(initialState, action);
     expect(state.isLoading).toBe(false);
-    expect(state.error).toBe('Ошибка');
+    expect(state.error).toBe('Ошибка выполнения');
   });
 });
