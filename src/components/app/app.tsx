@@ -2,10 +2,9 @@ import { ConstructorPage, Feed } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
 
-import { AppHeader, IngredientDetails, Modal } from '@components';
+import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Preloader } from '@ui';
-import { navigate } from '@storybook/addon-links';
 
 const App = () => {
   const navigate = useNavigate();
@@ -24,6 +23,7 @@ const App = () => {
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed' element={<Feed />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
       </Routes>
       {state?.background && (
         <Routes>
