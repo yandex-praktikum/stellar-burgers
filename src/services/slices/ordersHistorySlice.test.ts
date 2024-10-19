@@ -1,7 +1,7 @@
 import { ordersSlice, fetchOrders, retrieveOrderByNumber, clearOrders } from './ordersHistorySlice';
 import { expect, test } from '@jest/globals';
 
-describe('ordersSlice', () => {
+describe('Проверка слайса ordersSlice', () => {
   const initialState = {
     orderDetails: null,
     loading: false,

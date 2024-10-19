@@ -1,7 +1,7 @@
 import { ingredientsSlice, fetchIngredients } from './ingredientsSlice';
 import { expect, test } from '@jest/globals';
 
-describe('ingredientsSlice', () => {
+describe(' Проверка слайса ingredientsSlice', () => {
   const initialState = {
     ingredients: [],
     isLoading: false,
