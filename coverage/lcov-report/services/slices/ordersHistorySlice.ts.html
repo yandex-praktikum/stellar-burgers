@@ -189,41 +189,41 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -278,36 +278,36 @@ export const ordersSlice = createSlice({
       .addCase(fetchOrders.pending, (state) =&gt; ({
         ...state,
         loading: true,
-        isOrderClaimed: true
+        orderClaim: true
       }))
       .addCase(fetchOrders.fulfilled, (state, action) =&gt; ({
         ...state,
         orderDetails: action.payload.order,
         loading: false,
-        isOrderClaimed: false
+        orderClaim: false
       }))
       .addCase(fetchOrders.rejected, (state, action) =&gt; ({
         ...state,
-        isOrderClaimed: false,
+        orderClaim: false,
         loading: false,
-        orderErrorMessage: action.error.message<span class="branch-0 cbranch-no" title="branch not covered" > || null</span>
+        orderError: action.error.message<span class="branch-0 cbranch-no" title="branch not covered" > || null</span>
       }))
       .addCase(retrieveOrderByNumber.pending, (state) =&gt; ({
         ...state,
-        isOrderClaimed: true,
+        orderClaim: true,
         loading: true
       }))
       .addCase(retrieveOrderByNumber.fulfilled, (state, action) =&gt; ({
         ...state,
         loading: false,
-        isOrderClaimed: true,
+        orderClaim: true,
         orderDetails: action.payload.orders[0]
       }))
       .addCase(retrieveOrderByNumber.rejected, (state, action) =&gt; ({
         ...state,
-        isOrderClaimed: false,
+        orderClaim: false,
         loading: false,
-        orderIdentifier: action.error.message || null
+        orderError: action.error.message || null
       }));
   },
   selectors: {
@@ -325,7 +325,7 @@ export const { clearOrders } = ordersSlice.actions;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-10-19T15:25:45.289Z
+                at 2024-10-20T09:16:18.710Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

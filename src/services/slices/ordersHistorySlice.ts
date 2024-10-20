@@ -43,36 +43,36 @@ export const ordersSlice = createSlice({
       .addCase(fetchOrders.pending, (state) => ({
         ...state,
         loading: true,
-        isOrderClaimed: true
+        orderClaim: true
       }))
       .addCase(fetchOrders.fulfilled, (state, action) => ({
         ...state,
         orderDetails: action.payload.order,
         loading: false,
-        isOrderClaimed: false
+        orderClaim: false
       }))
       .addCase(fetchOrders.rejected, (state, action) => ({
         ...state,
-        isOrderClaimed: false,
+        orderClaim: false,
         loading: false,
-        orderErrorMessage: action.error.message || null
+        orderError: action.error.message || null
       }))
       .addCase(retrieveOrderByNumber.pending, (state) => ({
         ...state,
-        isOrderClaimed: true,
+        orderClaim: true,
         loading: true
       }))
       .addCase(retrieveOrderByNumber.fulfilled, (state, action) => ({
         ...state,
         loading: false,
-        isOrderClaimed: true,
+        orderClaim: true,
         orderDetails: action.payload.orders[0]
       }))
       .addCase(retrieveOrderByNumber.rejected, (state, action) => ({
         ...state,
-        isOrderClaimed: false,
+        orderClaim: false,
         loading: false,
-        orderIdentifier: action.error.message || null
+        orderError: action.error.message || null
       }));
   },
   selectors: {

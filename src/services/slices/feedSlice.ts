@@ -27,7 +27,7 @@ export const initialState: TFeedSliceState = {
 };
 
 // Асинхронный thunk для получения информации о заказах
-export const fetchFeeds = createAsyncThunk('orders/get', async () => {
+export const fetchFeeds = createAsyncThunk('orders/all', async () => {
   const response = await getFeedsApi();
   return response;
 });
