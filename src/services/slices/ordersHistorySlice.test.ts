@@ -1,15 +1,12 @@
-import { ordersSlice, fetchOrders, retrieveOrderByNumber, clearOrders } from './ordersHistorySlice';
+import {
+  ordersSlice,
+  fetchOrders,
+  clearOrders,
+  initialState
+} from './ordersHistorySlice';
 import { expect, test } from '@jest/globals';
 
 describe('Проверка слайса ordersSlice', () => {
-  const initialState = {
-    orderDetails: null,
-    loading: false,
-    orderClaim: false,
-    orderError: null,
-    orderId: null,
-  };
-
   const mockOrder = {
     _id: '671239b2d829be001c776eb8',
     number: 56854,
@@ -17,7 +14,7 @@ describe('Проверка слайса ordersSlice', () => {
     name: 'Флюоресцентный space экзо-плантаго люминесцентный метеоритный бургер',
     createdAt: '2024-10-18T10:34:26.623Z',
     updatedAt: '2024-10-18T10:34:27.349Z',
-    ingredients: ['643d69a5c3f7b9001cfa093d', '643d69a5c3f7b9001cfa0943'],
+    ingredients: ['643d69a5c3f7b9001cfa093d', '643d69a5c3f7b9001cfa0943']
   };
 
   test('устанавливает loading при запросе создания заказа', () => {
@@ -29,7 +26,10 @@ describe('Проверка слайса ordersSlice', () => {
   });
 
   test('успешно создает заказ', () => {
-    const action = { type: fetchOrders.fulfilled.type, payload: { order: mockOrder } };
+    const action = {
+      type: fetchOrders.fulfilled.type,
+      payload: { order: mockOrder }
+    };
     const state = ordersSlice.reducer(initialState, action);
     expect(state.loading).toBe(false);
     expect(state.orderDetails).toEqual(mockOrder);
@@ -37,7 +37,10 @@ describe('Проверка слайса ordersSlice', () => {
   });
 
   test('обрабатывает ошибку при создании заказа', () => {
-    const action = { type: fetchOrders.rejected.type, error: { message: 'Ошибка создания заказа' } };
+    const action = {
+      type: fetchOrders.rejected.type,
+      error: { message: 'Ошибка создания заказа' }
+    };
     const state = ordersSlice.reducer(initialState, action);
     expect(state.loading).toBe(false);
     expect(state.orderError).toBe('Ошибка создания заказа');

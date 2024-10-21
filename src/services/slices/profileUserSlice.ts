@@ -19,7 +19,7 @@ type TProfileState = {
 };
 
 // Начальное состояние
-const initialState: TProfileState = {
+export const initialState: TProfileState = {
   user: null,
   isDataLoading: false,
   error: null,

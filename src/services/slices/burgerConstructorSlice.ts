@@ -7,7 +7,7 @@ interface IBurgerConstructorState {
 }
 
 // Начальное состояние конструктора бургера
-const initialState: IBurgerConstructorState = {
+export const initialState: IBurgerConstructorState = {
   bun: null,
   ingredients: []
 };

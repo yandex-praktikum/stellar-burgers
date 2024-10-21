@@ -1,12 +1,9 @@
 import { expect, test } from '@jest/globals';
-import { submittedOrdersSlice, fetchSubmitOrders } from './activeOrdersSlice';
-import { TOrder } from '@utils-types';
-
-const initialState = {
-  orders: [] as TOrder[],
-  fetchingStatus: false,
-  error: null as string | null
-};
+import {
+  submittedOrdersSlice,
+  fetchSubmitOrders,
+  initialState
+} from './activeOrdersSlice';
 
 describe('submittedOrdersSlice', () => {
   test('fetchSubmitOrders.pending устанавливает fetchingStatus в true', () => {
@@ -19,7 +16,10 @@ describe('submittedOrdersSlice', () => {
 
   test('fetchSubmitOrders.fulfilled устанавливает заказы и fetchingStatus в false', () => {
     const ordersData = [{ id: '1', name: 'Order 1' }];
-    const action = { type: fetchSubmitOrders.fulfilled.type, payload: ordersData };
+    const action = {
+      type: fetchSubmitOrders.fulfilled.type,
+      payload: ordersData
+    };
     const state = submittedOrdersSlice.reducer(initialState, action);
     expect(state.orders).toEqual(ordersData);
     expect(state.fetchingStatus).toBe(false);
@@ -27,7 +27,10 @@ describe('submittedOrdersSlice', () => {
 
   test('fetchSubmitOrders.rejected устанавливает ошибку и fetchingStatus в false', () => {
     const errorMessage = 'Error message';
-    const action = { type: fetchSubmitOrders.rejected.type, error: { message: errorMessage } };
+    const action = {
+      type: fetchSubmitOrders.rejected.type,
+      error: { message: errorMessage }
+    };
     const state = submittedOrdersSlice.reducer(initialState, action);
     expect(state.error).toBe(errorMessage);
     expect(state.fetchingStatus).toBe(false);
