@@ -28,5 +28,6 @@
       "@selectors": ["src/services/selectors"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "cypress/**/*.ts", "cypress/e2e/constructor.cy.tsx"],
+  "exclude": ["cypress.config.ts", "cypress", "node_modules"]
 }
