@@ -99,48 +99,48 @@ const slice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state: TUserState) => {
+      .addCase(register.pending, (state) => {
         state.registerError = undefined;
       })
-      .addCase(register.fulfilled, (state: TUserState, action) => {
+      .addCase(register.fulfilled, (state, action) => {
         state.registerError = undefined;
         state.isAuthenticated = true;
         state.data = action.payload;
       })
-      .addCase(register.rejected, (state: TUserState, action) => {
+      .addCase(register.rejected, (state, action) => {
         state.registerError = action.meta.rejectedWithValue
           ? (action.payload as SerializedError)
           : action.error;
       })
-      .addCase(login.pending, (state: TUserState, action) => {
+      .addCase(login.pending, (state, action) => {
         state.loginError = undefined;
       })
-      .addCase(login.fulfilled, (state: TUserState, action) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.loginError = undefined;
         state.isAuthenticated = true;
         state.data = action.payload;
       })
-      .addCase(login.rejected, (state: TUserState, action) => {
+      .addCase(login.rejected, (state, action) => {
         state.loginError = action.meta.rejectedWithValue
           ? (action.payload as SerializedError)
           : action.error;
       })
-      .addCase(logoutUser.fulfilled, (state: TUserState) => {
+      .addCase(logoutUser.fulfilled, (state) => {
         state.isAuthenticated = false;
         state.data = {
           email: '',
           name: ''
         };
       })
-      .addCase(getUser.fulfilled, (state: TUserState, action) => {
+      .addCase(getUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.isAuthChecked = true;
         state.data = action.payload;
       })
-      .addCase(getUser.rejected, (state: TUserState) => {
+      .addCase(getUser.rejected, (state) => {
         state.isAuthChecked = true;
       })
-      .addCase(updateUser.fulfilled, (state: TUserState, action) => {
+      .addCase(updateUser.fulfilled, (state, action) => {
         state.data = action.payload;
       });
   }

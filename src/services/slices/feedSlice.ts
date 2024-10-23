@@ -1,15 +1,19 @@
 import { getFeedsApi } from '@api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  SerializedError
+} from '@reduxjs/toolkit';
 import { TOrdersData } from '@utils-types';
 
-export const getFeeds = createAsyncThunk<any>(
+export const getFeeds = createAsyncThunk<TOrdersData>(
   'feed/getFeeds',
-  async (): Promise<any> => await getFeedsApi()
+  async (): Promise<TOrdersData> => await getFeedsApi()
 );
 
 type TFeedState = {
   isLoading: boolean;
-  error: null | string;
+  error: null | SerializedError;
   data: TOrdersData;
 };
 const initialState: TFeedState = {
@@ -27,16 +31,16 @@ export const feedSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getFeeds.pending, (state: any, action: any) => {
+      .addCase(getFeeds.pending, (state, action) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getFeeds.fulfilled, (state: any, action: any) => {
+      .addCase(getFeeds.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         state.data = action.payload;
       })
-      .addCase(getFeeds.rejected, (state: any, action: any) => {
+      .addCase(getFeeds.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
       });

@@ -9,11 +9,14 @@ import { AppDispatch, RootState } from '../../services/store';
 import { getIngredient } from '../../services/slices/ingredientsSlice';
 
 export const ConstructorPage: FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(getIngredient());
+  }, [dispatch]);
   /** TODO: взять переменную из стора */
   const isIngredientsLoading = useSelector(
     (state: RootState) => state.ingredientsReducer
   );
-  console.log(isIngredientsLoading.isLoading);
 
   return (
     <>

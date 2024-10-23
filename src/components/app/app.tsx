@@ -30,7 +30,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getUser());
-  }, [dispatch]);
+  }, []);
   function handleModalClose() {
     navigate(-1);
   }

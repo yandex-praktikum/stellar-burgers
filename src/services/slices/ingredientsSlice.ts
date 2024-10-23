@@ -1,5 +1,9 @@
 import { getIngredientsApi } from '@api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  SerializedError
+} from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 
 export const getIngredient = createAsyncThunk<TIngredient[], void>(
@@ -9,7 +13,7 @@ export const getIngredient = createAsyncThunk<TIngredient[], void>(
 
 type TIngredientsState = {
   isLoading: boolean;
-  error: null | string;
+  error: null | SerializedError;
   data: TIngredient[];
 };
 const initialState: TIngredientsState = {
@@ -24,17 +28,16 @@ export const ingredientsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getIngredient.pending, (state: any, action: any) => {
-        console.log('reduser');
+      .addCase(getIngredient.pending, (state, action) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getIngredient.fulfilled, (state: any, action: any) => {
+      .addCase(getIngredient.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         state.data = action.payload;
       })
-      .addCase(getIngredient.rejected, (state: any, action: any) => {
+      .addCase(getIngredient.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
       });

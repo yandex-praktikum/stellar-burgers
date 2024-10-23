@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  SerializedError
+} from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { getOrderByNumberApi, getOrdersApi, orderBurgerApi } from '@api';
 
@@ -7,7 +11,7 @@ type TOrdersState = {
   isOrdersLoading: boolean;
   orderRequest: boolean;
   orderModalData: TOrder | null;
-  error: null | string;
+  error: null | SerializedError;
   data: TOrder[];
 };
 export const initialState: TOrdersState = {
@@ -18,9 +22,9 @@ export const initialState: TOrdersState = {
   error: null,
   data: []
 };
-export const getOrders = createAsyncThunk(
+export const getOrders = createAsyncThunk<TOrder[]>(
   'order/getOrders',
-  async (): Promise<any> => await getOrdersApi()
+  async (): Promise<TOrder[]> => await getOrdersApi()
 );
 export const createOrder = createAsyncThunk<
   {
@@ -55,37 +59,37 @@ export const orderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getOrder.pending, (state: TOrdersState) => {
+      .addCase(getOrder.pending, (state) => {
         state.isOrderLoading = true;
       })
-      .addCase(getOrder.fulfilled, (state: TOrdersState, action) => {
+      .addCase(getOrder.fulfilled, (state, action) => {
         state.isOrderLoading = false;
         state.orderModalData = action.payload;
       })
-      .addCase(getOrder.rejected, (state: TOrdersState) => {
+      .addCase(getOrder.rejected, (state) => {
         state.isOrderLoading = false;
       })
-      .addCase(getOrders.pending, (state: TOrdersState) => {
+      .addCase(getOrders.pending, (state) => {
         state.isOrdersLoading = true;
         state.error = null;
       })
-      .addCase(getOrders.fulfilled, (state: TOrdersState, action) => {
+      .addCase(getOrders.fulfilled, (state, action) => {
         state.isOrdersLoading = false;
         state.error = null;
         state.data = action.payload;
       })
-      .addCase(getOrders.rejected, (state: TOrdersState, action: any) => {
+      .addCase(getOrders.rejected, (state, action) => {
         state.isOrdersLoading = false;
         state.error = action.error;
       })
-      .addCase(createOrder.pending, (state: TOrdersState) => {
+      .addCase(createOrder.pending, (state) => {
         state.orderRequest = true;
       })
-      .addCase(createOrder.fulfilled, (state: TOrdersState, action) => {
+      .addCase(createOrder.fulfilled, (state, action) => {
         state.orderRequest = false;
         state.orderModalData = action.payload.order;
       })
-      .addCase(createOrder.rejected, (state: TOrdersState, action) => {
+      .addCase(createOrder.rejected, (state, action) => {
         state.orderRequest = false;
       });
   }
