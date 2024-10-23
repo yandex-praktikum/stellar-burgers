@@ -19,17 +19,16 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   }, []);
   const dispatch = useDispatch<AppDispatch>();
 
-  const ingredients = useSelector(
-    (state: RootState) => state.ingredientsReducer.data
+  const dataIngredients = useSelector(
+    (state: RootState) => state.ingredientsReducer
   );
-  // console.log(ingredients);
 
   const orderInfo = useMemo(() => {
-    if (!ingredients.length) return null;
+    if (!dataIngredients.data.length) return null;
 
     const ingredientsInfo = order.ingredients.reduce(
       (acc: TIngredient[], item: string) => {
-        const ingredient = ingredients.find((ing) => ing._id === item);
+        const ingredient = dataIngredients.data.find((ing) => ing._id === item);
         if (ingredient) return [...acc, ingredient];
         return acc;
       },
@@ -54,7 +53,7 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
       total,
       date
     };
-  }, [order, ingredients]);
+  }, [order, dataIngredients.data]);
 
   if (!orderInfo) return null;
 

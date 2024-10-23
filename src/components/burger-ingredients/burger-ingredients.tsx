@@ -12,14 +12,13 @@ export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */
   const dispatch = useDispatch<AppDispatch>();
 
-  const ingredientStore = useSelector(
-    (state: RootState) => state.ingredientsReducer.data
+  const dataIngredients = useSelector(
+    (state: RootState) => state.ingredientsReducer
   );
-  // console.log(ingredientStore);
 
-  const buns = ingredientStore.filter((item) => item.type === 'bun');
-  const mains = ingredientStore.filter((item) => item.type === 'main');
-  const sauces = ingredientStore.filter((item) => item.type === 'sauce');
+  const buns = dataIngredients.data.filter((item) => item.type === 'bun');
+  const mains = dataIngredients.data.filter((item) => item.type === 'main');
+  const sauces = dataIngredients.data.filter((item) => item.type === 'sauce');
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
@@ -61,8 +60,6 @@ export const BurgerIngredients: FC = () => {
     if (tab === 'sauce')
       titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-
-  // return null;
 
   return (
     <BurgerIngredientsUI

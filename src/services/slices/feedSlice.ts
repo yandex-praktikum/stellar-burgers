@@ -28,10 +28,10 @@ export const feedSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getFeeds.pending, (state: any, action: any) => {
-        console.log('loading');
+        state.isLoading = true;
+        state.error = null;
       })
       .addCase(getFeeds.fulfilled, (state: any, action: any) => {
-        console.log('done');
         state.isLoading = false;
         state.error = null;
         state.data = action.payload;

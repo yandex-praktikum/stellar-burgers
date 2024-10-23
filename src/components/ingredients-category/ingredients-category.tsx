@@ -10,12 +10,13 @@ export const IngredientsCategory = forwardRef<
   TIngredientsCategoryProps
 >(({ title, titleRef, ingredients }, ref) => {
   /** TODO: взять переменную из стора */
-  const burgerConstructor = useSelector(
+  const dataConstructor = useSelector(
     (state: RootState) => state.constructorReducer
   );
 
   const ingredientsCounters = useMemo(() => {
-    const { bun, ingredients } = burgerConstructor;
+    const bun = dataConstructor.bun;
+    const ingredients = dataConstructor.ingredients;
     const counters: { [key: string]: number } = {};
     ingredients.forEach((ingredient: TIngredient) => {
       if (!counters[ingredient._id]) counters[ingredient._id] = 0;
@@ -23,7 +24,7 @@ export const IngredientsCategory = forwardRef<
     });
     if (bun) counters[bun._id] = 2;
     return counters;
-  }, [burgerConstructor]);
+  }, [dataConstructor]);
 
   return (
     <IngredientsCategoryUI
