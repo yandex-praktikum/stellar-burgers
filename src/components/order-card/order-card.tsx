@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { OrderCardProps } from './type';
 import { TIngredient } from '@utils-types';
 import { OrderCardUI } from '../ui/order-card';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { AppDispatch, RootState } from 'src/services/store';
 import { getIngredient } from '../../services/slices/ingredientsSlice';
 
@@ -17,7 +17,7 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   useEffect(() => {
     dispatch(getIngredient());
   }, []);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch: AppDispatch = useDispatch();
 
   const dataIngredients = useSelector(
     (state: RootState) => state.ingredientsReducer

@@ -14,19 +14,16 @@ import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { Preloader } from '@ui';
 import { ProtectedRoute } from '../protected-route';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, useDispatch } from '../../services/store';
 import { getUser } from '../../services/slices/userSlice';
-import { AppDispatch } from '../../services/store';
-import { getIngredient } from '../../services/slices/ingredientsSlice';
 
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state;
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUser());

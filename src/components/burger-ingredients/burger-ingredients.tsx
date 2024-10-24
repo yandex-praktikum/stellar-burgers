@@ -1,17 +1,13 @@
 import { useState, useRef, useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { getIngredient } from '../../services//slices/ingredientsSlice';
 
-import { TIngredient, TTabMode } from '@utils-types';
+import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from 'src/services/store';
+import { useSelector } from '../../services/store';
 import { RootState } from 'src/services/store';
 
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */
-  const dispatch = useDispatch<AppDispatch>();
-
   const dataIngredients = useSelector(
     (state: RootState) => state.ingredientsReducer
   );

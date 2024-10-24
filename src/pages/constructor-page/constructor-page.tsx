@@ -4,12 +4,12 @@ import { BurgerIngredients } from '../../components';
 import { BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { AppDispatch, RootState } from '../../services/store';
 import { getIngredient } from '../../services/slices/ingredientsSlice';
 
 export const ConstructorPage: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch: AppDispatch = useDispatch();
   useEffect(() => {
     dispatch(getIngredient());
   }, [dispatch]);

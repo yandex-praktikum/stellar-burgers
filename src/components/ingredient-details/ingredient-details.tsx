@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { TIngredient } from '@utils-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { AppDispatch, RootState } from '../../services/store';
 import { getIngredient } from '../../services/slices/ingredientsSlice';
 import { useParams } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 export const IngredientDetails: FC = () => {
   /** TODO: взять переменную из стора */
   const { id } = useParams<{ id: string }>();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch: AppDispatch = useDispatch();
   useEffect(() => {
     dispatch(getIngredient());
   }, []);
