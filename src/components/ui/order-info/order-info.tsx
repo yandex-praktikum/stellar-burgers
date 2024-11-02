@@ -3,9 +3,7 @@ import {
   CurrencyIcon,
   FormattedDate
 } from '@zlden/react-developer-burger-ui-components';
-
 import styles from './order-info.module.css';
-
 import { OrderInfoUIProps } from './type';
 import { OrderStatus } from '@components';
 

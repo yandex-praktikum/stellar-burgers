@@ -1,23 +1,35 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { Modal } from '../modal';
+import { useSelector, useDispatch } from '../../services/store';
+import { fetchIngredients } from '../../services/burgerConstructorSlice/thunk';
+import { getFeedsThunk } from '../../services/ordersSlice/thunk';
+import styles from '../ui/modal/modal.module.css';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+  const { number } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const orderData = useSelector((store) =>
+    store.orders.feeds.orders.find((order) => order.number === Number(number))
+  );
 
-  const ingredients: TIngredient[] = [];
+  const ingredients = useSelector((store) => store.ingredients.ingredients);
 
-  /* Готовим данные для отображения */
+  useEffect(() => {
+    if (!orderData) {
+      dispatch(getFeedsThunk());
+    }
+
+    if (!ingredients.length) {
+      dispatch(fetchIngredients());
+    }
+  }, []);
+
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -63,5 +75,22 @@ export const OrderInfo: FC = () => {
     return <Preloader />;
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  if (!location.state) {
+    return (
+      <>
+        <div className={styles.pageView}>
+          <h1 className='text text_type_main-medium mt-2 mb-4'>
+            {`#${orderData?.number}`}
+          </h1>
+          <OrderInfoUI orderInfo={orderInfo} />
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <Modal title={`#${orderData?.number}`} onClose={() => navigate(-1)}>
+      <OrderInfoUI orderInfo={orderInfo} />
+    </Modal>
+  );
 };

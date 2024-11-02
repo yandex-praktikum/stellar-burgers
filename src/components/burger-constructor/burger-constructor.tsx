@@ -1,24 +1,37 @@
 import { FC, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from '../../services/store';
+import { orderBurgerApiThunk } from '../../services/burgerConstructorSlice/thunk';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { resetOrder } from '../../services/burgerConstructorSlice/slice';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
-
-  const orderRequest = false;
-
-  const orderModalData = null;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((store) => !!store.user.user);
+  const { constructorItems, isRequesting, orderModalData } = useSelector(
+    (store) => ({
+      constructorItems: store.ingredients.constructorItems,
+      isRequesting: store.ingredients.orderRequest.isRequesting,
+      orderModalData: store.ingredients.orderRequest.orderModalData
+    })
+  );
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!constructorItems.bun || isRequesting) return;
+
+    if (!isLoggedIn) {
+      return navigate('/login');
+    }
+    const order = constructorItems.ingredients
+      .map(({ _id }) => _id)
+      .concat([constructorItems.bun._id]);
+    dispatch(orderBurgerApiThunk(order));
   };
-  const closeOrderModal = () => {};
+  const closeOrderModal = () => {
+    dispatch(resetOrder());
+  };
 
   const price = useMemo(
     () =>
@@ -30,12 +43,10 @@ export const BurgerConstructor: FC = () => {
     [constructorItems]
   );
 
-  return null;
-
   return (
     <BurgerConstructorUI
       price={price}
-      orderRequest={orderRequest}
+      orderRequest={isRequesting}
       constructorItems={constructorItems}
       orderModalData={orderModalData}
       onOrderClick={onOrderClick}
