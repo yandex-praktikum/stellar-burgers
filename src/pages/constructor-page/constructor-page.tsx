@@ -8,7 +8,9 @@ import { useAppDispatch, useAppSelector } from '@store';
 
 export const ConstructorPage: FC = () => {
   const dispatch = useAppDispatch();
-  const isIngredientsLoading = useAppSelector((state) => state.ingredients);
+  const isIngredientsLoading = useAppSelector(
+    (state) => state.ingredients
+  ).loading;
 
   useEffect(() => {
     dispatch(fetchIngredients());
