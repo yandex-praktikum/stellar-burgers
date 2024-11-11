@@ -5,8 +5,6 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/services/store';
 import { useNavigate } from 'react-router-dom';
 
-////////Работает??
-
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,7 +29,3 @@ export const Login: FC = () => {
     />
   );
 };
-
-// const loginUser = () => {
-//   dispatch(loginUser(loginData))
-// };

@@ -186,9 +186,7 @@ const userSlice = createSlice({
         state.error = action.payload as string;
       })
       // Логаут
-      .addCase(logout.fulfilled, (state) => {
-        state = initialState;
-      });
+      .addCase(logout.fulfilled, (state) => (state = initialState));
   }
 });
 

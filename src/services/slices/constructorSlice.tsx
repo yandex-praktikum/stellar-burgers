@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TIngredient, TConstructorIngredient } from '../../utils/types';
+import { TIngredient, TConstructorIngredient, TOrder } from '../../utils/types';
 
 interface ConstructorState {
   bun: TIngredient | null;
   ingredients: TConstructorIngredient[];
   orderRequest: boolean;
-  orderModalData: null | any; // Убедитесь, что структура данных соответствует
+  orderModalData: null | TOrder;
 }
 
 const initialState: ConstructorState = {
@@ -39,18 +39,15 @@ export const constructorSlice = createSlice({
     ) => {
       const { index, direction } = action.payload;
 
-      // Проверяем, что индекс в пределах массива
       if (index < 0 || index >= state.ingredients.length) return;
 
       const newIndex = direction === 'up' ? index - 1 : index + 1;
 
-      // Проверяем, что перемещение не выходит за пределы массива
       if (newIndex < 0 || newIndex >= state.ingredients.length) return;
 
-      // Перемещаем элемент
       const itemToMove = state.ingredients[index];
-      state.ingredients.splice(index, 1); // Удаляем элемент с текущего места
-      state.ingredients.splice(newIndex, 0, itemToMove); // Вставляем на новое место
+      state.ingredients.splice(index, 1);
+      state.ingredients.splice(newIndex, 0, itemToMove);
     },
     removeIngredientByIndex: (
       state,

@@ -8,23 +8,9 @@ import { useParams } from 'react-router-dom';
 import { fetchOrderByNumber } from '../../services/slices/orderSlice';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-
   const dispatch: AppDispatch = useDispatch();
 
-  // const orderData: TOrder = {
-  //   createdAt: '',
-  //   ingredients: [],
-  //   _id: '',
-  //   status: '',
-  //   name: '',
-  //   updatedAt: 'string',
-  //   number: 0
-  // };
-
   const orderNumber = Number(useParams().number);
-
-  console.log('номер заказа', orderNumber);
 
   const ingredients: TIngredient[] = useSelector(
     (state: RootState) => state.ingredients.ingredients
@@ -38,13 +24,6 @@ export const OrderInfo: FC = () => {
     (state: RootState) => state.order.currentOrder
   );
 
-  // getOrderbyNumber -это поставит в теории ордер из парамс в currentOrder что позволит взять orderData из currentData
-
-  // const orderData: TOrder | null = useSelector(
-  //   (state: RootState) => state.order.currentOrder
-  // );
-
-  /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 

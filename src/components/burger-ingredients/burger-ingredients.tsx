@@ -7,6 +7,8 @@ import { getIngredients } from '../../services/slices/ingredientsSlice';
 import { RootState, AppDispatch } from '../../services/store';
 import { Preloader } from '@ui';
 
+// selectory
+
 export const BurgerIngredients: FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
@@ -25,8 +27,6 @@ export const BurgerIngredients: FC = () => {
       dispatch(getIngredients());
     }
   }, [status, dispatch]);
-
-  // console.log('Ingredients as JSON:', JSON.stringify(ingredients, null, 2));
 
   const buns = ingredients.filter((ingredient) => ingredient.type === 'bun');
   const mains = ingredients.filter((ingredient) => ingredient.type === 'main');

@@ -3,15 +3,10 @@ import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { updateUser } from '../../services/slices/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../services/store';
-
-// Здесь что то не так
+import { Preloader } from '@ui';
 
 export const Profile: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-
-  // useEffect(() => {
-  //   dispatch(getUser()); // вызываем thunk для загрузки данных
-  // }, [dispatch]);
 
   const { user } = useSelector((state: RootState) => state.user);
 
@@ -67,5 +62,7 @@ export const Profile: FC = () => {
       handleSubmit={handleSubmit}
       handleInputChange={handleInputChange}
     />
-  ) : null; // или Loading component, если user еще не загружен
+  ) : (
+    <Preloader />
+  );
 };

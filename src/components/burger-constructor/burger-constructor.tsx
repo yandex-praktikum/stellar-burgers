@@ -9,13 +9,12 @@ import {
 } from '../../services/slices/orderSlice';
 import { clearCurrentOrder } from '../../services/slices/orderSlice';
 import { clearConstructor } from '../../services/slices/constructorSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  console.log(
-    'Current state:',
-    useSelector((state) => state)
-  );
+  const navigate = useNavigate();
+
   const constructorItems = useSelector(
     (state: RootState) => state.constructorBurger
   );
@@ -24,19 +23,19 @@ export const BurgerConstructor: FC = () => {
 
   const orderModalData = useSelector(selectCurrentOrder);
 
-  console.log('ordermodaldata', orderModalData);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const onOrderClick = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     if (!constructorItems.bun || orderRequest) return;
-    // Подготавливаем массив ингредиентов для отправки
     const ingredientsForOrder = [
-      constructorItems.bun._id, // добавляем булку дважды — сверху и снизу
+      constructorItems.bun._id, // добавляем булку
       ...constructorItems.ingredients.map((ingredient) => ingredient._id),
       constructorItems.bun._id // второй раз для нижней булки
     ];
-    // Отправляем заказ с помощью экшена createOrder
-
-    console.log('ТО ЧТО Я КИДАЮ В АПИ', ingredientsForOrder);
     dispatch(createOrder(ingredientsForOrder));
   };
 

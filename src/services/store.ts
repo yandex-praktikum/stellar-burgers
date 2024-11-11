@@ -10,8 +10,8 @@ import ingredientsReducer from './slices/ingredientsSlice';
 import orderReducer from './slices/orderSlice';
 import constructorReducer from './slices/constructorSlice';
 import userReducer from './slices/userSlice';
-import ordersReducer from './slices/orders';
-import feedReducer from './slices/feed';
+import ordersReducer from './slices/ordersSlice';
+import feedReducer from './slices/feedSlice';
 
 const rootReducer = combineReducers({
   user: userReducer,

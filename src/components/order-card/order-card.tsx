@@ -9,11 +9,9 @@ import { getIngredientsSelector } from '../../services/slices/ingredientsSlice';
 
 const maxIngredients = 6;
 
-///////////////////////////////////////////что то тут я делал и наделал
-
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const location = useLocation();
-  // const dispatch: AppDispatch = useDispatch();
+
   const ingredients: TIngredient[] = useSelector(getIngredientsSelector);
 
   const orderInfo = useMemo(() => {

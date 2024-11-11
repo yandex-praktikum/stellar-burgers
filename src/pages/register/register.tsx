@@ -5,8 +5,6 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/services/store';
 import { useNavigate } from 'react-router-dom';
 
-////////Здесь надо добавить функцию register которая будет внутри handlesubmit
-
 export const Register: FC = () => {
   const [name, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -16,8 +14,12 @@ export const Register: FC = () => {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await dispatch(registerUser({ email, name, password }));
-    navigate('/profile');
+    try {
+      await dispatch(registerUser({ email, name, password })).unwrap();
+      navigate('/profile'); // произойдет только при успешном выполнении
+    } catch (error) {
+      console.error('Registration failed:', error);
+    }
   };
 
   return (

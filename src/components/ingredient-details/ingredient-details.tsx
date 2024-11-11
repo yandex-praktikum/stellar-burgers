@@ -6,9 +6,7 @@ import { useParams } from 'react-router-dom';
 import { RootState, AppDispatch } from '../../services/store';
 
 export const IngredientDetails: FC = () => {
-  const id = useParams().id;
-
-  console.log(useParams());
+  const { id } = useParams();
 
   const ingredients = useSelector(
     (state: RootState) => state.ingredients.ingredients
@@ -24,5 +22,3 @@ export const IngredientDetails: FC = () => {
 
   return <IngredientDetailsUI ingredientData={ingredientData} />;
 };
-
-// //////////////////////////////////

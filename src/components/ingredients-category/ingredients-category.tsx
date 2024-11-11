@@ -5,8 +5,6 @@ import { IngredientsCategoryUI } from '../ui/ingredients-category';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/services/store';
 
-//////это вроде как просто циферку над ингредиентом добавляет я так и не понял зачем это
-
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,
   TIngredientsCategoryProps
