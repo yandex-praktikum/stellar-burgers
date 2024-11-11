@@ -25,6 +25,9 @@ export const getIngredients = createAsyncThunk(
 export const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
+  selectors: {
+    getIngredientsSelector: (state: TIngredientState) => state.ingredients
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getIngredients.pending, (state) => {
@@ -42,5 +45,5 @@ export const ingredientsSlice = createSlice({
     });
   }
 });
-
+export const { getIngredientsSelector } = ingredientsSlice.selectors;
 export default ingredientsSlice.reducer;

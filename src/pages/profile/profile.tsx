@@ -1,25 +1,34 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { updateUser } from '../../services/slices/userSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../../services/store';
+
+// Здесь что то не так
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
+  const dispatch: AppDispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getUser()); // вызываем thunk для загрузки данных
+  // }, [dispatch]);
+
+  const { user } = useSelector((state: RootState) => state.user);
 
   const [formValue, setFormValue] = useState({
-    name: user.name,
-    email: user.email,
+    name: user?.name || '',
+    email: user?.email || '',
     password: ''
   });
 
   useEffect(() => {
-    setFormValue((prevState) => ({
-      ...prevState,
-      name: user?.name || '',
-      email: user?.email || ''
-    }));
+    if (user) {
+      setFormValue((prevState) => ({
+        ...prevState,
+        name: user.name,
+        email: user.email
+      }));
+    }
   }, [user]);
 
   const isFormChanged =
@@ -29,15 +38,18 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(updateUser(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
-    setFormValue({
-      name: user.name,
-      email: user.email,
-      password: ''
-    });
+    if (user) {
+      setFormValue({
+        name: user.name,
+        email: user.email,
+        password: ''
+      });
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +59,7 @@ export const Profile: FC = () => {
     }));
   };
 
-  return (
+  return user ? (
     <ProfileUI
       formValue={formValue}
       isFormChanged={isFormChanged}
@@ -55,7 +67,5 @@ export const Profile: FC = () => {
       handleSubmit={handleSubmit}
       handleInputChange={handleInputChange}
     />
-  );
-
-  return null;
+  ) : null; // или Loading component, если user еще не загружен
 };

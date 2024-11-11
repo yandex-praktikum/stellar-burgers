@@ -8,12 +8,12 @@ import { RootState, AppDispatch } from '../../services/store';
 import { Preloader } from '@ui';
 
 export const BurgerIngredients: FC = () => {
-  /** TODO: взять переменные из стора */
   const dispatch: AppDispatch = useDispatch();
 
   const ingredients = useSelector(
     (state: RootState) => state.ingredients.ingredients
   );
+
   const isLoading = useSelector(
     (state: RootState) => state.ingredients.isLoading
   );
@@ -25,6 +25,8 @@ export const BurgerIngredients: FC = () => {
       dispatch(getIngredients());
     }
   }, [status, dispatch]);
+
+  // console.log('Ingredients as JSON:', JSON.stringify(ingredients, null, 2));
 
   const buns = ingredients.filter((ingredient) => ingredient.type === 'bun');
   const mains = ingredients.filter((ingredient) => ingredient.type === 'main');
