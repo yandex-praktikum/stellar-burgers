@@ -3,22 +3,28 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../services/store';
-import { createOrder } from '../../services/slices/orderSlice';
+import {
+  createOrder,
+  selectCurrentOrder
+} from '../../services/slices/orderSlice';
 import { clearCurrentOrder } from '../../services/slices/orderSlice';
 import { clearConstructor } from '../../services/slices/constructorSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-
+  console.log(
+    'Current state:',
+    useSelector((state) => state)
+  );
   const constructorItems = useSelector(
     (state: RootState) => state.constructorBurger
   );
 
   const orderRequest = useSelector((state: RootState) => state.order.isLoading);
 
-  const orderModalData = useSelector(
-    (state: RootState) => state.order.currentOrder
-  );
+  const orderModalData = useSelector(selectCurrentOrder);
+
+  console.log('ordermodaldata', orderModalData);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
@@ -29,6 +35,8 @@ export const BurgerConstructor: FC = () => {
       constructorItems.bun._id // второй раз для нижней булки
     ];
     // Отправляем заказ с помощью экшена createOrder
+
+    console.log('ТО ЧТО Я КИДАЮ В АПИ', ingredientsForOrder);
     dispatch(createOrder(ingredientsForOrder));
   };
 

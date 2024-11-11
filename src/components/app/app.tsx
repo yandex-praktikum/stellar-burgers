@@ -155,7 +155,12 @@ import {
   getIngredients,
   getIngredientsSelector
 } from '../../services/slices/ingredientsSlice';
-import { ProtectedRoute } from './protected-route/protected-route';
+import {
+  ProtectedRoute,
+  OnlyAuth,
+  OnlyUnAuth
+} from './protected-route/protected-route';
+import { getCookie } from '../../utils/cookie';
 
 const App = () => {
   const navigate = useNavigate();
@@ -177,6 +182,19 @@ const App = () => {
     }
   }, []);
 
+  // useEffect(() => {
+  // dispatch(checkUserAuth())
+  // .unwrap()
+  // .catch((error) => {
+  //   console.error('Error during user authentication check:', error);
+  // });
+  //   const accessToken = getCookie('accessToken');
+  //   console.log('app Access Token:', accessToken);
+  //   const refreshToken = localStorage.getItem('refreshToken');
+  //   console.log('app Refresh Token:', refreshToken);
+  //   dispatch(getIngredients());
+  // }, [dispatch]);
+
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -184,44 +202,28 @@ const App = () => {
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='/feed/:number' element={<OrderInfo />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/forgot-password' element={<ForgotPassword />} />
-        <Route path='/reset-password' element={<ResetPassword />} />
-
-        {/* всепеределать onlyAuth = только авторизированный
-      onlyUnAuth = только неавторизированный
-
-      <Route
-          path='/forgot-password'
-          element={<OnlyUnAuth component={<ForgotPassword />} />}
-        />    
-        
-        работает вот так */}
-
+        <Route path='/login' element={<OnlyUnAuth component={<Login />} />} />
         <Route
-          path='/profile'
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
+          path='/register'
+          element={<OnlyUnAuth component={<Register />} />}
         />
         <Route
+          path='/forgot-password'
+          element={<OnlyUnAuth component={<ForgotPassword />} />}
+        />
+        <Route
+          path='/reset-password'
+          element={<OnlyAuth component={<ResetPassword />} />}
+        />
+
+        <Route path='/profile' element={<OnlyAuth component={<Profile />} />} />
+        <Route
           path='/profile/orders'
-          element={
-            <ProtectedRoute>
-              <ProfileOrders />
-            </ProtectedRoute>
-          }
+          element={<OnlyAuth component={<ProfileOrders />} />}
         />
         <Route
           path='/profile/orders/:number'
-          element={
-            <ProtectedRoute>
-              <OrderInfo />
-            </ProtectedRoute>
-          }
+          element={<OnlyAuth component={<OrderInfo />} />}
         />
         <Route path='*' element={<NotFound404 />} />
       </Routes>

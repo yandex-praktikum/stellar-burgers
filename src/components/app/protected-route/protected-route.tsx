@@ -39,15 +39,17 @@ export const ProtectedRoute = ({
   onlyUnAuth = false,
   component
 }: TProtectedRouteProps) => {
-  const isAuthChecked = useSelector(
-    (state: RootState) => state.user.isAuthorized
-  );
-  const user = useSelector((state: RootState) => state.user);
+  //   const isAuthChecked = useSelector(
+  //     (state: RootState) => state.user.isAuthorized
+  //   );
+
+  const user = useSelector((state: RootState) => state.user.user);
+
   const location = useLocation();
 
-  if (!isAuthChecked) {
-    return <Preloader />;
-  }
+  //   if (!isAuthChecked) {
+  //     return <Preloader />;
+  //   }
 
   if (onlyUnAuth && user) {
     const { from } = location.state || { from: { pathname: '/' } };
@@ -55,6 +57,7 @@ export const ProtectedRoute = ({
   }
 
   if (!onlyUnAuth && !user) {
+    console.log(user);
     return <Navigate replace to='/login' state={{ from: location }} />;
   }
 

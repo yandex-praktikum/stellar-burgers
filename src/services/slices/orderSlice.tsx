@@ -149,6 +149,7 @@ export const createOrder = createAsyncThunk(
   async (data: string[], { rejectWithValue }) => {
     try {
       const response = await orderBurgerApi(data);
+      console.log('GLUBINA', response);
       return response.order; // Возвращаем только объект заказа
     } catch (err) {
       return rejectWithValue('Failed to create order');
@@ -190,6 +191,7 @@ const orderSlice = createSlice({
       .addCase(createOrder.fulfilled, (state, action) => {
         state.orderStatus = 'succeeded';
         state.currentOrder = action.payload;
+        console.log('CREATEORDER', action.payload);
         state.isLoading = false;
       })
       .addCase(createOrder.rejected, (state, action) => {
@@ -204,5 +206,6 @@ const orderSlice = createSlice({
   }
 });
 
+export const { selectCurrentOrder } = orderSlice.selectors;
 export const { clearCurrentOrder } = orderSlice.actions;
 export default orderSlice.reducer;

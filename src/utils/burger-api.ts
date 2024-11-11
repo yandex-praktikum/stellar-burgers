@@ -30,6 +30,7 @@ export const refreshToken = (): Promise<TRefreshResponse> =>
       if (!refreshData.success) {
         return Promise.reject(refreshData);
       }
+      console.log('tokenrefreshed!!!!!!!!!!!!!!!!!!!!!');
       localStorage.setItem('refreshToken', refreshData.refreshToken);
       setCookie('accessToken', refreshData.accessToken);
       return refreshData;
@@ -115,6 +116,7 @@ export const orderBurgerApi = (data: string[]) =>
       ingredients: data
     })
   }).then((data) => {
+    console.log('API', data);
     if (data?.success) return data;
     return Promise.reject(data);
   });

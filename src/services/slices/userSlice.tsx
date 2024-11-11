@@ -11,6 +11,7 @@ import {
   TRegisterData,
   TLoginData
 } from '@api';
+import { setCookie } from '../../utils/cookie';
 
 // Типы для состояния и запросов
 type UserState = {
@@ -46,6 +47,8 @@ export const loginUser = createAsyncThunk(
   async (data: TLoginData, { rejectWithValue }) => {
     try {
       const response = await loginUserApi(data);
+      setCookie('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
       return response.user;
     } catch (err) {
       return rejectWithValue('Failed to log in user');

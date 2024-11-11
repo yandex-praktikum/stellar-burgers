@@ -24,7 +24,7 @@ export const OrderInfo: FC = () => {
 
   const orderNumber = Number(useParams().number);
 
-  console.log(orderNumber);
+  console.log('номер заказа', orderNumber);
 
   const ingredients: TIngredient[] = useSelector(
     (state: RootState) => state.ingredients.ingredients

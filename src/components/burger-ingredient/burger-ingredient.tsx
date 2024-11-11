@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../services/store';
 import { addBun, addIngredient } from '../../services/slices/constructorSlice';
 import { TIngredient } from '@utils-types';
+import { nanoid } from '@reduxjs/toolkit';
 
 /////////////////////////////////////////////////////////////////НАШЁЛ ЭДД ХЭНДЛЕР ОН ЗДЕСЬ
 
@@ -21,8 +22,8 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     //////////////// ЗДЕСЬ ВИДИШЬ ТУ ХЕРНЮ КОТОРУЮ Я ВНИЗУ НАПИСАЛ ПОЧИНИ ЕЕ И ПОМЕНЯЙ КЛЮЧ КАКНИБУДЬ ПРОСТО РАНДОМ НЕ ОЧ
     const handleAdd = () => {
       const ingredientfirstson: any = Object.assign({}, ingredient);
-      ingredientfirstson.id = Math.random();
-
+      ingredientfirstson.id = nanoid();
+      console.log('id', ingredientfirstson);
       ingredient.type == 'bun'
         ? dispatch(addBun(ingredient))
         : dispatch(addIngredient(ingredientfirstson));

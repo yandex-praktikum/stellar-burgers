@@ -15,6 +15,7 @@ export const Login: FC = () => {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+
     await dispatch(loginUser({ email, password }));
     navigate('/profile');
   };
