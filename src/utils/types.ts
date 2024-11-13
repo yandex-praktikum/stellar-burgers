@@ -45,3 +45,16 @@ export interface IIngredientsState {
   loading: boolean;
   error: string | null;
 }
+
+export type TConstructorItems = {
+  bun: TConstructorIngredient | null;
+  ingredients: TConstructorIngredient[];
+};
+
+// Интерфейс для состояния конструктора
+export interface IConstructorState {
+  constructorItems: TConstructorItems;
+  orderRequest: boolean;
+  orderData: TOrder | null;
+  error: string | null;
+}
