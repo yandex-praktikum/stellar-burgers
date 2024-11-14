@@ -36,6 +36,19 @@ const constructorSlice = createSlice({
           (ingredient) => ingredient.id !== action.payload
         );
     },
+    moveIngredient: (
+      state,
+      action: PayloadAction<{ oldIndex: number; newIndex: number }>
+    ) => {
+      const { oldIndex, newIndex } = action.payload;
+      const ingredients = state.constructorItems.ingredients;
+      // Убедимся, что индексы в допустимых пределах
+      if (newIndex >= 0 && newIndex < ingredients.length) {
+        // Меняем местами элементы
+        const [movedItem] = ingredients.splice(oldIndex, 1);
+        ingredients.splice(newIndex, 0, movedItem);
+      }
+    },
     resetConstructor: (state) => {
       state.constructorItems.bun = null;
       state.constructorItems.ingredients = [];
@@ -52,6 +65,7 @@ const constructorSlice = createSlice({
   }
 });
 
-export const { setBun, setIngredient } = constructorSlice.actions;
+export const { setBun, setIngredient, removeIngredient, moveIngredient } =
+  constructorSlice.actions;
 
 export default constructorSlice.reducer;

@@ -6,5 +6,7 @@ export {
 export {
   default as constructorReducer,
   setIngredient,
-  setBun
+  setBun,
+  removeIngredient,
+  moveIngredient
 } from './constructor-slice';
