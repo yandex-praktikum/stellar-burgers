@@ -6,7 +6,7 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from '../../services/store';
 import { ProtectedRoute } from '../protected-royte';
 import { checkUserAuth } from '../slices/userAuthSlice';
-import { fetchIngredients } from '../slices/burgerIngridientsSlice';
+import { getBurgerIngridients } from '../slices/burgerIngridientsSlice';
 import {
   ConstructorPage,
   Feed,
@@ -26,7 +26,7 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(checkUserAuth());
-    dispatch(fetchIngredients());
+    dispatch(getBurgerIngridients());
   }, []);
   return (
     <>

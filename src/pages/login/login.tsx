@@ -9,11 +9,11 @@ export const Login: FC = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector(getUserData);
+  const errorText = error || '';
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
-    const errorText = error || '';
   };
 
   return (
@@ -22,7 +22,7 @@ export const Login: FC = () => {
         <Preloader />
       ) : (
         <LoginUI
-          errorText=''
+          errorText={errorText}
           email={email}
           setEmail={setEmail}
           password={password}

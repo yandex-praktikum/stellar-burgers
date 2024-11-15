@@ -5,46 +5,55 @@ import { getIngredientsApi } from '@api';
 interface IBurgerIngredients {
   ingredients: TIngredient[];
   isLoading: boolean;
-  error: boolean;
+  error: string | null;
 }
 
 export const initialState: IBurgerIngredients = {
   ingredients: [],
   isLoading: false,
-  error: false
+  error: null
 };
 
-export const fetchIngredients = createAsyncThunk(
-  'ingredients/fetchIngredients',
-  async (_, { rejectWithValue }) => {
-    try {
-      const data = await getIngredientsApi();
-      return data;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
-  }
+export const getBurgerIngridients = createAsyncThunk(
+  'ingredients/get',
+  async () => getIngredientsApi()
 );
 
 export const burgerIngredientsSlice = createSlice({
-  name: 'ingredients',
+  name: 'burgerIngredients',
   initialState,
   reducers: {},
+  selectors: {
+    selectIsLoading: (state) => state.isLoading,
+    selectIngredients: (state) => state.ingredients,
+    selectBun: (state) =>
+      state.ingredients.filter((ingredient) => ingredient.type === 'bun'),
+    selectMain: (state) =>
+      state.ingredients.filter((ingredient) => ingredient.type === 'main'),
+    selectSauce: (state) =>
+      state.ingredients.filter((ingredient) => ingredient.type === 'sauce')
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchIngredients.pending, (state) => {
+      .addCase(getBurgerIngridients.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
-      .addCase(fetchIngredients.fulfilled, (state, action) => {
+      .addCase(getBurgerIngridients.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = 'ingredients error';
+      })
+      .addCase(getBurgerIngridients.fulfilled, (state, action) => {
         state.isLoading = false;
         state.ingredients = action.payload;
-      })
-      .addCase(fetchIngredients.rejected, (state) => {
-        state.isLoading = false;
-        state.error = true;
       });
   }
 });
 
-// Экспорт редьюсера для использования в сторе
-export default burgerIngredientsSlice.reducer;
+export const {
+  selectIsLoading,
+  selectIngredients,
+  selectBun,
+  selectMain,
+  selectSauce
+} = burgerIngredientsSlice.selectors;

@@ -27,7 +27,7 @@ export const Register: FC = () => {
         <Preloader />
       ) : (
         <RegisterUI
-          errorText=''
+          errorText={errorText}
           email={email}
           userName={userName}
           password={password}
