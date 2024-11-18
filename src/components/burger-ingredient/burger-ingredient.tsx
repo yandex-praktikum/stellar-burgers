@@ -14,7 +14,7 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
 
     // Достаем состояние конструктора из store
     const constructorItems = useAppSelector(
-      (state) => state.burgerConstructor.constructorItems
+      (state) => state.burgerConstructorState.constructorItems
     );
 
     // Считаем количество повторений ингредиента в конструкторе

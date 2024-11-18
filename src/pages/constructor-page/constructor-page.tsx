@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@store';
 export const ConstructorPage: FC = () => {
   const dispatch = useAppDispatch();
   const isIngredientsLoading = useAppSelector(
-    (state) => state.ingredients
+    (state) => state.ingredientsState
   ).loading;
 
   useEffect(() => {

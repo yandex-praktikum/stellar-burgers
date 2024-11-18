@@ -1,4 +1,4 @@
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi, handleApiError } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IIngredientsState, TIngredient } from '@utils-types';
 
@@ -9,6 +9,7 @@ const ingredientsSliceName = 'ingredients';
 // Начальное состояние
 const initialState: IIngredientsState = {
   ingredients: [],
+  selectedIngredient: null,
   loading: false,
   error: null
 };
@@ -21,7 +22,9 @@ export const fetchIngredients = createAsyncThunk(
       const response: TIngredient[] = await getIngredientsApi();
       return response;
     } catch (error) {
-      return rejectWithValue('Failed to load ingredients:' + error);
+      return rejectWithValue(
+        handleApiError(error, 'Failed to load ingredients')
+      );
     }
   }
 );

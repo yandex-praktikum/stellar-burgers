@@ -1,12 +1,11 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { useAppDispatch, useAppSelector } from '@store';
+import { useAppSelector } from '@store';
 
 export const BurgerConstructor: FC = () => {
-  const dispatch = useAppDispatch();
   const constructorItems = useAppSelector(
-    (state) => state.burgerConstructor.constructorItems
+    (state) => state.burgerConstructorState.constructorItems
   );
 
   const orderRequest = false;
