@@ -1,5 +1,11 @@
 import { setCookie, getCookie } from './cookie';
-import { TIngredient, TOrder, TOrdersData, TUser } from './types';
+import {
+  IApiError,
+  TIngredient,
+  TOrder,
+  TOrdersData,
+  TUser
+} from '@utils-types';
 
 const URL = process.env.BURGER_API_URL;
 
@@ -233,3 +239,12 @@ export const logoutApi = () =>
       token: localStorage.getItem('refreshToken')
     })
   }).then((res) => checkResponse<TServerResponse<{}>>(res));
+
+// Вспомогательная функция, которая будет извлекать сообщение об ошибке
+export const handleApiError = (
+  error: unknown,
+  defaultMessage: string
+): string => {
+  const errorResponse = error as IApiError;
+  return errorResponse?.message || defaultMessage;
+};
