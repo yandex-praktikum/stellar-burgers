@@ -10,6 +10,7 @@ const root = ReactDOMClient.createRoot(container!);
 
 root.render(
   <React.StrictMode>
+    {/* Оборачиваю все приложение в BrowserRouter для включения навигации */}
     <BrowserRouter>
       <Provider store={store}>
         <App />
