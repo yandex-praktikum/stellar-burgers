@@ -10,3 +10,5 @@ export {
   removeIngredient,
   moveIngredient
 } from './constructor-slice';
+
+export { default as userReducer, registerUser, loginUser } from './user-slice';

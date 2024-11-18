@@ -37,11 +37,19 @@ export type TUser = {
   name: string;
 };
 
+export interface IUserState {
+  isInit: boolean;
+  isLoading: boolean;
+  user: TUser | null;
+  error: string | null;
+}
+
 export type TTabMode = 'bun' | 'sauce' | 'main';
 
 // Интерфейс для состояния ингридиентов
 export interface IIngredientsState {
   ingredients: TIngredient[];
+  selectedIngredient: TIngredient | null;
   loading: boolean;
   error: string | null;
 }
@@ -57,4 +65,13 @@ export interface IConstructorState {
   orderRequest: boolean;
   orderData: TOrder | null;
   error: string | null;
+}
+
+export interface IProtectedRouteProps {
+  isProtected?: boolean; // Флаг для проверки необходимости авторизации
+}
+
+export interface IApiError {
+  status: number;
+  message: string;
 }
