@@ -1,6 +1,6 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@store'; // Подключаем данные из Redux
+import { useAppDispatch, useAppSelector } from '@store';
 import { fetchUser, updateUser } from '@slices';
 
 export const Profile: FC = () => {
@@ -12,16 +12,6 @@ export const Profile: FC = () => {
     email: user?.email || '',
     password: ''
   });
-
-  useEffect(() => {
-    if (user) {
-      setFormValue((prevState) => ({
-        ...prevState,
-        name: user.name || '',
-        email: user.email || ''
-      }));
-    }
-  }, [user?.name, user?.email]);
 
   const isFormChanged =
     formValue.name !== (user?.name || '') ||

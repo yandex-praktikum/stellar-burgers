@@ -5,7 +5,6 @@ import { TIngredient } from '@utils-types';
 import { useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@store';
 import { getOrder } from '@slices';
-import { parse } from 'path';
 
 export const OrderInfo: FC = () => {
   const dispatch = useAppDispatch();

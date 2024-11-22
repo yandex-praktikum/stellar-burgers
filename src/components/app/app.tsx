@@ -17,7 +17,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '@components';
 import { useAppDispatch, useAppSelector } from '@store';
 import { useEffect } from 'react';
-import { fetchIngredients, fetchUser, getFeed } from '@slices';
+import { fetchUser } from '@slices';
 
 const App = () => {
   const navigate = useNavigate();
