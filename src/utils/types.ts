@@ -32,14 +32,25 @@ export type TOrdersData = {
   totalToday: number;
 };
 
+// Интерфейс для состояния заказов
+export interface IOrdersState {
+  feed: TOrdersData;
+  usersOrders: TOrdersData;
+  selectedOrder: TOrder | null;
+  isLoadingSelectedOrder: boolean;
+  justCreatedOrder: TOrder | null;
+  isLoading: boolean;
+  error: string | null;
+}
+
 export type TUser = {
   email: string;
   name: string;
 };
 
 export interface IUserState {
-  isInit: boolean;
   isLoading: boolean;
+  isChecked: boolean;
   user: TUser | null;
   error: string | null;
 }
@@ -62,9 +73,6 @@ export type TConstructorItems = {
 // Интерфейс для состояния конструктора
 export interface IConstructorState {
   constructorItems: TConstructorItems;
-  orderRequest: boolean;
-  orderData: TOrder | null;
-  error: string | null;
 }
 
 export interface IProtectedRouteProps {

@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  IConstructorState,
-  TConstructorIngredient,
-  TOrder
-} from '@utils-types';
+import { IConstructorState, TConstructorIngredient } from '@utils-types';
+import { get } from 'http';
 
 // Переменные для строковых наименований
 const constructorSliceName = 'constructor';
@@ -13,10 +10,7 @@ const initialState: IConstructorState = {
   constructorItems: {
     bun: null,
     ingredients: []
-  },
-  orderRequest: false,
-  orderData: null,
-  error: null
+  }
 };
 
 // Слайс для конструктора
@@ -52,20 +46,16 @@ const constructorSlice = createSlice({
     resetConstructor: (state) => {
       state.constructorItems.bun = null;
       state.constructorItems.ingredients = [];
-    },
-    setOrderRequest: (state, action: PayloadAction<boolean>) => {
-      state.orderRequest = action.payload;
-    },
-    setOrderData: (state, action: PayloadAction<TOrder | null>) => {
-      state.orderData = action.payload;
-    },
-    setError: (state, action: PayloadAction<string>) => {
-      state.error = action.payload;
     }
   }
 });
 
-export const { setBun, setIngredient, removeIngredient, moveIngredient } =
-  constructorSlice.actions;
+export const {
+  setBun,
+  setIngredient,
+  removeIngredient,
+  moveIngredient,
+  resetConstructor
+} = constructorSlice.actions;
 
 export default constructorSlice.reducer;

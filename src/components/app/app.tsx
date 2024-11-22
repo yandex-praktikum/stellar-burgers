@@ -15,10 +15,23 @@ import styles from './app.module.css';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '@components';
+import { useAppDispatch, useAppSelector } from '@store';
+import { useEffect } from 'react';
+import { fetchIngredients, fetchUser, getFeed } from '@slices';
 
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const { isChecked, user } = useAppSelector((state) => state.userState);
+
+  // Проверяю авторизацию
+  useEffect(() => {
+    // Проверка токена и загрузка пользователя при старте приложения
+    if (!isChecked) {
+      dispatch(fetchUser());
+    }
+  }, [dispatch, isChecked, user]);
 
   // Достаю из локации информацию о предыдущей странице (если она есть)
   const backgroundLocation = location.state?.background;

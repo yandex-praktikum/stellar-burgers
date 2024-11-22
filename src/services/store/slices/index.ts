@@ -1,14 +1,32 @@
 export {
   default as ingredientsReducer,
-  fetchIngredients
+  fetchIngredients,
+  getIngredients
 } from './ingredients-slice';
 
 export {
   default as constructorReducer,
-  setIngredient,
   setBun,
+  setIngredient,
   removeIngredient,
-  moveIngredient
+  moveIngredient,
+  resetConstructor
 } from './constructor-slice';
 
-export { default as userReducer, registerUser, loginUser } from './user-slice';
+export {
+  default as userReducer,
+  registerUser,
+  loginUser,
+  logoutUser,
+  fetchUser,
+  updateUser
+} from './user-slice';
+
+export {
+  default as ordersReducer,
+  createOrder,
+  getOrder,
+  getFeed,
+  getUsersOrders,
+  clearJustCreatedOrder
+} from './orders-slice';

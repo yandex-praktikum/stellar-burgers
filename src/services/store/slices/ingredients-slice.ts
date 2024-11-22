@@ -19,8 +19,7 @@ export const fetchIngredients = createAsyncThunk(
   fetchIngredientsActionType,
   async (_, { rejectWithValue }) => {
     try {
-      const response: TIngredient[] = await getIngredientsApi();
-      return response;
+      return await getIngredientsApi();
     } catch (error) {
       return rejectWithValue(
         handleApiError(error, 'Failed to load ingredients')
@@ -34,6 +33,9 @@ const ingredientSlice = createSlice({
   name: ingredientsSliceName,
   initialState,
   reducers: {},
+  selectors: {
+    getIngredients: (state) => state.ingredients
+  },
   // Обработка асинхронных действий
   extraReducers: (builder) => {
     builder
@@ -54,5 +56,5 @@ const ingredientSlice = createSlice({
       });
   }
 });
-
+export const { getIngredients } = ingredientSlice.selectors;
 export default ingredientSlice.reducer;

@@ -24,7 +24,7 @@ const refreshTokenName = 'refreshToken';
 
 // Начальное состояние
 const initialState: IUserState = {
-  isInit: false,
+  isChecked: false,
   isLoading: false,
   user: null,
   error: null
@@ -67,8 +67,7 @@ export const fetchUser = createAsyncThunk(
   fetchUserActionType,
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getUserApi();
-      return response.user;
+      return (await getUserApi()).user;
     } catch (error) {
       return rejectWithValue(handleApiError(error, 'Failed to fetch user'));
     }
@@ -80,8 +79,7 @@ export const updateUser = createAsyncThunk(
   updateUserActionType,
   async (data: Partial<TRegisterData>, { rejectWithValue }) => {
     try {
-      const response = await updateUserApi(data);
-      return response.user;
+      return (await updateUserApi(data)).user;
     } catch (error) {
       return rejectWithValue(handleApiError(error, 'Failed to update user'));
     }
@@ -108,6 +106,9 @@ const userSlice = createSlice({
   name: userSliceName,
   initialState,
   reducers: {},
+  selectors: {
+    getUser: (state) => state.user
+  },
   extraReducers: (builder) => {
     builder
       // Регистрация
@@ -126,57 +127,65 @@ const userSlice = createSlice({
       // Авторизация
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
+        state.isChecked = false;
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        state.isChecked = true;
         state.isLoading = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.isChecked = true;
         state.error = action.payload as string;
       })
       // Получение текущего пользователя
       .addCase(fetchUser.pending, (state) => {
         state.isLoading = true;
+        state.isChecked = false;
         state.error = null;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.isInit = true;
+        state.isChecked = true;
         state.isLoading = false;
       })
       .addCase(fetchUser.rejected, (state, action) => {
-        state.isInit = true;
         state.isLoading = false;
+        state.isChecked = true;
         state.error = action.payload as string;
       })
       // Обновление данных пользователя
       .addCase(updateUser.pending, (state) => {
         state.isLoading = true;
+        state.isChecked = false;
         state.error = null;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        state.isChecked = true;
         state.isLoading = false;
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.isChecked = true;
         state.error = action.payload as string;
       })
       // Выход из системы
       .addCase(logoutUser.pending, (state) => {
         state.isLoading = true;
+        state.isChecked = false;
         state.error = null;
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.user = null;
-        state.isInit = true;
+        state.isChecked = true;
         state.isLoading = false;
       })
       .addCase(logoutUser.rejected, (state, action) => {
-        state.isInit = true;
         state.isLoading = false;
+        state.isChecked = true;
         state.error = action.payload as string;
       });
   }
