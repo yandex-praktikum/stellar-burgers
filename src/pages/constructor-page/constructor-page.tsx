@@ -1,20 +1,33 @@
-import { useSelector } from '../../services/store';
-
+import { useSelector, useDispatch } from '../../services/store';
+import { FC, useEffect } from 'react';
 import styles from './constructor-page.module.css';
-
-import { BurgerIngredients } from '../../components';
-import { BurgerConstructor } from '../../components';
+import { BurgerIngredients, BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
-import { FC } from 'react';
+import {
+  fetchIngredients,
+  getIngredients,
+  isLoadState
+} from '../../services/slices/ingridientsSlice';
 
 export const ConstructorPage: FC = () => {
-  /** TODO: взять переменную из стора */
-  const isIngredientsLoading = false;
+  const dispatch = useDispatch();
+  const isIngredientsLoading = useSelector(isLoadState);
+  const ingredients = useSelector(getIngredients);
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, []);
+
+  const isLoad = useSelector(isLoadState);
 
   return (
     <>
-      {isIngredientsLoading ? (
+      {isLoad ? (
         <Preloader />
+      ) : ingredients.length === 0 ? (
+        <div className={`${styles.error} text text_type_main-default`}>
+          Не удалось загрузить ингредиенты
+        </div>
       ) : (
         <main className={styles.containerMain}>
           <h1
