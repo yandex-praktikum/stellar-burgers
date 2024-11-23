@@ -1,7 +1,8 @@
 export {
   default as ingredientsReducer,
   fetchIngredients,
-  getIngredients
+  selectIngredientsItems,
+  selectIngredientsLoadingState
 } from './ingredients-slice';
 
 export {
@@ -10,7 +11,8 @@ export {
   setIngredient,
   removeIngredient,
   moveIngredient,
-  resetConstructor
+  resetConstructor,
+  selectConstructorItems
 } from './constructor-slice';
 
 export {
@@ -19,7 +21,11 @@ export {
   loginUser,
   logoutUser,
   fetchUser,
-  updateUser
+  updateUser,
+  selectUser,
+  selectUserCheckedState,
+  selectUserLoadingState,
+  selectUserError
 } from './user-slice';
 
 export {
@@ -28,5 +34,11 @@ export {
   getOrder,
   getFeed,
   getUsersOrders,
-  clearJustCreatedOrder
+  clearJustCreatedOrder,
+  selectOrdersLoadingState,
+  selectjustCreatedOrder,
+  selectFeed,
+  selectSelectedOrder,
+  selectFeedOrders,
+  selectUsersOrders
 } from './orders-slice';

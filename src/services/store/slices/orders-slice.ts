@@ -6,6 +6,7 @@ import {
   orderBurgerApi
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '@store';
 import { IOrdersState, TOrder, TOrdersData } from '@utils-types';
 
 // Переменные для строковых наименований
@@ -158,6 +159,19 @@ const ordersSlice = createSlice({
       });
   }
 });
+
+// Селекторы
+export const selectOrdersLoadingState = (state: RootState) =>
+  state.ordersState.isLoading;
+export const selectjustCreatedOrder = (state: RootState) =>
+  state.ordersState.justCreatedOrder;
+export const selectFeed = (state: RootState) => state.ordersState.feed;
+export const selectSelectedOrder = (state: RootState) =>
+  state.ordersState.selectedOrder;
+export const selectFeedOrders = (state: RootState) =>
+  state.ordersState.feed.orders;
+export const selectUsersOrders = (state: RootState) =>
+  state.ordersState.usersOrders.orders;
 
 export const { clearJustCreatedOrder } = ordersSlice.actions;
 

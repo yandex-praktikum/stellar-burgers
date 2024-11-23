@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IConstructorState, TConstructorIngredient } from '@utils-types';
 import { get } from 'http';
+import { RootState } from '../store';
 
 // Переменные для строковых наименований
 const constructorSliceName = 'constructor';
@@ -49,6 +50,10 @@ const constructorSlice = createSlice({
     }
   }
 });
+
+// Селекторы
+export const selectConstructorItems = (state: RootState) =>
+  state.burgerConstructorState.constructorItems;
 
 export const {
   setBun,

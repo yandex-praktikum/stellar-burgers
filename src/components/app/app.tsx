@@ -17,13 +17,14 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '@components';
 import { useAppDispatch, useAppSelector } from '@store';
 import { useEffect } from 'react';
-import { fetchUser } from '@slices';
+import { fetchUser, selectUserCheckedState, selectUser } from '@slices';
 
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const { isChecked, user } = useAppSelector((state) => state.userState);
+  const user = useAppSelector(selectUser);
+  const isChecked = useAppSelector(selectUserCheckedState);
 
   // Проверяю авторизацию
   useEffect(() => {

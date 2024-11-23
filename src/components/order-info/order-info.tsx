@@ -4,7 +4,7 @@ import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@store';
-import { getOrder } from '@slices';
+import { getOrder, selectSelectedOrder } from '@slices';
 
 export const OrderInfo: FC = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +15,7 @@ export const OrderInfo: FC = () => {
     orderNumber && dispatch(getOrder(orderNumber));
   }, [dispatch]);
 
-  const orderData = useAppSelector((state) => state.ordersState.selectedOrder);
+  const orderData = useAppSelector(selectSelectedOrder);
 
   const ingredients: TIngredient[] = useAppSelector(
     (state) => state.ingredientsState.ingredients

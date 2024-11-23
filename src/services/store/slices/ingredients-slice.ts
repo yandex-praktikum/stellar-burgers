@@ -1,5 +1,6 @@
 import { getIngredientsApi, handleApiError } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '@store';
 import { IIngredientsState, TIngredient } from '@utils-types';
 
 // Переменные для строковых наименований
@@ -33,9 +34,6 @@ const ingredientSlice = createSlice({
   name: ingredientsSliceName,
   initialState,
   reducers: {},
-  selectors: {
-    getIngredients: (state) => state.ingredients
-  },
   // Обработка асинхронных действий
   extraReducers: (builder) => {
     builder
@@ -56,5 +54,11 @@ const ingredientSlice = createSlice({
       });
   }
 });
-export const { getIngredients } = ingredientSlice.selectors;
+
+// Селекторы
+export const selectIngredientsItems = (state: RootState) =>
+  state.ingredientsState.ingredients;
+export const selectIngredientsLoadingState = (state: RootState) =>
+  state.ingredientsState.loading;
+
 export default ingredientSlice.reducer;

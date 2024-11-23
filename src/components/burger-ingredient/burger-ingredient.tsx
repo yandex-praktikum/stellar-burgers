@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { BurgerIngredientUI } from '@ui';
 import { TBurgerIngredientProps } from './type';
 import { useAppDispatch, useAppSelector } from '@store';
-import { setBun, setIngredient } from '@slices';
+import { selectConstructorItems, setBun, setIngredient } from '@slices';
 import { TConstructorIngredient } from '@utils-types';
 
 export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
@@ -13,9 +13,7 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     const location = useLocation();
 
     // Достаем состояние конструктора из store
-    const constructorItems = useAppSelector(
-      (state) => state.burgerConstructorState.constructorItems
-    );
+    const constructorItems = useAppSelector(selectConstructorItems);
 
     // Считаем количество повторений ингредиента в конструкторе
     useMemo(() => {

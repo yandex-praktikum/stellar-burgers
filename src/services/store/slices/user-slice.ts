@@ -11,6 +11,7 @@ import {
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IApiError, IUserState } from '@utils-types';
 import { setCookie, deleteCookie } from '@utils-cookie';
+import { RootState } from '@store';
 
 // Переменные для строковых наименований
 const registerUserActionType = 'user/registerUser';
@@ -106,9 +107,6 @@ const userSlice = createSlice({
   name: userSliceName,
   initialState,
   reducers: {},
-  selectors: {
-    getUser: (state) => state.user
-  },
   extraReducers: (builder) => {
     builder
       // Регистрация
@@ -190,5 +188,13 @@ const userSlice = createSlice({
       });
   }
 });
+
+// Селекторы
+export const selectUser = (state: RootState) => state.userState.user;
+export const selectUserLoadingState = (state: RootState) =>
+  state.userState.isLoading;
+export const selectUserCheckedState = (state: RootState) =>
+  state.userState.isChecked;
+export const selectUserError = (state: RootState) => state.userState.error;
 
 export default userSlice.reducer;

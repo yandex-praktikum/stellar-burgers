@@ -2,24 +2,25 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient, TOrder } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useAppDispatch, useAppSelector } from '@store';
-import { clearJustCreatedOrder, createOrder, resetConstructor } from '@slices';
+import {
+  clearJustCreatedOrder,
+  createOrder,
+  resetConstructor,
+  selectConstructorItems,
+  selectjustCreatedOrder,
+  selectOrdersLoadingState,
+  selectUser
+} from '@slices';
 
 import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const constructorItems = useAppSelector(
-    (state) => state.burgerConstructorState.constructorItems
-  );
-  const user = useAppSelector((state) => state.userState.user);
-
-  const orderRequest = useAppSelector((state) => state.ordersState.isLoading);
-
-  const orderModalData = useAppSelector(
-    (state) => state.ordersState.justCreatedOrder
-  );
+  const constructorItems = useAppSelector(selectConstructorItems);
+  const user = useAppSelector(selectUser);
+  const orderRequest = useAppSelector(selectOrdersLoadingState);
+  const orderModalData = useAppSelector(selectjustCreatedOrder);
 
   const onOrderClick = async () => {
     if (!constructorItems.bun || orderRequest) return;

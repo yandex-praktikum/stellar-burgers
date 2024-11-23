@@ -3,14 +3,19 @@ import { useAppSelector } from '@store';
 import { FC } from 'react';
 import { Preloader } from '@ui';
 import { IProtectedRouteProps } from '@utils-types';
+import {
+  selectUserCheckedState,
+  selectUserLoadingState,
+  selectUser
+} from '@slices';
 
 export const ProtectedRoute: FC<IProtectedRouteProps> = ({
   isProtected = true
 }) => {
   const location = useLocation();
-  const { user, isChecked, isLoading } = useAppSelector(
-    (state) => state.userState
-  );
+  const user = useAppSelector(selectUser);
+  const isChecked = useAppSelector(selectUserCheckedState);
+  const isLoading = useAppSelector(selectUserLoadingState);
 
   // Пока идёт загрузка
   if (isLoading || !isChecked) {

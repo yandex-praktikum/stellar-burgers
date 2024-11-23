@@ -1,4 +1,9 @@
-import { getFeed } from '@slices';
+import {
+  getFeed,
+  selectFeed,
+  selectFeedOrders,
+  selectOrdersLoadingState
+} from '@slices';
 import { useAppDispatch, useAppSelector } from '@store';
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
@@ -7,15 +12,12 @@ import { FC, useEffect } from 'react';
 
 export const Feed: FC = () => {
   const dispatch = useAppDispatch();
-  const isLoading = useAppSelector((state) => state.ordersState.isLoading);
+  const isLoading = useAppSelector(selectOrdersLoadingState);
+  const orders: TOrder[] = useAppSelector(selectFeedOrders);
 
   useEffect(() => {
     dispatch(getFeed());
   }, [dispatch]);
-
-  const orders: TOrder[] = useAppSelector(
-    (state) => state.ordersState.feed.orders
-  );
 
   const handleGetFeeds = () => {
     dispatch(getFeed());

@@ -1,11 +1,11 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { LoginUI } from '@ui-pages';
 import { useAppDispatch, useAppSelector } from '@store';
-import { loginUser } from '@slices';
+import { loginUser, selectUserError } from '@slices';
 
 export const Login: FC = () => {
   const dispatch = useAppDispatch();
-  const errorText = useAppSelector((state) => state.userState.error) || '';
+  const errorText = useAppSelector(selectUserError) || '';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
