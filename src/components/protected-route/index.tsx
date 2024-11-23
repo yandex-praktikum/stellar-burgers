@@ -24,7 +24,8 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({
 
   // Если маршрут не защищён и пользователь авторизован
   if (!isProtected && user) {
-    return <Navigate to='/profile' state={{ from: location }} replace />;
+    const redirectTo = location.state?.from?.pathname || '/profile';
+    return <Navigate to={redirectTo} replace />;
   }
 
   // Если маршрут не защищён или пользователь авторизован
