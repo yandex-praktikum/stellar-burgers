@@ -22,6 +22,11 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({
     return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
+  // Если маршрут не защищён и пользователь авторизован
+  if (!isProtected && user) {
+    return <Navigate to='/profile' state={{ from: location }} replace />;
+  }
+
   // Если маршрут не защищён или пользователь авторизован
   return <Outlet />;
 };
