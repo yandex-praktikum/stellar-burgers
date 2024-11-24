@@ -14,7 +14,7 @@ export const OrderInfo: FC = () => {
     _id: '',
     status: '',
     name: '',
-    updatedAt: 'string',
+    updatedAt: '',
     number: 0
   });
 
@@ -66,7 +66,7 @@ export const OrderInfo: FC = () => {
     getOrderByNumberApi(Number(id)).then((data) => {
       setOrderData(data.orders[0]);
     });
-  }, []);
+  }, [id]);
 
   if (!orderInfo) {
     return <Preloader />;
