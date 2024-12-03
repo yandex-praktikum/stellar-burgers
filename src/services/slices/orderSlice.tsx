@@ -9,7 +9,7 @@ interface OrderState {
   error: string | null | undefined;
 }
 
-const initialState: OrderState = {
+export const initialState: OrderState = {
   orderRequest: false,
   orderModalData: null,
   error: undefined
@@ -65,3 +65,4 @@ export const { getOrderRequest, getOrderModalData } = orderSlice.selectors;
 function dispatch(arg0: any) {
   throw new Error('Function not implemented.');
 }
+export const newOrderReducer = orderSlice.reducer;

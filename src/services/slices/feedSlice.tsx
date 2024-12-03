@@ -14,7 +14,7 @@ export const fetchFeeds = createAsyncThunk(
   }
 );
 
-const initialState: TFeedState = {
+export const initialState: TFeedState = {
   orders: [],
   total: 0,
   totalToday: 0,
@@ -51,3 +51,4 @@ export const feedSlice = createSlice({
 });
 
 export const { getOrders, getTotal, getTotalToday } = feedSlice.selectors;
+export const feedsReducer = feedSlice.reducer;

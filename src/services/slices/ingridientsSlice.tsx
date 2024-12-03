@@ -8,7 +8,7 @@ type TIngredientsState = {
   error: string | null;
 };
 
-const initialState: TIngredientsState = {
+export const initialState: TIngredientsState = {
   items: [],
   isLoad: false,
   error: null
@@ -51,3 +51,4 @@ export const ingredientsSlice = createSlice({
 });
 
 export const { isLoadState, getIngredients } = ingredientsSlice.selectors;
+export const ingredientsReducer = ingredientsSlice.reducer;

@@ -17,7 +17,7 @@ export interface IUserState {
   error: string | null;
 }
 
-const initialState: IUserState = {
+export const initialState: IUserState = {
   user: {
     name: '',
     email: ''
@@ -173,3 +173,5 @@ export const {
   getUserAuth,
   getUserEmail
 } = userSlice.selectors;
+
+export const userReducer = userSlice.reducer;

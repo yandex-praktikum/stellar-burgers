@@ -8,7 +8,7 @@ interface OrdersState {
   error: string | null;
 }
 
-const initialState: OrdersState = {
+export const initialState: OrdersState = {
   orders: [],
   loading: false,
   error: null
@@ -53,3 +53,4 @@ export const ordersSlice = createSlice({
 export const { getOrders } = ordersSlice.selectors;
 
 export default ordersSlice.reducer;
+export const ordersReducer = ordersSlice.reducer;
