@@ -1,0 +1,99 @@
+import { orderBurgerApi, getOrdersApi, getOrderByNumberApi } from '@api';
+import { TOrder } from '@utils-types';
+import {
+  SerializedError,
+  createAsyncThunk,
+  createSlice
+} from '@reduxjs/toolkit';
+
+type TOrdersState = {
+  isLoading: boolean;
+  isOrderLoading: boolean;
+  orders: TOrder[];
+  error: null | SerializedError;
+  orderModal: TOrder | null;
+  orderNumber: TOrder[] | [];
+};
+
+const initialState: TOrdersState = {
+  isLoading: false,
+  isOrderLoading: false,
+  orders: [],
+  error: null,
+  orderModal: null,
+  orderNumber: []
+};
+
+export const fetchOrders = createAsyncThunk(
+  'orders/post',
+  async (data: string[]) => await orderBurgerApi(data)
+);
+
+export const getOrders = createAsyncThunk(
+  'orders/get',
+  async () => await getOrdersApi()
+);
+
+export const fetchFeedsNumber = createAsyncThunk(
+  'feeds/fetchNumber',
+  async (number: number) => getOrderByNumberApi(number)
+);
+
+const ordersSlice = createSlice({
+  name: 'orders',
+  initialState,
+  reducers: {
+    resetOrderModal(state) {
+      state.orderModal = null;
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOrders.pending, (state) => {
+        state.isLoading = true;
+        state.isOrderLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchOrders.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isOrderLoading = false;
+        state.error = null;
+        state.orderModal = action.payload.order;
+      })
+      .addCase(fetchOrders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isOrderLoading = false;
+        state.error = action.error;
+      })
+      .addCase(getOrders.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getOrders.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.orders = action.payload;
+      })
+      .addCase(getOrders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
+      .addCase(fetchFeedsNumber.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchFeedsNumber.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
+      .addCase(fetchFeedsNumber.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.orderNumber = action.payload.orders;
+      });
+  }
+});
+
+export default ordersSlice.reducer;
+
+export const { resetOrderModal } = ordersSlice.actions;

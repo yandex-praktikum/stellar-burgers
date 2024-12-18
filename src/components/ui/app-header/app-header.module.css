@@ -16,12 +16,21 @@
 
 .link {
   display: flex;
+  align-items: center;
   text-decoration: none;
   color: var(--text-inactive-color);
+  transition: color ease-in 0.2s;
+}
+
+.link:hover {
+  color: var(--text-primary-color);
+  transition: all ease-in 0.3s;
 }
 
 .link_active {
   color: var(--text-primary-color);
+  user-select: none;
+  cursor: default;
 }
 
 .link_position_last {
