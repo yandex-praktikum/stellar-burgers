@@ -13,11 +13,10 @@ import {
 } from '@api';
 import { TLoginData } from '@api';
 import { TUser } from '@utils-types';
-import { setCookie } from '../../utils/cookie';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 
 interface AuthState {
   isAuthenticated: boolean;
-  token: string | null;
   refreshToken: string | null;
   isLoading: boolean;
   errorRegister: null | SerializedError;
@@ -27,7 +26,6 @@ interface AuthState {
 
 const initialState: AuthState = {
   isAuthenticated: false,
-  token: null,
   refreshToken: null,
   isLoading: false,
   errorRegister: null,
@@ -49,11 +47,17 @@ export const login = createAsyncThunk(
     return data;
   }
 );
+
 // Асинхронный thunk для выхода
-export const logout = createAsyncThunk(
-  'auth/login',
-  async () => await logoutApi()
-);
+export const logout = createAsyncThunk('auth/logout', async (_) => {
+  try {
+    await logoutApi();
+    localStorage.clear();
+    deleteCookie('accessToken');
+  } catch (error) {
+    console.log('Ошибка выполнения выхода', error);
+  }
+});
 
 // Асинхронный thunk для проверки пользователя
 export const getUser = createAsyncThunk(
@@ -90,13 +94,7 @@ export const updateUser = createAsyncThunk<TUser, Partial<TRegisterData>>(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.token = null;
-      state.refreshToken = null;
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -137,6 +135,17 @@ const authSlice = createSlice({
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.userData = action.payload;
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isLoading = false;
+        state.userData = null;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.errorRegister = action.error;
       });
   }
 });

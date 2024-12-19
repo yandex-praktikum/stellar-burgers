@@ -1,23 +1,22 @@
 import { FC, useEffect, useMemo } from 'react';
-import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
-import { fetchFeedsNumber } from '@slices';
+import {
+  fetchFeedsNumber,
+  getIngredientsSelector,
+  getOrderSelector
+} from '@slices';
+import { Preloader } from '../ui/preloader';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const { number } = useParams<{ number: string }>();
+  const { number } = useParams();
   const dispatch = useDispatch();
 
-  const { isLoading: isLoadingIngredient, data: ingredients } = useSelector(
-    (state) => state.ingredients
-  );
-
-  const { isOrderLoading, orderModal: orderData } = useSelector(
-    (state) => state.orders
-  );
+  const orderData = useSelector(getOrderSelector);
+  const ingredients: TIngredient[] = useSelector(getIngredientsSelector);
 
   useEffect(() => {
     dispatch(fetchFeedsNumber(Number(number)));
@@ -65,12 +64,8 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (isLoadingIngredient || isOrderLoading) {
-    return <Preloader />;
-  }
-
   if (!orderInfo) {
-    return null;
+    return <Preloader />;
   }
 
   return <OrderInfoUI orderInfo={orderInfo} />;

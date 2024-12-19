@@ -35,7 +35,7 @@ export const getOrders = createAsyncThunk(
 );
 
 export const fetchFeedsNumber = createAsyncThunk(
-  'feeds/fetchNumber',
+  'orders/fetchNumber',
   async (number: number) => getOrderByNumberApi(number)
 );
 
@@ -47,21 +47,21 @@ const ordersSlice = createSlice({
       state.orderModal = null;
     }
   },
+  selectors: {
+    getOrderSelector: (state) => state.orderNumber[0]
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchOrders.pending, (state) => {
         state.isLoading = true;
-        state.isOrderLoading = true;
         state.error = null;
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isOrderLoading = false;
         state.error = null;
         state.orderModal = action.payload.order;
       })
       .addCase(fetchOrders.rejected, (state, action) => {
-        state.isLoading = false;
         state.isOrderLoading = false;
         state.error = action.error;
       })
@@ -97,3 +97,4 @@ const ordersSlice = createSlice({
 export default ordersSlice.reducer;
 
 export const { resetOrderModal } = ordersSlice.actions;
+export const { getOrderSelector } = ordersSlice.selectors;

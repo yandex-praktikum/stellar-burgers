@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useSelector, useDispatch } from '../../../src/services/store';
@@ -8,6 +8,7 @@ export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const { bun, ingredients } = useSelector((store) => store.builder);
   const { isLoading, orderModal } = useSelector((store) => store.orders);
+  const { userData } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   const constructorItems = { bun, ingredients };
@@ -17,7 +18,7 @@ export const BurgerConstructor: FC = () => {
   const orderModalData = orderModal;
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!constructorItems.bun || orderRequest || !userData) return;
     else {
       const ingredientIds = constructorItems.ingredients.map(
         (ingredient) => ingredient._id
