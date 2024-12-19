@@ -3,31 +3,34 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useSelector, useDispatch } from '../../../src/services/store';
 import { fetchOrders, resetConstructor, resetOrderModal } from '@slices';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const { bun, ingredients } = useSelector((store) => store.builder);
-  const { isLoading, orderModal } = useSelector((store) => store.orders);
-  const { userData } = useSelector((store) => store.auth);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const constructorItems = useSelector((state) => state.builder);
 
-  const constructorItems = { bun, ingredients };
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const orderRequest = isLoading;
-
-  const orderModalData = orderModal;
+  const { orderRequest, orderModal } = useSelector((state) => state.orders);
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest || !userData) return;
-    else {
-      const ingredientIds = constructorItems.ingredients.map(
-        (ingredient) => ingredient._id
-      );
-      const bunId = constructorItems.bun._id;
-      const orderData = [bunId, ...ingredientIds];
-      dispatch(fetchOrders(orderData));
+    if (!constructorItems.bun || orderRequest) return;
+
+    if (!isAuthenticated) {
+      return navigate('/login');
     }
+
+    const data = [
+      constructorItems.bun._id,
+      ...constructorItems.ingredients.map((ingredient) => ingredient._id),
+      constructorItems.bun._id
+    ];
+
+    dispatch(fetchOrders(data));
   };
+
   const closeOrderModal = () => {
     dispatch(resetConstructor());
     dispatch(resetOrderModal());
@@ -48,7 +51,7 @@ export const BurgerConstructor: FC = () => {
       price={price}
       orderRequest={orderRequest}
       constructorItems={constructorItems}
-      orderModalData={orderModalData}
+      orderModalData={orderModal}
       onOrderClick={onOrderClick}
       closeOrderModal={closeOrderModal}
     />

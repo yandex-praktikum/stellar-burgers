@@ -13,6 +13,7 @@ type TOrdersState = {
   error: null | SerializedError;
   orderModal: TOrder | null;
   orderNumber: TOrder[] | [];
+  orderRequest: boolean;
 };
 
 const initialState: TOrdersState = {
@@ -21,7 +22,8 @@ const initialState: TOrdersState = {
   orders: [],
   error: null,
   orderModal: null,
-  orderNumber: []
+  orderNumber: [],
+  orderRequest: false
 };
 
 export const fetchOrders = createAsyncThunk(
@@ -31,8 +33,9 @@ export const fetchOrders = createAsyncThunk(
 
 export const getOrders = createAsyncThunk(
   'orders/get',
-  async () => await getOrdersApi()
+  getOrdersApi
 );
+
 
 export const fetchFeedsNumber = createAsyncThunk(
   'orders/fetchNumber',
@@ -55,15 +58,18 @@ const ordersSlice = createSlice({
       .addCase(fetchOrders.pending, (state) => {
         state.isLoading = true;
         state.error = null;
+        state.orderRequest = true;
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         state.orderModal = action.payload.order;
+        state.orderRequest = false;
       })
       .addCase(fetchOrders.rejected, (state, action) => {
         state.isOrderLoading = false;
         state.error = action.error;
+        state.orderRequest = false;
       })
       .addCase(getOrders.pending, (state) => {
         state.isLoading = true;
