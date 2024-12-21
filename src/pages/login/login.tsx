@@ -7,6 +7,7 @@ import { login } from '@slices';
 export const Login: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { errorRegister } = useSelector((state) => state.auth);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,8 +17,8 @@ export const Login: FC = () => {
 
     try {
       await dispatch(login({ email, password })).unwrap();
-
-      navigate('/profile', { replace: true });
+      const from = location.state?.from;
+      navigate(from || '/profile', { replace: true });
     } catch (_) {}
   };
 

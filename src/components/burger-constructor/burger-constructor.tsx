@@ -19,9 +19,8 @@ export const BurgerConstructor: FC = () => {
     if (!constructorItems.bun || orderRequest) return;
 
     if (!isAuthenticated) {
-      return navigate('/login');
+      return navigate('/login', { state: { from: '/' } });
     }
-
     const data = [
       constructorItems.bun._id,
       ...constructorItems.ingredients.map((ingredient) => ingredient._id),

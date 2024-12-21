@@ -31,11 +31,7 @@ export const fetchOrders = createAsyncThunk(
   async (data: string[]) => await orderBurgerApi(data)
 );
 
-export const getOrders = createAsyncThunk(
-  'orders/get',
-  getOrdersApi
-);
-
+export const getOrders = createAsyncThunk('orders/get', getOrdersApi);
 
 export const fetchFeedsNumber = createAsyncThunk(
   'orders/fetchNumber',
