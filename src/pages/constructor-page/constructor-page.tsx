@@ -1,14 +1,16 @@
-import { useSelector } from '../../services/store';
-
 import styles from './constructor-page.module.css';
 
 import { BurgerIngredients } from '../../components';
 import { BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
 import { FC } from 'react';
+import { useAppDispatch } from '@store';
+import { getIngredientsApiThunk } from '@slices';
 
 export const ConstructorPage: FC = () => {
-  /** TODO: взять переменную из стора */
+  const dispatch = useAppDispatch();
+  dispatch(getIngredientsApiThunk());
+
   const isIngredientsLoading = false;
 
   return (
