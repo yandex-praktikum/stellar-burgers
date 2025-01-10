@@ -5,6 +5,7 @@ import { TIngredient } from '@utils-types';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
+  console.log('OrderInfo:');
   const orderData = {
     createdAt: '',
     ingredients: [],
