@@ -12,7 +12,6 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     const dispatch = useDispatch();
     const location = useLocation();
     const params = useParams();
-    console.log('BurgerIngredient params: ', JSON.stringify(params));
     const handleAdd = (ingredient: TIngredient) => {
       if (ingredient.type === 'bun') dispatch(addBun(ingredient));
       else dispatch(addIngredient(ingredient));

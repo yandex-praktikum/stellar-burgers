@@ -9,10 +9,6 @@ import { selectAllIngredients } from '../../../src/services/slices/burgerSlice';
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */
   const allIngredients = useSelector(selectAllIngredients);
-  console.log(
-    'BurgerIngredients allIngredients: ',
-    JSON.stringify(allIngredients)
-  );
   const buns: any = allIngredients.filter(
     (ingredient: TIngredient) => ingredient?.type === 'bun'
   );

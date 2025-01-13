@@ -16,7 +16,8 @@ import {
   createBrowserRouter,
   Route,
   Routes,
-  Outlet
+  Outlet,
+  useNavigate
 } from 'react-router-dom';
 
 import {
@@ -25,13 +26,30 @@ import {
   OrderInfo,
   ProtectedRoute
 } from '@components';
+import { useEffect, useState } from 'react';
+import { useDispatch } from '../../../src/services/store';
+import { fetchGetUser } from '../../../src/services/slices/userSlice';
+import { useSelector } from 'react-redux';
+import { fetchIngredients } from '@slices';
 
-export const App = () => (
-  <div className={styles.app}>
-    <AppHeader />
-    <Outlet />
-  </div>
-);
+export const App = () => {
+  const dispatch = useDispatch();
+  const [pathname, setPathName] = useState('/');
+  const user = useSelector((state: any) => state.userReducer);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(fetchGetUser());
+    dispatch(fetchIngredients());
+  }, []);
+
+  return (
+    <div className={styles.app}>
+      <AppHeader />
+      <Outlet />
+    </div>
+  );
+};
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,14 +64,7 @@ const router = createBrowserRouter(
       />
       <Route path='/feed' element={<Feed />} />
       <Route path='/feed/:number' element={<OrderInfo />} />
-      <Route
-        path='/login'
-        element={
-          <ProtectedRoute>
-            <Login />
-          </ProtectedRoute>
-        }
-      />
+      <Route path='/login' element={<Login />} />
       <Route
         path='/register'
         element={
@@ -79,30 +90,37 @@ const router = createBrowserRouter(
         }
       />
       <Route
+        path='/reset-password/:tokenId'
+        element={
+          <ProtectedRoute>
+            <ResetPassword />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path='/profile/orders'
+        element={
+          <ProtectedRoute>
+            <ProfileOrders />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path='profile/orders/:number'
+        element={
+          <ProtectedRoute>
+            <OrderInfo />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path='/profile'
         element={
           <ProtectedRoute>
             <Profile />
           </ProtectedRoute>
         }
-      >
-        <Route
-          path='orders'
-          element={
-            <ProtectedRoute>
-              <ProfileOrders />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='orders/:number'
-          element={
-            <ProtectedRoute>
-              <OrderInfo />
-            </ProtectedRoute>
-          }
-        />
-      </Route>
+      />
       <Route path='/ingredients/:id' element={<IngredientDetails />} />
       <Route path='*' element={<NotFound404 />} />
     </Route>

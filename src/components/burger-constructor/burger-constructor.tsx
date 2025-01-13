@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo } from 'react';
-import { TConstructorIngredient } from '@utils-types';
+import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { RootState, useDispatch } from '../../../src/services/store';
 import { useSelector } from 'react-redux';
@@ -10,11 +10,13 @@ import {
   selectModalOrderData
 } from '@slices';
 import burgerSlice, {
-  fetchIngredients
+  fetchIngredients,
+  fetchOrderBurger
 } from '../../../src/services/slices/burgerSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
+  const dispatch = useDispatch();
 
   const constructorItems: any = useSelector(selectConstructorItems);
   console.log(
@@ -28,6 +30,15 @@ export const BurgerConstructor: FC = () => {
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+    console.log('constructorItems: ', JSON.stringify(constructorItems));
+    dispatch(
+      fetchOrderBurger([
+        constructorItems.bun._id,
+        ...constructorItems.ingredients.map(
+          (ingredient: TIngredient) => ingredient._id
+        )
+      ])
+    );
   };
   const closeOrderModal = () => {};
 
