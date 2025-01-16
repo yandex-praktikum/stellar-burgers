@@ -2,6 +2,7 @@ import { getFeedsApi, getIngredientsApi, orderBurgerApi } from '@api';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TIngredient, TOrder } from '@utils-types';
+import { create } from 'domain';
 
 const initialState: {
   constructorItems: {
@@ -10,11 +11,11 @@ const initialState: {
   };
   allIngredients: TIngredient[];
   isLoading: boolean;
-  orderRequest: boolean;
   orderModalData: TOrder | null;
   isError: boolean;
   errorText: string | undefined;
   orderResponse: TOrder | null;
+  modalIsClosed: boolean;
 } = {
   constructorItems: {
     bun: {
@@ -23,22 +24,17 @@ const initialState: {
     ingredients: []
   },
   allIngredients: [],
-  orderRequest: false,
   orderModalData: null,
   isLoading: false,
   isError: false,
   errorText: '',
-  orderResponse: null
+  orderResponse: null,
+  modalIsClosed: true
 };
 
 export const fetchIngredients = createAsyncThunk(
   'burger/getIngredients',
   async () => await getIngredientsApi()
-);
-
-export const fetchOrderBurger = createAsyncThunk(
-  'burger/orderBurger',
-  async (data: string[]) => await orderBurgerApi(data)
 );
 
 const burgerSlice = createSlice({
@@ -72,12 +68,18 @@ const burgerSlice = createSlice({
       let secondIngredient = state.constructorItems.ingredients[secondIndex];
       state.constructorItems.ingredients[firstIndex] = secondIngredient;
       state.constructorItems.ingredients[secondIndex] = firstIngredient;
+    },
+    closeModal: (state) => {
+      state.modalIsClosed = true;
+    },
+    openModal: (state) => {
+      state.modalIsClosed = false;
     }
   },
   selectors: {
     selectIsLoading: (state) => state.isLoading,
     selectConstructorItems: (state) => state.constructorItems,
-    selectOrderRequest: (state) => state.orderRequest,
+    selectOrderRequest: (state) => state.isLoading,
     selectModalOrderData: (state) => state.orderModalData,
     selectAllIngredients: (state) => state.allIngredients
   },
@@ -92,28 +94,21 @@ const burgerSlice = createSlice({
       .addCase(fetchIngredients.fulfilled, (state, action) => {
         state.isLoading = false;
         state.allIngredients = action.payload;
-      })
-      .addCase(fetchOrderBurger.pending, (state) => {
-        state.isLoading = true;
-        state.isError = false;
-      })
-      .addCase(fetchOrderBurger.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.errorText = action.error.message;
-      })
-      .addCase(fetchOrderBurger.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.orderRequest = !action.payload.order;
       });
   }
 });
 
 export default burgerSlice.reducer;
 
-export const { addBun, addIngredient, deleteIngredient, moveDown, moveUp } =
-  burgerSlice.actions;
+export const {
+  addBun,
+  addIngredient,
+  deleteIngredient,
+  moveDown,
+  moveUp,
+  closeModal,
+  openModal
+} = burgerSlice.actions;
 
 export const {
   selectIsLoading,

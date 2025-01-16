@@ -16,7 +16,6 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const ingredients: TIngredient[] = useSelector(
     (state: any) => state.burgerSlice.allIngredients
   );
-  console.log('OrderCard ingredients: ', JSON.stringify(ingredients));
 
   const orderInfo = useMemo(() => {
     if (!ingredients.length) return null;
@@ -29,8 +28,6 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
       },
       []
     );
-
-    console.log('orderInfo: ', JSON.stringify(orderInfo));
 
     const total = ingredientsInfo.reduce((acc, item) => acc + item.price, 0);
 

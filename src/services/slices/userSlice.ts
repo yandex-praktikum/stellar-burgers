@@ -23,7 +23,7 @@ const initialState: {
 } = {
   email: '',
   name: '',
-  isLoading: false,
+  isLoading: true,
   isError: false,
   errorText: ''
 };
@@ -128,6 +128,24 @@ const userSlice = createSlice({
         console.log('fetchGetUser action: ', JSON.stringify(action));
         state.isLoading = false;
         state.isError = false;
+        state.email = action.payload.user.email;
+        state.name = action.payload.user.name;
+      })
+      .addCase(fetchUserUpdate.pending, (state, action) => {
+        state.isError = false;
+        state.isLoading = true;
+        state.email = action.meta.arg.email;
+        state.name = action.meta.arg.name;
+        console.log('user update action: ', JSON.stringify(action));
+      })
+      .addCase(fetchUserUpdate.rejected, (state, action) => {
+        state.isError = true;
+        state.errorText = action.error.message;
+        state.isLoading = true;
+      })
+      .addCase(fetchUserUpdate.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
         state.email = action.payload.user.email;
         state.name = action.payload.user.name;
       });

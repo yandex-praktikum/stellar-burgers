@@ -16,12 +16,17 @@
 
 .link {
   display: flex;
-  text-decoration: none;
   color: var(--text-inactive-color);
+  border: none;
+  text-decoration: none;
 }
 
 .link_active {
   color: var(--text-primary-color);
+  padding: 0;
+  margin: 0;
+  text-decoration: underline;
+  text-underline-offset: 10px;
 }
 
 .link_position_last {

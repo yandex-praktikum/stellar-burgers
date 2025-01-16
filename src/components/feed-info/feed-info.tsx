@@ -13,8 +13,7 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
 export const FeedInfo: FC = () => {
   /** TODO: взять переменные из стора */
   const orderInfo = useSelector((state: any) => state.orderReducer);
-  console.log('FeedInfo orderInfo: ', JSON.stringify(orderInfo));
-  const orders: TOrder[] = orderInfo.orders;
+  const orders: TOrder[] = orderInfo.feedOrders;
   const feed = {
     total: orderInfo.total,
     totalToday: orderInfo.totalToday

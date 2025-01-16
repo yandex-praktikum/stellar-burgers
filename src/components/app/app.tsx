@@ -17,7 +17,8 @@ import {
   Route,
   Routes,
   Outlet,
-  useNavigate
+  useNavigate,
+  useLocation
 } from 'react-router-dom';
 
 import {
@@ -37,6 +38,7 @@ export const App = () => {
   const [pathname, setPathName] = useState('/');
   const user = useSelector((state: any) => state.userReducer);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(fetchGetUser());
@@ -62,8 +64,16 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
+      <Route
+        path='/ingredients/:id'
+        element={
+          <ProtectedRoute>
+            <ConstructorPage />
+          </ProtectedRoute>
+        }
+      />
       <Route path='/feed' element={<Feed />} />
-      <Route path='/feed/:number' element={<OrderInfo />} />
+      <Route path='/feed/:number' element={<Feed />} />
       <Route path='/login' element={<Login />} />
       <Route
         path='/register'
@@ -73,30 +83,9 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
-      <Route
-        path='/forgot-password'
-        element={
-          <ProtectedRoute>
-            <ForgotPassword />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path='/reset-password'
-        element={
-          <ProtectedRoute>
-            <ResetPassword />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path='/reset-password/:tokenId'
-        element={
-          <ProtectedRoute>
-            <ResetPassword />
-          </ProtectedRoute>
-        }
-      />
+      <Route path='/forgot-password' element={<ForgotPassword />} />
+      <Route path='/reset-password' element={<ResetPassword />} />
+      <Route path='/reset-password/:tokenId' element={<ResetPassword />} />
       <Route
         path='/profile/orders'
         element={
@@ -109,7 +98,7 @@ const router = createBrowserRouter(
         path='profile/orders/:number'
         element={
           <ProtectedRoute>
-            <OrderInfo />
+            <ProfileOrders />
           </ProtectedRoute>
         }
       />
@@ -121,7 +110,6 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
-      <Route path='/ingredients/:id' element={<IngredientDetails />} />
       <Route path='*' element={<NotFound404 />} />
     </Route>
   )

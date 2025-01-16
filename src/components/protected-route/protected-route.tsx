@@ -1,6 +1,9 @@
 import { FC, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useDispatch } from '../../../src/services/store';
+import { fetchGetUser } from '../../../src/services/slices/userSlice';
+import { Preloader } from '../ui/preloader';
 
 type ProtectedRouteProps = {
   children: React.ReactElement;
@@ -10,11 +13,15 @@ export const ProtectedRoute: FC<ProtectedRouteProps> = ({
   children
 }: ProtectedRouteProps) => {
   const user = useSelector((state: any) => state.userReducer);
+  console.log('ProtectedRoute user: ', JSON.stringify(user));
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('ProtectedRoute user: ', JSON.stringify(user));
-  }, [user]);
+    if (!user) dispatch(fetchGetUser());
+  }, []);
 
-  if (!user.name && !user.email) return <Navigate to='/login' />;
+  if (user.isLoading) return <Preloader />;
+  else if (!user.name && !user.email) return <Navigate to='/login' />;
   else return <>{children}</>;
 };

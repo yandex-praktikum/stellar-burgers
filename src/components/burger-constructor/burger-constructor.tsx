@@ -7,12 +7,15 @@ import {
   selectIsLoading,
   selectConstructorItems,
   selectOrderRequest,
-  selectModalOrderData
+  selectModalOrderData,
+  closeModal,
+  openModal
 } from '@slices';
 import burgerSlice, {
-  fetchIngredients,
-  fetchOrderBurger
-} from '../../../src/services/slices/burgerSlice';
+  closeOrderModalAction,
+  fetchOrderBurger,
+  openOrderModalAction
+} from '../../../src/services/slices/orderSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
@@ -24,13 +27,19 @@ export const BurgerConstructor: FC = () => {
     JSON.stringify(constructorItems)
   );
 
-  const orderRequest = useSelector(selectOrderRequest);
+  const orderRequest = useSelector(
+    (state: any) => state.orderReducer.isLoading
+  );
+  console.log('BurgerConstructor orderRequest: ', JSON.stringify(orderRequest));
 
-  const orderModalData = useSelector(selectModalOrderData);
+  const orderModalData = useSelector(
+    (state: any) => state.orderReducer.orderModalData
+  );
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
     console.log('constructorItems: ', JSON.stringify(constructorItems));
+    dispatch(openOrderModalAction());
     dispatch(
       fetchOrderBurger([
         constructorItems.bun._id,
@@ -40,7 +49,10 @@ export const BurgerConstructor: FC = () => {
       ])
     );
   };
-  const closeOrderModal = () => {};
+  const closeOrderModal = () => {
+    console.log('closeOrderModal');
+    dispatch(closeOrderModalAction());
+  };
 
   const price = useMemo(
     () =>

@@ -9,6 +9,7 @@ import { BurgerConstructorUIProps } from './type';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorElement, Modal } from '@components';
 import { Preloader, OrderDetailsUI } from '@ui';
+import { useSelector } from 'react-redux';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   constructorItems,
@@ -19,6 +20,9 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   closeOrderModal
 }) => {
   console.log('constructorItems: ', JSON.stringify(constructorItems));
+  const modalIsOpened = useSelector(
+    (state: any) => state.orderReducer.isOrderModalOpened
+  );
   return (
     <section className={styles.burger_constructor}>
       {constructorItems.bun &&
@@ -95,13 +99,13 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         />
       </div>
 
-      {orderRequest && (
+      {orderRequest && modalIsOpened && (
         <Modal onClose={closeOrderModal} title={'Оформляем заказ...'}>
           <Preloader />
         </Modal>
       )}
 
-      {orderModalData && (
+      {orderModalData && modalIsOpened && (
         <Modal
           onClose={closeOrderModal}
           title={orderRequest ? 'Оформляем заказ...' : ''}
