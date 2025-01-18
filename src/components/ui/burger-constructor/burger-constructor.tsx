@@ -9,9 +9,9 @@ import { BurgerConstructorUIProps } from './type';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorElement, Modal } from '@components';
 import { Preloader, OrderDetailsUI } from '@ui';
-import { useSelector } from 'react-redux';
 import { selectIsModalOpened } from '../../../../src/services/slices/orderSlice';
 import { nanoid } from '@reduxjs/toolkit';
+import { useSelector } from '../../../../src/services/store';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   constructorItems,
@@ -48,14 +48,12 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         {constructorItems.ingredients.length > 0 ? (
           constructorItems.ingredients.map(
             (item: TConstructorIngredient, index: number) => (
-              <div key={nanoid()}>
-                <BurgerConstructorElement
-                  ingredient={item}
-                  index={index}
-                  totalItems={constructorItems.ingredients.length}
-                  key={item.id}
-                />
-              </div>
+              <BurgerConstructorElement
+                ingredient={item}
+                index={index}
+                totalItems={constructorItems.ingredients.length}
+                key={item.uuid}
+              />
             )
           )
         ) : (

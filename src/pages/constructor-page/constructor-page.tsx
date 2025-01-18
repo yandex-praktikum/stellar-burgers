@@ -1,13 +1,10 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-
 import styles from './constructor-page.module.css';
-
 import { BurgerIngredients, IngredientDetails, Modal } from '../../components';
 import { BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
 import { FC } from 'react';
-import { useDispatch } from '../../../src/services/store';
+import { useDispatch, useSelector } from '../../../src/services/store';
 import {
   fetchIngredients,
   selectIsLoading

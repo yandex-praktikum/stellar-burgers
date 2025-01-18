@@ -10,7 +10,8 @@ import {
   selectIsLoading,
   selectConstructorItems,
   closeModal,
-  openModal
+  openModal,
+  clearConstructor
 } from '@slices';
 import burgerSlice, {
   closeOrderModalAction,
@@ -33,6 +34,10 @@ export const BurgerConstructor: FC = () => {
   const orderRequest = useSelector(selectOrderRequest);
 
   const orderModalData = useSelector(selectModalOrderData);
+
+  useEffect(() => {
+    if (orderModalData?._id) dispatch(clearConstructor());
+  }, [orderModalData]);
 
   const onOrderClick = () => {
     if (!user.name || !user.email) {

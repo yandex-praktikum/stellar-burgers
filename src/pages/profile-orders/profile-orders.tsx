@@ -1,8 +1,7 @@
 import { ProfileOrdersUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from '../../../src/services/store';
+import { useDispatch, useSelector } from '../../../src/services/store';
 import {
   closeOrderModalAction,
   fetchOrders,

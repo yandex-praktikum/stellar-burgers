@@ -14,6 +14,7 @@ export type TIngredient = {
 
 export type TConstructorIngredient = TIngredient & {
   id: string;
+  uuid: string;
 };
 
 export type TOrder = {

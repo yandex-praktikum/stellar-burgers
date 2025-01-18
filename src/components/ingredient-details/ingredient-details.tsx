@@ -2,10 +2,10 @@ import { FC } from 'react';
 import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { selectAllIngredients } from '@slices';
 import { TIngredient } from '@utils-types';
 import { Modal } from '../modal';
+import { useSelector } from '../../../src/services/store';
 
 export const IngredientDetails: FC = () => {
   /** TODO: взять переменную из стора */

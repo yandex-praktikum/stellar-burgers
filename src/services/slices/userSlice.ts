@@ -37,10 +37,7 @@ export const fetchUserRegister = createAsyncThunk(
   async (registerData: TRegisterData) => await registerUserApi(registerData)
 );
 
-export const fetchUserLogout = createAsyncThunk(
-  'user/logout',
-  async () => await logoutApi()
-);
+export const fetchUserLogout = createAsyncThunk('user/logout', logoutApi);
 
 export const fetchUserLogin = createAsyncThunk(
   'user/login',
@@ -52,10 +49,7 @@ export const fetchRecoverPassword = createAsyncThunk(
   async (data: { email: string }) => await forgotPasswordApi(data)
 );
 
-export const fetchGetUser = createAsyncThunk(
-  'user/getUser',
-  async () => await getUserApi()
-);
+export const fetchGetUser = createAsyncThunk('user/getUser', getUserApi);
 
 export const fetchUserUpdate = createAsyncThunk(
   'user/updateUser',
@@ -97,6 +91,7 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.errorText = action?.payload?.error.message;
+        state.isRegistered = false;
       })
       .addCase(fetchUserLogout.fulfilled, (state) => {
         state.isLoading = false;

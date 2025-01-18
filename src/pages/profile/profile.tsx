@@ -1,8 +1,7 @@
 import { ProfileUI } from '@ui-pages';
 import { TUser } from '@utils-types';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from '../../../src/services/store';
+import { useDispatch, useSelector } from '../../../src/services/store';
 import { TRegisterData } from '@api';
 import {
   fetchUserUpdate,

@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../../src/services/store';
 import {
@@ -15,7 +15,9 @@ export const Register: FC = () => {
   const navigate = useNavigate();
   const userIsRegistered = useSelector(selectIsUserRegistered);
 
-  if (userIsRegistered) navigate('/');
+  useEffect(() => {
+    if (userIsRegistered) navigate('/');
+  }, [userIsRegistered]);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

@@ -28,12 +28,12 @@ import {
   ProtectedRoute
 } from '@components';
 import { useEffect, useState } from 'react';
-import { useDispatch } from '../../../src/services/store';
+import { useDispatch, useSelector } from '../../../src/services/store';
 import {
   fetchGetUser,
   selectUser
 } from '../../../src/services/slices/userSlice';
-import { useSelector } from 'react-redux';
+
 import { fetchIngredients } from '@slices';
 
 export const App = () => {

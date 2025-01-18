@@ -30,7 +30,8 @@ export const DefaultElement: Story = {
       price: 123,
       image: '',
       image_large: '',
-      image_mobile: ''
+      image_mobile: '',
+      uuid: 'erwrwr'
     },
     index: 0,
     totalItems: 1,

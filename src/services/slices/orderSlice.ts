@@ -36,20 +36,14 @@ const initialState: TOrderState = {
   orderModalData: null
 };
 
-export const fetchOrders = createAsyncThunk(
-  'orders/getOrders',
-  async () => await getOrdersApi()
-);
+export const fetchOrders = createAsyncThunk('orders/getOrders', getOrdersApi);
 
 export const fetchOrderById = createAsyncThunk(
   'orders/getOrderById',
   async (id: number) => await getOrderByNumberApi(id)
 );
 
-export const fetchFeed = createAsyncThunk(
-  'feed/getOrders',
-  async () => await getFeedsApi()
-);
+export const fetchFeed = createAsyncThunk('feed/getOrders', getFeedsApi);
 
 export const fetchOrderBurger = createAsyncThunk(
   'burger/orderBurger',

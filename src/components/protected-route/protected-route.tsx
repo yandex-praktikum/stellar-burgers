@@ -1,7 +1,6 @@
 import { FC, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useDispatch } from '../../../src/services/store';
+import { useDispatch, useSelector } from '../../../src/services/store';
 import {
   fetchGetUser,
   selectUser
