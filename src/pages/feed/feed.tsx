@@ -8,7 +8,8 @@ import {
   closeOrderModalAction,
   fetchFeed,
   fetchOrders,
-  openOrderModalAction
+  openOrderModalAction,
+  selectFeedOrders
 } from '../../../src/services/slices/orderSlice';
 import {
   useLocation,
@@ -30,9 +31,7 @@ export const Feed: FC = () => {
     dispatch(fetchFeed());
   }, []);
 
-  const orders: TOrder[] = useSelector(
-    (state: any) => state.orderReducer.feedOrders
-  );
+  const orders: TOrder[] = useSelector(selectFeedOrders);
 
   const closeModal = () => {
     navigate('/feed');

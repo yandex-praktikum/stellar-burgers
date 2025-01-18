@@ -29,14 +29,17 @@ import {
 } from '@components';
 import { useEffect, useState } from 'react';
 import { useDispatch } from '../../../src/services/store';
-import { fetchGetUser } from '../../../src/services/slices/userSlice';
+import {
+  fetchGetUser,
+  selectUser
+} from '../../../src/services/slices/userSlice';
 import { useSelector } from 'react-redux';
 import { fetchIngredients } from '@slices';
 
 export const App = () => {
   const dispatch = useDispatch();
   const [pathname, setPathName] = useState('/');
-  const user = useSelector((state: any) => state.userReducer);
+  const user = useSelector(selectUser);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -56,33 +59,12 @@ export const App = () => {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route
-        index
-        element={
-          <ProtectedRoute>
-            <ConstructorPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path='/ingredients/:id'
-        element={
-          <ProtectedRoute>
-            <ConstructorPage />
-          </ProtectedRoute>
-        }
-      />
+      <Route index element={<ConstructorPage />} />
+      <Route path='/ingredients/:id' element={<ConstructorPage />} />
       <Route path='/feed' element={<Feed />} />
       <Route path='/feed/:number' element={<Feed />} />
       <Route path='/login' element={<Login />} />
-      <Route
-        path='/register'
-        element={
-          <ProtectedRoute>
-            <Register />
-          </ProtectedRoute>
-        }
-      />
+      <Route path='/register' element={<Register />} />
       <Route path='/forgot-password' element={<ForgotPassword />} />
       <Route path='/reset-password' element={<ResetPassword />} />
       <Route path='/reset-password/:tokenId' element={<ResetPassword />} />

@@ -4,23 +4,25 @@ import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient, TOrder } from '@utils-types';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
+import { selectAllIngredients } from '@slices';
+import {
+  selectFeedOrders,
+  selectProfileOrders
+} from '../../../src/services/slices/orderSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  console.log('OrderInfo:');
 
-  const ingredients: TIngredient[] = useSelector(
-    (state: any) => state.burgerSlice.allIngredients
-  );
+  const ingredients: TIngredient[] = useSelector(selectAllIngredients);
   const urlParams = useParams();
   const location = useLocation();
   let orders: TOrder[] =
     location.pathname && location.pathname.includes('feed')
-      ? useSelector((state: any) => state.orderReducer.feedOrders)
+      ? useSelector(selectFeedOrders)
       : [];
   orders =
     location.pathname && location.pathname.includes('profile')
-      ? useSelector((state: any) => state.orderReducer.profileOrders)
+      ? useSelector(selectProfileOrders)
       : orders;
   /* Готовим данные для отображения */
   const orderDataList: TOrder[] = orders.filter(

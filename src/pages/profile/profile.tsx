@@ -4,12 +4,15 @@ import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from '../../../src/services/store';
 import { TRegisterData } from '@api';
-import { fetchUserUpdate } from '../../../src/services/slices/userSlice';
+import {
+  fetchUserUpdate,
+  selectUser
+} from '../../../src/services/slices/userSlice';
 
 export const Profile: FC = () => {
   /** TODO: взять переменную из стора */
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.userReducer);
+  const user = useSelector(selectUser);
 
   const [formValue, setFormValue] = useState({
     name: user.name,

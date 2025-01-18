@@ -1,7 +1,11 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import burgerReducer from './slices/burgerSlice';
-import orderReducer from './slices/orderSlice';
-import userReducer from './slices/userSlice';
+import {
+  combineReducers,
+  combineSlices,
+  configureStore
+} from '@reduxjs/toolkit';
+import burgerSlice from './slices/burgerSlice';
+import orderSlice from './slices/orderSlice';
+import userSlice from './slices/userSlice';
 
 import {
   TypedUseSelectorHook,
@@ -9,20 +13,14 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 
-// const rootReducer = combineReducers({
-//   burger: burgerSlice.reducer
-// }); // Заменить на импорт настоящего редьюсера
+const rootReducer = combineSlices(burgerSlice, orderSlice, userSlice); // Заменить на импорт настоящего редьюсера
 
 const store = configureStore({
-  reducer: {
-    burgerSlice: burgerReducer,
-    orderReducer: orderReducer,
-    userReducer: userReducer
-  },
+  reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production'
 });
 
-export type RootState = ReturnType<typeof burgerReducer>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type AppDispatch = typeof store.dispatch;
 

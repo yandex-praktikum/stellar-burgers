@@ -2,7 +2,10 @@ import { FC, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useDispatch } from '../../../src/services/store';
-import { fetchGetUser } from '../../../src/services/slices/userSlice';
+import {
+  fetchGetUser,
+  selectUser
+} from '../../../src/services/slices/userSlice';
 import { Preloader } from '../ui/preloader';
 
 type ProtectedRouteProps = {
@@ -12,8 +15,7 @@ type ProtectedRouteProps = {
 export const ProtectedRoute: FC<ProtectedRouteProps> = ({
   children
 }: ProtectedRouteProps) => {
-  const user = useSelector((state: any) => state.userReducer);
-  console.log('ProtectedRoute user: ', JSON.stringify(user));
+  const user = useSelector(selectUser);
   const location = useLocation();
   const dispatch = useDispatch();
 

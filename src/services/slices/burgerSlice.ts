@@ -4,7 +4,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TIngredient, TOrder } from '@utils-types';
 import { create } from 'domain';
 
-const initialState: {
+type TBurgerState = {
   constructorItems: {
     bun: Object;
     ingredients: TIngredient[];
@@ -16,7 +16,9 @@ const initialState: {
   errorText: string | undefined;
   orderResponse: TOrder | null;
   modalIsClosed: boolean;
-} = {
+};
+
+const initialState: TBurgerState = {
   constructorItems: {
     bun: {
       price: 0
@@ -38,22 +40,22 @@ export const fetchIngredients = createAsyncThunk(
 );
 
 const burgerSlice = createSlice({
-  name: 'burgerSlice',
+  name: 'burger',
   initialState,
   reducers: {
-    addBun: (state, action) => {
+    addBun: (state: TBurgerState, action) => {
       state.constructorItems.bun = action.payload;
     },
-    addIngredient: (state, action) => {
+    addIngredient: (state: TBurgerState, action) => {
       state.constructorItems.ingredients.push(action.payload);
     },
-    deleteIngredient: (state, action) => {
+    deleteIngredient: (state: TBurgerState, action) => {
       state.constructorItems.ingredients =
         state.constructorItems.ingredients.filter(
           (ingredient: TIngredient) => ingredient._id !== action.payload._id
         );
     },
-    moveDown: (state, action) => {
+    moveDown: (state: TBurgerState, action) => {
       let firstIndex = action.payload;
       let secondIndex = firstIndex + 1;
       let firstIngredient = state.constructorItems.ingredients[firstIndex];
@@ -61,7 +63,7 @@ const burgerSlice = createSlice({
       state.constructorItems.ingredients[firstIndex] = secondIngredient;
       state.constructorItems.ingredients[secondIndex] = firstIngredient;
     },
-    moveUp: (state, action) => {
+    moveUp: (state: TBurgerState, action) => {
       let firstIndex = action.payload;
       let secondIndex = firstIndex - 1;
       let firstIngredient = state.constructorItems.ingredients[firstIndex];
@@ -69,36 +71,34 @@ const burgerSlice = createSlice({
       state.constructorItems.ingredients[firstIndex] = secondIngredient;
       state.constructorItems.ingredients[secondIndex] = firstIngredient;
     },
-    closeModal: (state) => {
+    closeModal: (state: TBurgerState) => {
       state.modalIsClosed = true;
     },
-    openModal: (state) => {
+    openModal: (state: TBurgerState) => {
       state.modalIsClosed = false;
     }
   },
   selectors: {
-    selectIsLoading: (state) => state.isLoading,
-    selectConstructorItems: (state) => state.constructorItems,
-    selectOrderRequest: (state) => state.isLoading,
-    selectModalOrderData: (state) => state.orderModalData,
-    selectAllIngredients: (state) => state.allIngredients
+    selectIsLoading: (state: TBurgerState) => state.isLoading,
+    selectConstructorItems: (state: TBurgerState) => state.constructorItems,
+    selectAllIngredients: (state: TBurgerState) => state.allIngredients
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchIngredients.pending, (state) => {
+      .addCase(fetchIngredients.pending, (state: TBurgerState) => {
         state.isLoading = true;
       })
-      .addCase(fetchIngredients.rejected, (state) => {
+      .addCase(fetchIngredients.rejected, (state: TBurgerState) => {
         state.isLoading = false;
       })
-      .addCase(fetchIngredients.fulfilled, (state, action) => {
+      .addCase(fetchIngredients.fulfilled, (state: TBurgerState, action) => {
         state.isLoading = false;
         state.allIngredients = action.payload;
       });
   }
 });
 
-export default burgerSlice.reducer;
+export default burgerSlice;
 
 export const {
   addBun,
@@ -110,10 +110,5 @@ export const {
   openModal
 } = burgerSlice.actions;
 
-export const {
-  selectIsLoading,
-  selectConstructorItems,
-  selectOrderRequest,
-  selectModalOrderData,
-  selectAllIngredients
-} = burgerSlice.selectors;
+export const { selectIsLoading, selectConstructorItems, selectAllIngredients } =
+  burgerSlice.selectors;

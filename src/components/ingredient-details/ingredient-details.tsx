@@ -10,7 +10,6 @@ import { Modal } from '../modal';
 export const IngredientDetails: FC = () => {
   /** TODO: взять переменную из стора */
   const params = useParams();
-  console.log('IngredientDetails params: ', JSON.stringify(params));
   const allIngredients = useSelector(selectAllIngredients);
   const navigate = useNavigate();
   const ingredientData = allIngredients.filter(

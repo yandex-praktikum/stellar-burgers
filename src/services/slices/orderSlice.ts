@@ -4,12 +4,15 @@ import {
   getOrdersApi,
   orderBurgerApi
 } from '@api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  PayloadAction,
+  createAsyncThunk,
+  createSlice,
+  nanoid
+} from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-import { error } from 'console';
-import { act } from 'react-dom/test-utils';
 
-const initialState: {
+type TOrderState = {
   feedOrders: TOrder[];
   profileOrders: TOrder[];
   isLoading: boolean;
@@ -17,9 +20,11 @@ const initialState: {
   errorMessage: string | undefined;
   total: number;
   totalToday: number;
-  orderModalData?: TOrder;
+  orderModalData: TOrder | null;
   isOrderModalOpened: boolean;
-} = {
+};
+
+const initialState: TOrderState = {
   feedOrders: [],
   profileOrders: [],
   isLoading: false,
@@ -27,7 +32,8 @@ const initialState: {
   errorMessage: '',
   total: 0,
   totalToday: 0,
-  isOrderModalOpened: false
+  isOrderModalOpened: false,
+  orderModalData: null
 };
 
 export const fetchOrders = createAsyncThunk(
@@ -51,7 +57,7 @@ export const fetchOrderBurger = createAsyncThunk(
 );
 
 const ordersSlice = createSlice({
-  name: 'orders',
+  name: 'orderReducer',
   initialState,
   reducers: {
     openOrderModalAction: (state) => {
@@ -60,6 +66,15 @@ const ordersSlice = createSlice({
     closeOrderModalAction: (state) => {
       state.isOrderModalOpened = false;
     }
+  },
+  selectors: {
+    selectOrderRequest: (state) => state.isLoading,
+    selectFeedOrders: (state) => state.feedOrders,
+    selectProfileOrders: (state) => state.profileOrders,
+    selectTotal: (state) => state.total,
+    selectTotalToday: (state) => state.totalToday,
+    selectModalOrderData: (state) => state.orderModalData,
+    selectIsModalOpened: (state) => state.isOrderModalOpened
   },
   extraReducers: (builder) => {
     builder
@@ -89,7 +104,6 @@ const ordersSlice = createSlice({
         state.errorMessage = action.error.message;
       })
       .addCase(fetchOrderById.fulfilled, (state, action) => {
-        console.log('fetch orders by id: ', JSON.stringify(action));
         state.isLoading = false;
         state.isError = false;
         state.profileOrders = action.payload.orders;
@@ -113,7 +127,6 @@ const ordersSlice = createSlice({
       .addCase(fetchOrderBurger.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
-        console.log('fetch order pending');
       })
       .addCase(fetchOrderBurger.rejected, (state, action) => {
         state.isLoading = false;
@@ -130,7 +143,17 @@ const ordersSlice = createSlice({
   }
 });
 
-export default ordersSlice.reducer;
+export default ordersSlice;
 
 export const { openOrderModalAction, closeOrderModalAction } =
   ordersSlice.actions;
+
+export const {
+  selectOrderRequest,
+  selectFeedOrders,
+  selectProfileOrders,
+  selectTotal,
+  selectTotalToday,
+  selectModalOrderData,
+  selectIsModalOpened
+} = ordersSlice.selectors;

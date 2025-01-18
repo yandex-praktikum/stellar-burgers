@@ -1,47 +1,49 @@
 import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { RootState, useDispatch } from '../../../src/services/store';
-import { useSelector } from 'react-redux';
+import {
+  RootState,
+  useDispatch,
+  useSelector
+} from '../../../src/services/store';
 import {
   selectIsLoading,
   selectConstructorItems,
-  selectOrderRequest,
-  selectModalOrderData,
   closeModal,
   openModal
 } from '@slices';
 import burgerSlice, {
   closeOrderModalAction,
   fetchOrderBurger,
-  openOrderModalAction
+  openOrderModalAction,
+  selectModalOrderData,
+  selectOrderRequest
 } from '../../../src/services/slices/orderSlice';
+import { useNavigate } from 'react-router-dom';
+import { TUserState, selectUser } from '../../../src/services/slices/userSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector(selectUser);
 
   const constructorItems: any = useSelector(selectConstructorItems);
-  console.log(
-    'BurgerConstructor constructorItems: ',
-    JSON.stringify(constructorItems)
-  );
 
-  const orderRequest = useSelector(
-    (state: any) => state.orderReducer.isLoading
-  );
-  console.log('BurgerConstructor orderRequest: ', JSON.stringify(orderRequest));
+  const orderRequest = useSelector(selectOrderRequest);
 
-  const orderModalData = useSelector(
-    (state: any) => state.orderReducer.orderModalData
-  );
+  const orderModalData = useSelector(selectModalOrderData);
 
   const onOrderClick = () => {
+    if (!user.name || !user.email) {
+      navigate('/login');
+      return;
+    }
     if (!constructorItems.bun || orderRequest) return;
-    console.log('constructorItems: ', JSON.stringify(constructorItems));
     dispatch(openOrderModalAction());
     dispatch(
       fetchOrderBurger([
+        constructorItems.bun._id,
         constructorItems.bun._id,
         ...constructorItems.ingredients.map(
           (ingredient: TIngredient) => ingredient._id
@@ -50,7 +52,6 @@ export const BurgerConstructor: FC = () => {
     );
   };
   const closeOrderModal = () => {
-    console.log('closeOrderModal');
     dispatch(closeOrderModalAction());
   };
 

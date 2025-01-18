@@ -13,9 +13,7 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const location = useLocation();
 
   /** TODO: взять переменную из стора */
-  const ingredients: TIngredient[] = useSelector(
-    (state: any) => state.burgerSlice.allIngredients
-  );
+  const ingredients: TIngredient[] = useSelector(selectAllIngredients);
 
   const orderInfo = useMemo(() => {
     if (!ingredients.length) return null;

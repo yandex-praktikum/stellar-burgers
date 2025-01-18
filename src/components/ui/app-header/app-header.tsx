@@ -14,7 +14,6 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
   const classList = styles.link;
   const location = useLocation();
   const pathname = location.state?.background?.pathname || location.pathname;
-  console.log('AppHeaderUI pathname: ', JSON.stringify(pathname));
   return (
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
@@ -27,10 +26,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
                   : classList
               }
             >
-              <BurgerIcon
-                type={'primary'}
-                onClick={() => console.log('list1')}
-              />
+              <BurgerIcon type={'primary'} onClick={() => {}} />
               <p className='text text_type_main-default ml-2 mr-10'>
                 Конструктор
               </p>
@@ -42,10 +38,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
                 pathname.includes('/feed') ? classListActive : classList
               }
             >
-              <ListIcon
-                type={'primary'}
-                onClick={() => console.log('list icon')}
-              />
+              <ListIcon type={'primary'} onClick={() => {}} />
               <p className='text text_type_main-default ml-2'>Лента заказов</p>
             </div>
           </Link>

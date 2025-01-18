@@ -25,8 +25,6 @@ export const ConstructorPage: FC = () => {
   }, []);
   const isIngredientsLoading = useSelector(selectIsLoading);
 
-  console.log('params: ', JSON.stringify(params));
-
   if (isIngredientsLoading) return <Preloader />;
   else if (Object.keys(params).length === 0)
     return (
@@ -61,5 +59,3 @@ export const ConstructorPage: FC = () => {
     );
   else if (params && params.id && !location.state) return <IngredientDetails />;
 };
-
-// http://localhost:4000/ingredients/643d69a5c3f7b9001cfa093c

@@ -10,22 +10,26 @@ import {
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { setCookie } from '../../../src/utils/cookie';
+import { deleteCookie, setCookie } from '../../../src/utils/cookie';
 import { log } from 'console';
 import { LoggedIn } from 'src/stories/Header.stories';
 
-const initialState: {
+export type TUserState = {
   email: TUser['email'];
   name: TUser['name'];
   isLoading: boolean;
   isError: boolean;
   errorText: string | undefined;
-} = {
+  isRegistered: boolean;
+};
+
+const initialState: TUserState = {
   email: '',
   name: '',
   isLoading: true,
   isError: false,
-  errorText: ''
+  errorText: '',
+  isRegistered: false
 };
 
 export const fetchUserRegister = createAsyncThunk(
@@ -59,9 +63,13 @@ export const fetchUserUpdate = createAsyncThunk(
 );
 
 const userSlice = createSlice({
-  name: 'users',
+  name: 'userReducer',
   initialState,
   reducers: {},
+  selectors: {
+    selectUser: (state: TUserState) => state,
+    selectIsUserRegistered: (state: TUserState) => state.isRegistered
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserRegister.pending, (state) => {
@@ -78,7 +86,7 @@ const userSlice = createSlice({
         state.isError = false;
         state.email = action.payload.user.email;
         state.name = action.payload.user.name;
-        console.log('fetchUserRegister action: ', JSON.stringify(action));
+        state.isRegistered = true;
         setCookie('accessToken', action.payload.accessToken);
         localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
@@ -93,8 +101,10 @@ const userSlice = createSlice({
       .addCase(fetchUserLogout.fulfilled, (state) => {
         state.isLoading = false;
         state.isError = false;
+        state.errorText = '';
         state.name = '';
         state.email = '';
+        deleteCookie('accessToken');
       })
       .addCase(fetchUserLogin.pending, (state) => {
         state.isLoading = true;
@@ -110,7 +120,7 @@ const userSlice = createSlice({
         state.isError = false;
         state.email = action.payload.user.email;
         state.name = action.payload.user.name;
-        setCookie('acccessToken', action.payload.accessToken);
+        setCookie('accessToken', action.payload.accessToken);
         localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
       .addCase(fetchGetUser.pending, (state) => {
@@ -125,7 +135,6 @@ const userSlice = createSlice({
         state.name = '';
       })
       .addCase(fetchGetUser.fulfilled, (state, action) => {
-        console.log('fetchGetUser action: ', JSON.stringify(action));
         state.isLoading = false;
         state.isError = false;
         state.email = action.payload.user.email;
@@ -136,7 +145,6 @@ const userSlice = createSlice({
         state.isLoading = true;
         state.email = action.meta.arg.email;
         state.name = action.meta.arg.name;
-        console.log('user update action: ', JSON.stringify(action));
       })
       .addCase(fetchUserUpdate.rejected, (state, action) => {
         state.isError = true;
@@ -152,4 +160,5 @@ const userSlice = createSlice({
   }
 });
 
-export default userSlice.reducer;
+export default userSlice;
+export const { selectUser, selectIsUserRegistered } = userSlice.selectors;

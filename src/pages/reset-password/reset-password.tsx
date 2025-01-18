@@ -10,7 +10,6 @@ export const ResetPassword: FC = () => {
   const [token, setToken] = useState('');
   const [error, setError] = useState<Error | null>(null);
   const paramsToken = useParams();
-  console.log('ResetPassword paramsToken: ', paramsToken);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -24,7 +23,7 @@ export const ResetPassword: FC = () => {
   };
 
   useEffect(() => {
-    if (String(paramsToken.tokenId) !== '')
+    if (paramsToken.tokenId && String(paramsToken.tokenId) !== '')
       setToken(String(paramsToken.tokenId));
     if (!localStorage.getItem('resetPassword')) {
       navigate('/forgot-password', { replace: true });

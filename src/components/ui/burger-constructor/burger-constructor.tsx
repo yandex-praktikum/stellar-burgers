@@ -10,6 +10,8 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorElement, Modal } from '@components';
 import { Preloader, OrderDetailsUI } from '@ui';
 import { useSelector } from 'react-redux';
+import { selectIsModalOpened } from '../../../../src/services/slices/orderSlice';
+import { nanoid } from '@reduxjs/toolkit';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   constructorItems,
@@ -19,10 +21,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   onOrderClick,
   closeOrderModal
 }) => {
-  console.log('constructorItems: ', JSON.stringify(constructorItems));
-  const modalIsOpened = useSelector(
-    (state: any) => state.orderReducer.isOrderModalOpened
-  );
+  const modalIsOpened = useSelector(selectIsModalOpened);
   return (
     <section className={styles.burger_constructor}>
       {constructorItems.bun &&
@@ -49,12 +48,14 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         {constructorItems.ingredients.length > 0 ? (
           constructorItems.ingredients.map(
             (item: TConstructorIngredient, index: number) => (
-              <BurgerConstructorElement
-                ingredient={item}
-                index={index}
-                totalItems={constructorItems.ingredients.length}
-                key={item.id}
-              />
+              <div key={nanoid()}>
+                <BurgerConstructorElement
+                  ingredient={item}
+                  index={index}
+                  totalItems={constructorItems.ingredients.length}
+                  key={item.id}
+                />
+              </div>
             )
           )
         ) : (
