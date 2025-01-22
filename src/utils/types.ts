@@ -37,4 +37,9 @@ export type TUser = {
   name: string;
 };
 
+export type TConstructorState = {
+  ingredients: TConstructorIngredient[];
+  bun: TIngredient | null;
+};
+
 export type TTabMode = 'bun' | 'sauce' | 'main';

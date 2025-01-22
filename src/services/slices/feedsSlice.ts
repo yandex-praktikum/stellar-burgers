@@ -1,5 +1,5 @@
-import { getFeedsApi } from '@api';
-import { TOrder, TOrdersData } from '@utils-types';
+import { getFeedsApi } from '../../utils/burger-api';
+import { TOrder, TOrdersData } from '../../utils/types';
 import {
   SerializedError,
   createAsyncThunk,
@@ -12,7 +12,7 @@ type TFeedsState = {
   feeds: TOrdersData;
 };
 
-export const initialState: TFeedsState = {
+export const feedsInitialState: TFeedsState = {
   isLoading: true,
   error: null,
   feeds: {
@@ -29,7 +29,7 @@ export const fetchFeeds = createAsyncThunk<TOrdersData>(
 
 const feedsSlice = createSlice({
   name: 'feeds',
-  initialState,
+  initialState: feedsInitialState,
   reducers: {},
   selectors: {
     getAllOrdersSelector: (state) => state.feeds.orders,

@@ -10,9 +10,9 @@ import {
   registerUserApi,
   TRegisterData,
   updateUserApi
-} from '@api';
-import { TLoginData } from '@api';
-import { TUser } from '@utils-types';
+} from '../../utils/burger-api';
+import { TLoginData } from '../../utils/burger-api';
+import { TUser } from '../../utils/types';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 
 interface AuthState {
@@ -24,7 +24,7 @@ interface AuthState {
   authChecked: boolean;
 }
 
-const initialState: AuthState = {
+export const authInitialState: AuthState = {
   isAuthenticated: false,
   refreshToken: null,
   isLoading: false,
@@ -93,7 +93,7 @@ export const updateUser = createAsyncThunk<TUser, Partial<TRegisterData>>(
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: authInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder

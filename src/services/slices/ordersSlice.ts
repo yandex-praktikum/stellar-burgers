@@ -1,5 +1,9 @@
-import { orderBurgerApi, getOrdersApi, getOrderByNumberApi } from '@api';
-import { TOrder } from '@utils-types';
+import {
+  orderBurgerApi,
+  getOrdersApi,
+  getOrderByNumberApi
+} from '../../utils/burger-api';
+import { TOrder } from '../../utils/types';
 import {
   SerializedError,
   createAsyncThunk,
@@ -16,7 +20,7 @@ type TOrdersState = {
   orderRequest: boolean;
 };
 
-const initialState: TOrdersState = {
+export const initialState: TOrdersState = {
   isLoading: false,
   isOrderLoading: false,
   orders: [],

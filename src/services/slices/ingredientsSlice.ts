@@ -1,18 +1,18 @@
-import { getIngredientsApi } from '@api';
-import { TIngredient } from '@utils-types';
+import { getIngredientsApi } from '../../utils/burger-api';
+import { TIngredient } from '../../utils/types';
 import {
   SerializedError,
   createAsyncThunk,
   createSlice
 } from '@reduxjs/toolkit';
 
-type TIngredientsState = {
+export type TIngredientsState = {
   isLoading: boolean;
   data: TIngredient[];
   error: null | SerializedError;
 };
 
-const initialState: TIngredientsState = {
+export const ingredientsInitialState: TIngredientsState = {
   isLoading: true,
   data: [],
   error: null
@@ -25,7 +25,7 @@ export const fetchIngredients = createAsyncThunk(
 
 const ingredientsSlice = createSlice({
   name: 'ingredients',
-  initialState,
+  initialState: ingredientsInitialState,
   reducers: {},
   selectors: {
     getIngredientsSelector: (state) => state.data,

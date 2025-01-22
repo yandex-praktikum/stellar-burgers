@@ -9,7 +9,7 @@ import constructorReducer from './slices/constructorSlice';
 import ordersReducer from './slices/ordersSlice';
 import authReducer from './slices/authSlice';
 import feedsReducer from './slices/feedsSlice';
-// Заменить на импорт настоящего редьюсера
+
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   builder: constructorReducer,
