@@ -12,15 +12,19 @@ import {
 import '../../index.css';
 import styles from './app.module.css';
 
-import { AppHeader, Modal, OrderInfo } from '@components';
+import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { title } from 'process';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { fetchIngredients } from '../../slices/ingredientsListSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../services/store';
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
+  const dispatch = useDispatch<AppDispatch>();
 
   const onClose = () => {
     setIsModalOpen(false);
@@ -30,6 +34,10 @@ const App = () => {
     setModalTitle(title);
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, []);
 
   return (
     <div className={styles.app}>
@@ -101,7 +109,7 @@ const App = () => {
           element={
             isModalOpen && (
               <Modal title={title} onClose={onClose}>
-                <OrderInfo />
+                <IngredientDetails />
               </Modal>
             )
           }

@@ -1,76 +1,65 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createAsyncThunk,
+  SerializedError
+} from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 import { getIngredientsApi } from '@api';
 
 interface IIngredientsState {
-  getIngredientRequest: boolean;
-  getIngredientsError: boolean;
-  errorMessage: string;
-  ingredients: TIngredient[];
+  buns: TIngredient[];
+  mains: TIngredient[];
+  sauces: TIngredient[];
+  isLoading: boolean;
+  error: null | SerializedError;
 }
 
 const initialState: IIngredientsState = {
-  getIngredientRequest: false,
-  getIngredientsError: false,
-  errorMessage: '',
-  ingredients: []
+  buns: [],
+  mains: [],
+  sauces: [],
+  isLoading: true,
+  error: null
 };
 
 // Создание Thunk-функции для получения ингредиентов
-export const fetchIngredients = createAsyncThunk<
-  TIngredient[],
-  void,
-  { rejectValue: string }
->('ingredients/fetchIngredients', async (_, { rejectWithValue }) => {
-  try {
-    const ingredients = await getIngredientsApi();
-    return ingredients;
-  } catch (error) {
-    return rejectWithValue(
-      (error as { message?: string }).message || 'Ошибка получения ингредиентов'
-    );
-  }
-});
+export const fetchIngredients = createAsyncThunk(
+  'ingredients/fetch',
+  async () => await getIngredientsApi()
+);
 
 // Создание слайса с ранее описанными редьюсерами
 const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
-  reducers: {
-    getIngredientsRequest(state) {
-      state.getIngredientRequest = true;
-    },
-    getIngredientsSuccess(state, action: PayloadAction<TIngredient[]>) {
-      state.getIngredientRequest = false;
-      state.getIngredientsError = false;
-      state.ingredients = action.payload;
-    },
-    getIngredientsError(state, action: PayloadAction<string>) {
-      state.getIngredientRequest = false;
-      state.getIngredientsError = true;
-      state.errorMessage = action.payload;
-    }
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchIngredients.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchIngredients.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.buns = action.payload;
+        state.mains = action.payload;
+        state.sauces = action.payload;
+      })
+      .addCase(fetchIngredients.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      });
   }
 });
 
 // Селекторы
-export const selectIngredients = (state: { ingredients: IIngredientsState }) =>
-  state.ingredients.ingredients;
-export const selectGetIngredientRequest = (state: {
-  ingredients: IIngredientsState;
-}) => state.ingredients.getIngredientRequest;
-export const selectGetIngredientsError = (state: {
-  ingredients: IIngredientsState;
-}) => state.ingredients.getIngredientsError;
-export const selectErrorMessage = (state: { ingredients: IIngredientsState }) =>
-  state.ingredients.errorMessage;
-
-// Экспортирую экшены
-export const {
-  getIngredientsRequest,
-  getIngredientsSuccess,
-  getIngredientsError
-} = ingredientsSlice.actions;
+export const selectBuns = (state: { ingredients: IIngredientsState }) =>
+  state.ingredients.buns;
+export const selectMains = (state: { ingredients: IIngredientsState }) =>
+  state.ingredients.mains;
+export const selectSauces = (state: { ingredients: IIngredientsState }) =>
+  state.ingredients.sauces;
 
 // Экспортирую редьюсер
 export default ingredientsSlice.reducer;

@@ -1,27 +1,42 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createAsyncThunk,
+  SerializedError
+} from '@reduxjs/toolkit';
 import { TOrder, TOrdersData } from '@utils-types';
-import { TNewOrderResponse, orderBurgerApi } from '@api';
+import {
+  TNewOrderResponse,
+  orderBurgerApi,
+  getOrderByNumberApi,
+  getOrdersApi
+} from '@api';
 
 interface IOrderState {
-  order: TOrder | null;
+  order: TOrder[];
   orderRequest: boolean;
-  orderError: boolean;
-  errorMessage: string;
+  orderError: null | SerializedError;
+  orderModalData: TOrder | null;
+  isLoadingNumber: boolean;
+  isLoadingOrder: boolean;
 }
 
 const initialState: IOrderState = {
-  order: null,
+  order: [],
   orderRequest: false,
-  orderError: false,
-  errorMessage: ''
+  orderError: null,
+  orderModalData: null,
+  isLoadingNumber: true,
+  isLoadingOrder: true
 };
 
 // Создание Thunk-функции для создания заказа
 export const createOrder = createAsyncThunk<
-  TNewOrderResponse,
-  { ingredients: string[] },
-  { rejectValue: string }
->('order/createOrder', async ({ ingredients }, { rejectWithValue }) => {
+  {
+    order: TOrder;
+    name: string;
+  },
+  string[]
+>('order/createOrder', async (ingredients, { rejectWithValue }) => {
   try {
     const response = await orderBurgerApi(ingredients);
     return response;
@@ -32,10 +47,27 @@ export const createOrder = createAsyncThunk<
   }
 });
 
+export const fetchOrderNumber = createAsyncThunk<TOrder, number>(
+  'orders/fetchOrder',
+  async (data, { rejectWithValue }) => {
+    const response = await getOrderByNumberApi(data);
+    if (!response.success) {
+      return rejectWithValue(response);
+    }
+    return response.orders[0];
+  }
+);
+
+export const fetchOrder = createAsyncThunk(
+  'orders/fetchOrders',
+  async () => await getOrdersApi()
+);
+
 const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
+    /*
     loadOrderRequest(state) {
       state.orderRequest = true;
       state.orderError = false;
@@ -55,12 +87,51 @@ const orderSlice = createSlice({
       state.orderError = false;
       state.order = null;
       state.errorMessage = '';
+    }*/
+    clearOrderModalData(state) {
+      state.orderModalData = null;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOrderNumber.pending, (state) => {
+        state.isLoadingNumber = true;
+      })
+      .addCase(fetchOrderNumber.fulfilled, (state, action) => {
+        state.isLoadingNumber = false;
+        state.orderModalData = action.payload;
+      })
+      .addCase(fetchOrderNumber.rejected, (state) => {
+        state.isLoadingNumber = false;
+      })
+      .addCase(fetchOrder.pending, (state) => {
+        state.isLoadingOrder = true;
+        state.orderError = null;
+      })
+      .addCase(fetchOrder.fulfilled, (state, action) => {
+        state.isLoadingOrder = false;
+        state.orderError = null;
+        state.order = action.payload;
+      })
+      .addCase(fetchOrder.rejected, (state, action) => {
+        state.isLoadingOrder = false;
+        state.orderError = action.error;
+      })
+      .addCase(createOrder.pending, (state) => {
+        state.orderRequest = true;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orderModalData = action.payload.order;
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.orderRequest = false;
+      });
   }
 });
 
 // Получаю состояние заказа
-const selectOrderState = (state: { order: IOrderState }): IOrderState =>
+/*const selectOrderState = (state: { order: IOrderState }): IOrderState =>
   state.order;
 
 // Селекторы для получения отдельных значений состояния заказа
@@ -79,7 +150,16 @@ export const {
   loadOrderSuccess,
   loadOrderError,
   clearOrderDetails
-} = orderSlice.actions;
+} = orderSlice.actions;*/
+
+const selectOrderState = (state: { order: IOrderState }): IOrderState =>
+  state.order;
+export const selectOrderRequest = (state: { order: IOrderState }) =>
+  selectOrderState(state).orderRequest;
+export const selectOrderModalData = (state: { order: IOrderState }) =>
+  selectOrderState(state).orderModalData;
+
+export const { clearOrderModalData } = orderSlice.actions;
 
 // Экспортирую редьюсер
 export default orderSlice.reducer;

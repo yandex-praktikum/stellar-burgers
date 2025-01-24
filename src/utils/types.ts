@@ -38,8 +38,3 @@ export type TUser = {
 };
 
 export type TTabMode = 'bun' | 'sauce' | 'main';
-
-/*export type TConstructorBurger = {
-  bun: Partial<TIngredient>;
-  ingredients: TIngredient[];
-};*/

@@ -2,12 +2,10 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectConstructorItems } from '../../slices/constructorSlice';
+import { selectConstructorItems } from '../../slices/builderSlice';
 import {
-  loadOrderRequest,
-  loadOrderSuccess,
-  loadOrderError,
-  clearOrderDetails,
+  clearOrderModalData,
+  selectOrderModalData,
   selectOrderRequest,
   createOrder
 } from '../../slices/orderSlice';
@@ -24,16 +22,29 @@ export const BurgerConstructor: FC = () => {
     ingredients: []
   };*/
   const dispatch = useDispatch<AppDispatch>();
-  const { bun, ingredients } = useSelector(selectConstructorItems);
+
+  const constructorItems = useSelector(selectConstructorItems);
+
+  //const { bun, ingredients } = useSelector(selectConstructorItems);
   const orderRequest = useSelector(selectOrderRequest);
+  const orderModalData = useSelector(selectOrderModalData);
 
-  const onOrderClick = () => null;
-  const orderModalData = null;
+  //const orderModalData = null;
 
-  /*const onOrderClick = () => {
+  const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+
+    const order = [
+      constructorItems.bun._id,
+      ...constructorItems.ingredients.map((ingredient) => ingredient._id),
+      constructorItems.bun._id
+    ];
+    dispatch(createOrder(order));
   };
-  const closeOrderModal = () => {};
+
+  const closeOrderModal = () => {
+    dispatch(clearOrderModalData());
+  };
 
   const price = useMemo(
     () =>
@@ -43,52 +54,13 @@ export const BurgerConstructor: FC = () => {
         0
       ),
     [constructorItems]
-  );*/
-
-  /*const onOrderClick = async () => {
-    if (!bun || orderRequest) return; // Проверка: есть ли булочка и не идет ли запрос
-
-    dispatch(loadOrderRequest()); // Установить состояние запроса
-
-    try {
-      // Преобразуем массив TConstructorIngredient в массив строк
-        const ingredientIds: string[] = ingredients.map(ingredient => ingredient.id);
-
-      const result = await dispatch(createOrder({ ingredients: ingredientIds })) as {
-        type: string;
-        payload: TNewOrderResponse | string;
-      };
-
-       // Проверяем, успешен ли результат
-      if (createOrder.fulfilled.match(result)) {
-        dispatch(loadOrderSuccess(result.payload)); // Успешно загружаем заказ
-      } else {
-        dispatch(loadOrderError(result.payload)); // Обработка ошибки
-      }
-    } catch (error) {
-      dispatch(loadOrderError(error)); // Обработка ошибки
-    }
-  };*/
-
-  const price = useMemo(
-    () =>
-      (bun ? bun.price * 2 : 0) +
-      ingredients.reduce(
-        (s: number, v: TConstructorIngredient) => s + v.price,
-        0
-      ),
-    [bun, ingredients]
   );
-
-  const closeOrderModal = () => {
-    dispatch(clearOrderDetails());
-  };
 
   return (
     <BurgerConstructorUI
       price={price}
       orderRequest={orderRequest}
-      constructorItems={{ bun, ingredients }}
+      constructorItems={constructorItems}
       orderModalData={orderModalData}
       onOrderClick={onOrderClick}
       closeOrderModal={closeOrderModal}

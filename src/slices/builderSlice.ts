@@ -1,22 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TConstructorIngredient } from '@utils-types';
+import { TConstructorIngredient, TIngredient } from '@utils-types';
 
-interface IConstructorState {
+interface IBuilderState {
   constructorItems: {
-    bun: TConstructorIngredient | null;
+    bun: TIngredient | null;
     ingredients: TConstructorIngredient[];
   };
 }
 
-const initialState: IConstructorState = {
+const initialState: IBuilderState = {
   constructorItems: {
     bun: null,
     ingredients: []
   }
 };
 
-const constructorSlice = createSlice({
-  name: 'constructor',
+const builderSlice = createSlice({
+  name: 'builder',
   initialState,
   reducers: {
     addItemConstructor(state, action: PayloadAction<TConstructorIngredient>) {
@@ -39,10 +39,7 @@ const constructorSlice = createSlice({
     ) {
       state.constructorItems.ingredients = action.payload;
     },
-    addMoveBunConstructor(
-      state,
-      action: PayloadAction<TConstructorIngredient>
-    ) {
+    addMoveBunConstructor(state, action: PayloadAction<TIngredient>) {
       state.constructorItems.bun = action.payload;
     },
     clearConstructor(state) {
@@ -55,16 +52,15 @@ const constructorSlice = createSlice({
 });
 
 // Определяю селекторы вне слайса
-export const selectConstructorItems = (state: {
-  constructor: IConstructorState;
-}) => state.constructor.constructorItems;
+export const selectConstructorItems = (state: { builder: IBuilderState }) =>
+  state.builder.constructorItems;
 
-export const selectBun = (state: { constructor: IConstructorState }) =>
-  state.constructor.constructorItems.bun;
+export const selectBun = (state: { builder: IBuilderState }) =>
+  state.builder.constructorItems.bun;
 
 export const selectConstructorTotalCount = (state: {
-  constructor: IConstructorState;
-}) => state.constructor.constructorItems.ingredients.length;
+  builder: IBuilderState;
+}) => state.builder.constructorItems.ingredients.length;
 
 // Экспортирую экшены
 export const {
@@ -73,7 +69,7 @@ export const {
   addUpdateMoveConstructor,
   addMoveBunConstructor,
   clearConstructor
-} = constructorSlice.actions;
+} = builderSlice.actions;
 
 // Экспортирую редьюсер
-export default constructorSlice.reducer;
+export default builderSlice.reducer;
