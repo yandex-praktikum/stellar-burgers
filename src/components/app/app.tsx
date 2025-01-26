@@ -11,7 +11,7 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { IngredientDetails, Modal, OrderInfo } from '@components';
+import { IngredientDetails, Modal, OrderInfo, AppHeader } from '@components';
 import {
   Route,
   Routes,
@@ -53,6 +53,7 @@ const App = () => {
 
   return (
     <div className={styles.app}>
+      <AppHeader />
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
