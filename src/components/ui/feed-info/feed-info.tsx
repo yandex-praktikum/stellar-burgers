@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-
 import styles from './feed-info.module.css';
 
 import { FeedInfoUIProps, HalfColumnProps, TColumnProps } from './type';
