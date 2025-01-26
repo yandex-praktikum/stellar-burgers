@@ -15,7 +15,6 @@ export const BurgerIngredients: FC = () => {
   const titleSaucesRef = useRef<HTMLHeadingElement>(null);
   const titleMainRef = useRef<HTMLHeadingElement>(null);
 
-
   const [bunsRef, inViewBuns] = useInView({
     threshold: 0
   });
