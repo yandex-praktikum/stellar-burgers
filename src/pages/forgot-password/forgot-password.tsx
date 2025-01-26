@@ -7,9 +7,7 @@ import { ForgotPasswordUI } from '@ui-pages';
 export const ForgotPassword: FC = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<Error | null>(null);
-
   const navigate = useNavigate();
-
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
