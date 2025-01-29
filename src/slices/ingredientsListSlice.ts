@@ -7,19 +7,15 @@ import { TIngredient } from '@utils-types';
 import { getIngredientsApi } from '@api';
 
 interface IIngredientsState {
-  buns: TIngredient[];
-  mains: TIngredient[];
-  sauces: TIngredient[];
   isLoading: boolean;
   error: null | SerializedError;
+  data: TIngredient[];
 }
 
 const initialState: IIngredientsState = {
-  buns: [],
-  mains: [],
-  sauces: [],
   isLoading: true,
-  error: null
+  error: null,
+  data: []
 };
 
 // Создание Thunk-функции для получения ингредиентов
@@ -42,9 +38,7 @@ const ingredientsSlice = createSlice({
       .addCase(fetchIngredients.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        state.buns = action.payload;
-        state.mains = action.payload;
-        state.sauces = action.payload;
+        state.data = action.payload;
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.isLoading = false;
@@ -53,13 +47,9 @@ const ingredientsSlice = createSlice({
   }
 });
 
-// Селекторы
-export const selectBuns = (state: { ingredients: IIngredientsState }) =>
-  state.ingredients.buns;
-export const selectMains = (state: { ingredients: IIngredientsState }) =>
-  state.ingredients.mains;
-export const selectSauces = (state: { ingredients: IIngredientsState }) =>
-  state.ingredients.sauces;
+// Селектор
+export const selectIngredients = (state: { ingredients: IIngredientsState }) =>
+  state.ingredients.data;
 
 // Экспортирую редьюсер
 export default ingredientsSlice.reducer;

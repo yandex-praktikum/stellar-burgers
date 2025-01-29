@@ -13,7 +13,7 @@ import {
   createSlice
 } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { setCookie, deleteCookie } from 'src/utils/cookie';
+import { setCookie, deleteCookie } from '../utils/cookie';
 
 interface TUserState {
   isAuthChecked: boolean;
@@ -81,15 +81,15 @@ export const fetchUser = createAsyncThunk(
 );
 
 export const updateUser = createAsyncThunk<TUser, Partial<TRegisterData>>(
-    'user/update',
-    async (data, { rejectWithValue }) => {
-      const response = await updateUserApi(data);
-      if (!response.success) {
-        return rejectWithValue(response);
-      }
-      return response.user;
+  'user/update',
+  async (data, { rejectWithValue }) => {
+    const response = await updateUserApi(data);
+    if (!response.success) {
+      return rejectWithValue(response);
     }
-  );
+    return response.user;
+  }
+);
 
 const userSlice = createSlice({
   name: 'user',

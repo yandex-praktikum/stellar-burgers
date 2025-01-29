@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
+import { v4 as uuidv4 } from 'uuid';
 
 interface IBuilderState {
   constructorItems: {
@@ -19,10 +20,22 @@ const builderSlice = createSlice({
   name: 'builder',
   initialState,
   reducers: {
-    addItemConstructor(state, action: PayloadAction<TConstructorIngredient>) {
-      state.constructorItems.ingredients.push(action.payload);
+    addBunBuilder(state, action: PayloadAction<TIngredient | null>) {
+      state.constructorItems.bun = action.payload;
     },
-    deleteItemConstructor(
+    addItemBuilder: {
+      prepare: (payload: TConstructorIngredient) => ({
+        payload: { ...payload, id: uuidv4() }
+      }),
+      reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
+        if (action.payload.type === 'bun') {
+          state.constructorItems.bun = action.payload;
+        } else {
+          state.constructorItems.ingredients.push(action.payload);
+        }
+      }
+    },
+    deleteItemBuilder(
       state,
       action: PayloadAction<{ id: string; type: string }>
     ) {
@@ -33,16 +46,16 @@ const builderSlice = createSlice({
           );
       }
     },
-    addUpdateMoveConstructor(
+    addUpdateMoveBuilder(
       state,
       action: PayloadAction<TConstructorIngredient[]>
     ) {
       state.constructorItems.ingredients = action.payload;
     },
-    addMoveBunConstructor(state, action: PayloadAction<TIngredient>) {
+    addMoveBunBuilder(state, action: PayloadAction<TIngredient>) {
       state.constructorItems.bun = action.payload;
     },
-    clearConstructor(state) {
+    clearBuilder(state) {
       state.constructorItems = {
         bun: null,
         ingredients: []
@@ -64,11 +77,12 @@ export const selectConstructorTotalCount = (state: {
 
 // Экспортирую экшены
 export const {
-  addItemConstructor,
-  deleteItemConstructor,
-  addUpdateMoveConstructor,
-  addMoveBunConstructor,
-  clearConstructor
+  addBunBuilder,
+  addItemBuilder,
+  deleteItemBuilder,
+  addUpdateMoveBuilder,
+  addMoveBunBuilder,
+  clearBuilder
 } = builderSlice.actions;
 
 // Экспортирую редьюсер

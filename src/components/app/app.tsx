@@ -13,37 +13,37 @@ import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { title } from 'process';
 import { useEffect, useState } from 'react';
 import { fetchIngredients } from '../../slices/ingredientsListSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../services/store';
+import { clearOrderModalData } from '../../slices/orderSlice';
 
 const App = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
   const dispatch = useDispatch<AppDispatch>();
 
-  const onClose = () => {
-    setIsModalOpen(false);
-  };
-
-  const openModal = () => {
-    setModalTitle(title);
-    setIsModalOpen(true);
-  };
+  const location = useLocation();
+  const backgroundLocation = location.state?.backgroundLocation;
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchIngredients());
   }, []);
 
+  const closeModalData = () => {
+    navigate(-1);
+    dispatch(clearOrderModalData());
+  };
+
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+      <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed' element={<Feed />} />
         <Route
           path='/login'
@@ -94,39 +94,38 @@ const App = () => {
           }
         />
         <Route path='*' element={<NotFound404 />} />
-        <Route
-          path='/feed/:number'
-          element={
-            isModalOpen && (
-              <Modal title={title} onClose={onClose}>
+      </Routes>
+
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal title={'Детали заказа'} onClose={closeModalData}>
                 <OrderInfo />
               </Modal>
-            )
-          }
-        />
-        <Route
-          path='/ingredients/:id'
-          element={
-            isModalOpen && (
-              <Modal title={title} onClose={onClose}>
+            }
+          />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title={'Детали ингредиента'} onClose={closeModalData}>
                 <IngredientDetails />
               </Modal>
-            )
-          }
-        />
-        <Route
-          path='/profile/orders/:number'
-          element={
-            isModalOpen && (
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
               <ProtectedRoute>
-                <Modal title={title} onClose={onClose}>
+                <Modal title={'Детали заказа'} onClose={closeModalData}>
                   <OrderInfo />
                 </Modal>
               </ProtectedRoute>
-            )
-          }
-        />
-      </Routes>
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };
