@@ -51,5 +51,8 @@ const ingredientsSlice = createSlice({
 export const selectIngredients = (state: { ingredients: IIngredientsState }) =>
   state.ingredients.data;
 
+export const selectIsLoading = (state: { ingredients: IIngredientsState }) =>
+  state.ingredients.isLoading;
+
 // Экспортирую редьюсер
 export default ingredientsSlice.reducer;

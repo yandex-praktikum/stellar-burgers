@@ -152,12 +152,12 @@ export const {
   clearOrderDetails
 } = orderSlice.actions;*/
 
-const selectOrderState = (state: { order: IOrderState }): IOrderState =>
-  state.order;
+export const selectOrders = (state: { order: IOrderState }): TOrder[] =>
+  state.order.order;
 export const selectOrderRequest = (state: { order: IOrderState }) =>
-  selectOrderState(state).orderRequest;
+  state.order.orderRequest;
 export const selectOrderModalData = (state: { order: IOrderState }) =>
-  selectOrderState(state).orderModalData;
+  state.order.orderModalData;
 
 export const { clearOrderModalData } = orderSlice.actions;
 

@@ -4,12 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import {
-  selectIngredients
-  /*selectBuns,
-  selectMains,
-  selectSauces*/
-} from '../../slices/ingredientsListSlice';
+import { selectIngredients } from '../../slices/ingredientsListSlice';
 
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */

@@ -55,6 +55,24 @@ const builderSlice = createSlice({
     addMoveBunBuilder(state, action: PayloadAction<TIngredient>) {
       state.constructorItems.bun = action.payload;
     },
+    moveItems: (
+      state,
+      action: PayloadAction<{ index: number; direction: 'up' | 'down' }>
+    ) => {
+      const { index, direction } = action.payload;
+      const ingredients = [...state.constructorItems.ingredients];
+      const newIndex = direction === 'up' ? index - 1 : index + 1;
+
+      if (newIndex < 0 || newIndex >= ingredients.length) {
+        return;
+      }
+
+      [ingredients[index], ingredients[newIndex]] = [
+        ingredients[newIndex],
+        ingredients[index]
+      ];
+      state.constructorItems.ingredients = ingredients;
+    },
     clearBuilder(state) {
       state.constructorItems = {
         bun: null,
@@ -82,6 +100,7 @@ export const {
   deleteItemBuilder,
   addUpdateMoveBuilder,
   addMoveBunBuilder,
+  moveItems,
   clearBuilder
 } = builderSlice.actions;
 

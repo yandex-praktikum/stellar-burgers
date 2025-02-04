@@ -148,4 +148,14 @@ const userSlice = createSlice({
   }
 });
 
+export const selectIsAuthenticated = (state: { user: TUserState }) =>
+  state.user.isAuthenticated;
+export const selectUserData = (state: { user: TUserState }) => state.user.data;
+export const selectAuthChecked = (state: { user: TUserState }) =>
+  state.user.isAuthChecked;
+export const selectLoginError = (state: { user: TUserState }) =>
+  state.user.loginError;
+export const selectRegisterError = (state: { user: TUserState }) =>
+  state.user.registerError;
+
 export default userSlice.reducer;
