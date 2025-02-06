@@ -20,7 +20,14 @@ const initialState: FeedState = {
 
 export const feedThunk = createAsyncThunk(
   'feed/fetch',
-  async () => await getFeedsApi()
+  //async () => await getFeedsApi()
+  async () => {
+    try {
+      return await getFeedsApi();
+    } catch (error) {
+      throw new Error('Ошибка при загрузке данных: ' + error);
+    }
+  }
 );
 
 export const feedSlice = createSlice({
@@ -55,7 +62,7 @@ export const selectError = (state: { feed: FeedState }) => state.feed.error;
 
 // Селектор для получения всех заказов
 export const selectOrders = (state: { feed: FeedState }) =>
-  state.feed?.feed?.orders || [];
+  state.feed.feed ? state.feed?.feed?.orders : [];
 
 // Селектор для получения конкретного заказа по ID
 export const selectOrderById = (

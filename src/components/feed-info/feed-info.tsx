@@ -13,8 +13,8 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
 
 export const FeedInfo: FC = () => {
   /** TODO: взять переменные из стора */
-  const orders: TOrder[] = [];
   const feed = useSelector(selectFeed);
+  const orders = feed?.orders || [];
 
   const readyOrders = getOrders(orders, 'done');
 
@@ -24,7 +24,10 @@ export const FeedInfo: FC = () => {
     <FeedInfoUI
       readyOrders={readyOrders}
       pendingOrders={pendingOrders}
-      feed={feed}
+      feed={{
+        total: feed?.total,
+        totalToday: feed?.totalToday
+      }}
     />
   );
 };

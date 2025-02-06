@@ -1,11 +1,13 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient, TOrder, TOrdersData } from '@utils-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectIngredients } from '../../slices/ingredientsListSlice';
 import { selectOrders } from '../../slices/feedSlice';
 import { useParams } from 'react-router-dom';
+import { AppDispatch } from 'src/services/store';
+import { fetchOrderNumber } from '../../slices/orderSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
@@ -19,7 +21,7 @@ export const OrderInfo: FC = () => {
     number: 0
   };*/
 
-  const { id } = useParams<{ id: string }>();
+  /*const { id } = useParams<{ id: string }>();
   const orders: TOrder[] = useSelector(selectOrders);
   const ingredients: TIngredient[] = useSelector(selectIngredients);
 
@@ -27,7 +29,17 @@ export const OrderInfo: FC = () => {
   const orderData = useMemo(
     () => orders.find((order) => order._id === id) || null,
     [orders, id]
-  );
+  );*/
+  const { number } = useParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const ingredients: TIngredient[] = useSelector(selectIngredients);
+  const feed = useSelector(selectOrders);
+  const orders = feed.filter((item) => item.status === 'done');
+  const orderData = orders.find((item) => item.number === Number(number));
+
+  useEffect(() => {
+    dispatch(fetchOrderNumber(Number(number)));
+  }, [dispatch]);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

@@ -15,16 +15,16 @@ export const Feed: FC = () => {
   const isLoading = useSelector(selectLoading);
 
   useEffect(() => {
-    dispatch(feedThunk);
+    dispatch(feedThunk());
   }, [dispatch]);
 
   const handleGetFeeds = () => {
-    dispatch(feedThunk);
+    dispatch(feedThunk());
   };
 
-  if (!orders.length) {
+  /*if (!orders.length) {
     return <Preloader />;
-  }
+  }*/
 
   return (
     <>

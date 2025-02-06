@@ -32,7 +32,7 @@ export const initialState: TUserState = {
   }
 };
 
-const register = createAsyncThunk<TUser, TRegisterData>(
+export const registerUser = createAsyncThunk<TUser, TRegisterData>(
   'user/register',
   async (dataUser, { rejectWithValue }) => {
     const data = await registerUserApi(dataUser);
@@ -97,21 +97,21 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
+      .addCase(registerUser.pending, (state) => {
         state.registerError = undefined;
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state, action) => {
         state.registerError = undefined;
         state.isAuthenticated = true;
 
         state.data = action.payload;
       })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(registerUser.rejected, (state, action) => {
         state.registerError = action.meta.rejectedWithValue
           ? (action.payload as SerializedError)
           : action.error;
       })
-      .addCase(login.pending, (state, action) => {
+      .addCase(login.pending, (state) => {
         state.loginError = undefined;
       })
       .addCase(login.fulfilled, (state, action) => {
