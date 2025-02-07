@@ -6,6 +6,7 @@ import { useSelector } from '../../../src/services/store';
 
 export const AppHeader: FC = () => {
   const user = useSelector(selectUser);
+
   const userName = user.name;
   return (
     <>

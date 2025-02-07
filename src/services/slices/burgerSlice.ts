@@ -1,4 +1,8 @@
-import { getFeedsApi, getIngredientsApi, orderBurgerApi } from '@api';
+import {
+  getFeedsApi,
+  getIngredientsApi,
+  orderBurgerApi
+} from '../../../src/utils/burger-api';
 import {
   createSelector,
   createSlice,
@@ -23,7 +27,7 @@ type TBurgerState = {
   modalIsClosed: boolean;
 };
 
-const initialState: TBurgerState = {
+export const initialState: TBurgerState = {
   constructorItems: {
     bun: null,
     ingredients: []
@@ -101,12 +105,15 @@ const burgerSlice = createSlice({
     builder
       .addCase(fetchIngredients.pending, (state: TBurgerState) => {
         state.isLoading = true;
+        state.isError = false;
       })
       .addCase(fetchIngredients.rejected, (state: TBurgerState) => {
         state.isLoading = false;
+        state.isError = true;
       })
       .addCase(fetchIngredients.fulfilled, (state: TBurgerState, action) => {
         state.isLoading = false;
+        state.isError = false;
         state.allIngredients = action.payload;
       });
   }

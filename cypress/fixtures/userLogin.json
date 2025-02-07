@@ -1,0 +1,20 @@
+{
+    "type": "user/login/fulfilled",
+    "payload": {
+        "success": true,
+        "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTYyMjcyMTMzYWNkMDAxYmU0ZjJkNSIsImlhdCI6MTczODk0MTQ5NSwiZXhwIjoxNzM4OTQyNjk1fQ.49A6PyqKsumseS_TJ3ynXGYuw9nBrvOYG3z8qyLCfz0",
+        "refreshToken": "2025cca8fce19ac60eb9816990ed4f0313be46bcb2b488e0bfc8987edb0988bee7c481e9113f7a31",
+        "user": {
+            "email": "a1@ma.ru",
+            "name": "dds"
+        }
+    },
+    "meta": {
+        "arg": {
+            "email": "a1@ma.ru",
+            "password": "123456"
+        },
+        "requestId": "wbpeGlfnVTGbM6bj4nps3",
+        "requestStatus": "fulfilled"
+    }
+}

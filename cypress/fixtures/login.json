@@ -1,0 +1,9 @@
+{
+    "success": true,
+    "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODI1ODU2MTMzYWNkMDAxYmU0OThlNCIsImlhdCI6MTczODY4NTIzOCwiZXhwIjoxNzM4Njg2NDM4fQ.1Tq8-tMn7zFkZZClq6KwzL_PRg-Ez6imwzomnpzxe_A",
+    "refreshToken": "c652fa0a8201313d44c5a82d4b0300b7954099a9f0a77e32a04459c84b9d97e300316d62e173e17e",
+    "user": {
+        "email": "annenkov.alexander@gmail.com",
+        "name": "Жак Иванович Кустов"
+    }
+}

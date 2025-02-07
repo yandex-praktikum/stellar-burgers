@@ -6,3 +6,8 @@ a {
   text-decoration-line: none;
   margin: 0;
 }
+
+div {
+  min-width: 1px;
+  min-height: 1px;
+}

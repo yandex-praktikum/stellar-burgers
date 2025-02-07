@@ -1,0 +1,14 @@
+{
+    "type": "user/getUser/fulfilled",
+    "payload": {
+        "success": true,
+        "user": {
+            "email": "a1@ma.ru",
+            "name": "dds"
+        }
+    },
+    "meta": {
+        "requestId": "EFIp9xA2ewvEStxHa3k8v",
+        "requestStatus": "fulfilled"
+    }
+}

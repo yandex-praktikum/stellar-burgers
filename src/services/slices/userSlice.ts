@@ -7,7 +7,7 @@ import {
   logoutApi,
   registerUserApi,
   updateUserApi
-} from '@api';
+} from '../../../src/utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '../../../src/utils/cookie';
@@ -23,7 +23,7 @@ export type TUserState = {
   isRegistered: boolean;
 };
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   email: '',
   name: '',
   isLoading: true,
@@ -85,12 +85,13 @@ const userSlice = createSlice({
         localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
       .addCase(fetchUserLogout.pending, (state) => {
-        state.isLoading = false;
+        state.isLoading = true;
+        state.isError = false;
       })
       .addCase(fetchUserLogout.rejected, (state, action: any) => {
         state.isLoading = false;
         state.isError = true;
-        state.errorText = action?.payload?.error.message;
+        state.errorText = action?.error.message;
         state.isRegistered = false;
       })
       .addCase(fetchUserLogout.fulfilled, (state) => {
@@ -144,7 +145,7 @@ const userSlice = createSlice({
       .addCase(fetchUserUpdate.rejected, (state, action) => {
         state.isError = true;
         state.errorText = action.error.message;
-        state.isLoading = true;
+        state.isLoading = false;
       })
       .addCase(fetchUserUpdate.fulfilled, (state, action) => {
         state.isError = false;

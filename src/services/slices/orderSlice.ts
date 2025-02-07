@@ -3,7 +3,7 @@ import {
   getOrderByNumberApi,
   getOrdersApi,
   orderBurgerApi
-} from '@api';
+} from '../../../src/utils/burger-api';
 import {
   PayloadAction,
   createAsyncThunk,
@@ -24,7 +24,7 @@ type TOrderState = {
   isOrderModalOpened: boolean;
 };
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   feedOrders: [],
   profileOrders: [],
   isLoading: false,
@@ -37,11 +37,6 @@ const initialState: TOrderState = {
 };
 
 export const fetchOrders = createAsyncThunk('orders/getOrders', getOrdersApi);
-
-export const fetchOrderById = createAsyncThunk(
-  'orders/getOrderById',
-  async (id: number) => await getOrderByNumberApi(id)
-);
 
 export const fetchFeed = createAsyncThunk('feed/getOrders', getFeedsApi);
 
@@ -87,20 +82,6 @@ const ordersSlice = createSlice({
         state.profileOrders = action.payload.orders;
         state.total = action.payload.total;
         state.totalToday = action.payload.totalToday;
-      })
-      .addCase(fetchOrderById.pending, (state) => {
-        state.isLoading = true;
-        state.isError = false;
-      })
-      .addCase(fetchOrderById.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.errorMessage = action.error.message;
-      })
-      .addCase(fetchOrderById.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.profileOrders = action.payload.orders;
       })
       .addCase(fetchFeed.pending, (state) => {
         state.isLoading = true;
