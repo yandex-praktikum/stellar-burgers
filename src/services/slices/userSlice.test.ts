@@ -95,24 +95,37 @@ describe('Тестирование работы с пользовтелем', ()
       errorText: 'error'
     });
     expect(
-        userSlice.reducer(undefined, {
-          type: fetchUserLogout.fulfilled.type,
-          payload: {}
-        })
-      ).toEqual({ ...initialState, isLoading: false, isError: false, errorText: '', email: '', name: ''});
+      userSlice.reducer(undefined, {
+        type: fetchUserLogout.fulfilled.type,
+        payload: {}
+      })
+    ).toEqual({
+      ...initialState,
+      isLoading: false,
+      isError: false,
+      errorText: '',
+      email: '',
+      name: ''
+    });
   });
   it('Обновление пользователя', () => {
     expect(
       userSlice.reducer(undefined, {
         type: fetchUserUpdate.pending.type,
         meta: {
-            arg: {
-                email: 'email',
-                name: 'name'
-            }
+          arg: {
+            email: 'email',
+            name: 'name'
+          }
         }
       })
-    ).toEqual({ ...initialState, isLoading: true, isError: false, email: 'email', name: 'name' });
+    ).toEqual({
+      ...initialState,
+      isLoading: true,
+      isError: false,
+      email: 'email',
+      name: 'name'
+    });
     expect(
       userSlice.reducer(undefined, {
         type: fetchUserUpdate.rejected.type,
@@ -126,18 +139,17 @@ describe('Тестирование работы с пользовтелем', ()
       isRegistered: false
     });
     expect(
-        userSlice.reducer(undefined, {
-          type: fetchUserUpdate.fulfilled.type,
-          payload: userUpdateAction.payload
-        })
-      ).toEqual({
-        ...initialState,
-        isLoading: false,
-        isError: false,
-        email: userUpdateAction.payload.user.email,
-        name: userUpdateAction.payload.user.name
-      });
-    
+      userSlice.reducer(undefined, {
+        type: fetchUserUpdate.fulfilled.type,
+        payload: userUpdateAction.payload
+      })
+    ).toEqual({
+      ...initialState,
+      isLoading: false,
+      isError: false,
+      email: userUpdateAction.payload.user.email,
+      name: userUpdateAction.payload.user.name
+    });
   });
   it('Получение данных пользователя', () => {
     expect(
@@ -158,10 +170,16 @@ describe('Тестирование работы с пользовтелем', ()
       errorText: 'error'
     });
     expect(
-        userSlice.reducer(undefined, {
-          type: fetchGetUser.fulfilled.type,
-          payload: userGetAction.payload
-        })
-      ).toEqual({ ...initialState, isLoading: false, isError: false, name: userGetAction.payload.user.name, email: userGetAction.payload.user.email });
+      userSlice.reducer(undefined, {
+        type: fetchGetUser.fulfilled.type,
+        payload: userGetAction.payload
+      })
+    ).toEqual({
+      ...initialState,
+      isLoading: false,
+      isError: false,
+      name: userGetAction.payload.user.name,
+      email: userGetAction.payload.user.email
+    });
   });
 });
