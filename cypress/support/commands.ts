@@ -35,8 +35,22 @@
 //     }
 //   }
 // }
+import { setCookie, deleteCookie } from '../../src/utils/cookie';
 
 Cypress.Commands.add('clickOutside', () => {
     return cy.get('body').click(0, 0)
 });
 
+Cypress.Commands.add('beforeEachInit', () => {
+    cy.intercept('GET', 'api/ingredients', {fixture: 'ingredients.json'});
+    cy.intercept('GET', 'api/auth/user', {fixture:'login.json'});
+    cy.intercept('POST', 'api/orders', {fixture:'order.json'});
+    cy.visit('/');
+    setCookie('accessToken', 'accessToken');
+    localStorage.setItem('refreshToken', 'refreshToken');
+})
+
+Cypress.Commands.add('afterEachInit', () => {
+    deleteCookie('accessToken');
+    localStorage.removeItem('refreshToken');
+})

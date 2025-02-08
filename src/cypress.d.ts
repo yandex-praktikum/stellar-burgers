@@ -6,6 +6,8 @@ declare global {
     interface Chainable {
       mount: typeof mount;
       clickOutside: () => void;
+      beforeEachInit: () => void;
+      afterEachInit: () => void;
     }
   }
   namespace Chai {
