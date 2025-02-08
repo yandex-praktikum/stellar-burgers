@@ -8,8 +8,6 @@ import { feedThunk, selectLoading, selectOrders } from '../../slices/feedSlice';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
-  //const orders: TOrder[] = [];
-
   const orders: TOrder[] = useSelector(selectOrders);
   const dispatch = useDispatch<AppDispatch>();
   const isLoading = useSelector(selectLoading);
@@ -21,10 +19,6 @@ export const Feed: FC = () => {
   const handleGetFeeds = () => {
     dispatch(feedThunk());
   };
-
-  /*if (!orders.length) {
-    return <Preloader />;
-  }*/
 
   return (
     <>

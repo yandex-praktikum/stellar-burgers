@@ -20,16 +20,13 @@ interface TUserState {
   isAuthenticated: boolean;
   loginError?: SerializedError;
   registerError?: SerializedError;
-  data: TUser;
+  data: TUser | null;
 }
 
 export const initialState: TUserState = {
   isAuthChecked: false,
   isAuthenticated: false,
-  data: {
-    name: '',
-    email: ''
-  }
+  data: null
 };
 
 export const registerUser = createAsyncThunk<TUser, TRegisterData>(
@@ -128,10 +125,7 @@ const userSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.isAuthenticated = false;
 
-        state.data = {
-          email: '',
-          name: ''
-        };
+        state.data = null;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;

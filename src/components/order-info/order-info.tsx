@@ -11,25 +11,6 @@ import { fetchOrderNumber } from '../../slices/orderSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  /*const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };*/
-
-  /*const { id } = useParams<{ id: string }>();
-  const orders: TOrder[] = useSelector(selectOrders);
-  const ingredients: TIngredient[] = useSelector(selectIngredients);
-
-  // Находим заказ по его ID
-  const orderData = useMemo(
-    () => orders.find((order) => order._id === id) || null,
-    [orders, id]
-  );*/
   const { number } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const ingredients: TIngredient[] = useSelector(selectIngredients);

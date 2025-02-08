@@ -3,13 +3,8 @@ import {
   createAsyncThunk,
   SerializedError
 } from '@reduxjs/toolkit';
-import { TOrder, TOrdersData } from '@utils-types';
-import {
-  TNewOrderResponse,
-  orderBurgerApi,
-  getOrderByNumberApi,
-  getOrdersApi
-} from '@api';
+import { TOrder } from '@utils-types';
+import { orderBurgerApi, getOrderByNumberApi, getOrdersApi } from '@api';
 
 interface IOrderState {
   order: TOrder[];
@@ -67,29 +62,9 @@ const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    /*
-    loadOrderRequest(state) {
-      state.orderRequest = true;
-      state.orderError = false;
-    },
-    loadOrderSuccess(state, action: PayloadAction<TOrder>) {
-      state.orderRequest = false;
-      state.orderError = false;
-      state.order = action.payload;
-    },
-    loadOrderError(state, action: PayloadAction<string>) {
-      state.orderRequest = false;
-      state.orderError = true;
-      state.errorMessage = action.payload;
-    },
-    clearOrderDetails(state) {
-      state.orderRequest = false;
-      state.orderError = false;
-      state.order = null;
-      state.errorMessage = '';
-    }*/
-    clearOrderModalData(state) {
+    closeOrderModalData(state) {
       state.orderModalData = null;
+      state.orderRequest = false;
     }
   },
   extraReducers: (builder) => {
@@ -130,28 +105,6 @@ const orderSlice = createSlice({
   }
 });
 
-// Получаю состояние заказа
-/*const selectOrderState = (state: { order: IOrderState }): IOrderState =>
-  state.order;
-
-// Селекторы для получения отдельных значений состояния заказа
-export const selectOrder = (state: { order: IOrderState }) =>
-  selectOrderState(state).order;
-export const selectOrderRequest = (state: { order: IOrderState }) =>
-  selectOrderState(state).orderRequest;
-export const selectOrderError = (state: { order: IOrderState }) =>
-  selectOrderState(state).orderError;
-export const selectOrderErrorMessage = (state: { order: IOrderState }) =>
-  selectOrderState(state).errorMessage;
-
-// Экспортирую экшены
-export const {
-  loadOrderRequest,
-  loadOrderSuccess,
-  loadOrderError,
-  clearOrderDetails
-} = orderSlice.actions;*/
-
 export const selectOrders = (state: { order: IOrderState }): TOrder[] =>
   state.order.order;
 export const selectOrderRequest = (state: { order: IOrderState }) =>
@@ -159,7 +112,7 @@ export const selectOrderRequest = (state: { order: IOrderState }) =>
 export const selectOrderModalData = (state: { order: IOrderState }) =>
   state.order.orderModalData;
 
-export const { clearOrderModalData } = orderSlice.actions;
+export const { closeOrderModalData } = orderSlice.actions;
 
 // Экспортирую редьюсер
 export default orderSlice.reducer;

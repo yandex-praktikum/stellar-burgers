@@ -20,7 +20,8 @@ import { useEffect, useState } from 'react';
 import { fetchIngredients } from '../../slices/ingredientsListSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../services/store';
-import { clearOrderModalData } from '../../slices/orderSlice';
+import { closeOrderModalData } from '../../slices/orderSlice';
+import { fetchUser } from '../../slices/userSlice';
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,12 +31,13 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    dispatch(fetchUser());
     dispatch(fetchIngredients());
   }, []);
 
   const closeModalData = () => {
     navigate(-1);
-    dispatch(clearOrderModalData());
+    dispatch(closeOrderModalData());
   };
 
   return (
@@ -80,7 +82,7 @@ const App = () => {
         <Route
           path='/profile'
           element={
-            <ProtectedRoute onlyUnAuth>
+            <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
           }

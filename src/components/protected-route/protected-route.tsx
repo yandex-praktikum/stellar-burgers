@@ -22,12 +22,12 @@ export const ProtectedRoute = ({
     return <Preloader />;
   }
 
-  if (onlyUnAuth && dataUser.email && dataUser.name) {
+  if (onlyUnAuth && dataUser) {
     const { from } = location.state || { from: { pathname: '/' } };
     return <Navigate to={from} />;
   }
 
-  if (!onlyUnAuth && (!dataUser.email || !dataUser.name)) {
+  if (!onlyUnAuth && !dataUser) {
     return <Navigate to='/login' state={{ from: location }} />;
   }
 

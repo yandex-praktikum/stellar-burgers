@@ -2,9 +2,12 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectConstructorItems } from '../../slices/builderSlice';
 import {
-  clearOrderModalData,
+  clearBuilder,
+  selectConstructorItems
+} from '../../slices/builderSlice';
+import {
+  closeOrderModalData,
   selectOrderModalData,
   selectOrderRequest,
   createOrder
@@ -41,7 +44,8 @@ export const BurgerConstructor: FC = () => {
   };
 
   const closeOrderModal = () => {
-    dispatch(clearOrderModalData());
+    dispatch(clearBuilder());
+    dispatch(closeOrderModalData());
   };
 
   const price = useMemo(
