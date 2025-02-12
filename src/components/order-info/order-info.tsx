@@ -13,7 +13,7 @@ export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const dispatch = useDispatch();
   const ingredients: TIngredient[] = useSelector(selectIngredients);
-  
+
   const orders = useSelector(selectOrders);
   const orderData = orders.find((order) => order.number === Number(number));
 
