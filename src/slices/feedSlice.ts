@@ -55,7 +55,7 @@ export const selectError = (state: { feed: FeedState }) => state.feed.error;
 
 // Селектор для получения всех заказов
 export const selectOrders = (state: { feed: FeedState }) =>
-  state.feed.feed ? state.feed?.feed?.orders : [];
+  state.feed?.feed?.orders || [];
 
 // Селектор для получения конкретного заказа по ID
 export const selectOrderById = (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/store';
 import { useLocation, Navigate } from 'react-router-dom';
 import { selectAuthChecked, selectUserData } from '../../slices/userSlice';
 import { Preloader } from '@ui';
