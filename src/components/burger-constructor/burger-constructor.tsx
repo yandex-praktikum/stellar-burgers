@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
@@ -26,7 +26,7 @@ export const BurgerConstructor: FC = () => {
   const orderModalData = useSelector(selectOrderModalData);
   const user = useSelector(selectUserData);
 
-  const onOrderClick = () => {
+  const onOrderClick = async () => {
     if (!constructorItems.bun || orderRequest) return;
 
     const order = [
@@ -39,8 +39,12 @@ export const BurgerConstructor: FC = () => {
       return navigate('/login');
     }
 
-    dispatch(createOrder(order));
-    dispatch(clearBuilder());
+    try {
+      await dispatch(createOrder(order));
+      dispatch(clearBuilder());
+    } catch (error) {
+      console.error('Ошибка при отправке заказа:', error);
+    }
   };
 
   const closeOrderModal = () => {
