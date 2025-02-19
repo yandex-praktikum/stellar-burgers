@@ -128,9 +128,16 @@ const App = () => {
         <Route
           path='/profile/orders/:number'
           element={
-            <ProtectedRoute>
-              <OrderInfo />
-            </ProtectedRoute>
+            <div className={styles.detailPageWrap}>
+              <p
+                className={`text text_type_digits-default ${styles.detailHeader}`}
+              >
+                #{orderNumber && orderNumber.padStart(6, '0')}
+              </p>
+              <ProtectedRoute>
+                <OrderInfo />
+              </ProtectedRoute>
+            </div>
           }
         />
         <Route path='*' element={<NotFound404 />} />

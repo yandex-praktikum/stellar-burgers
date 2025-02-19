@@ -3,8 +3,9 @@ import {
   createAsyncThunk,
   SerializedError
 } from '@reduxjs/toolkit';
-import { TOrder } from '@utils-types';
+import { TOrder, TOrdersData } from '@utils-types';
 import { orderBurgerApi, getOrderByNumberApi, getOrdersApi } from '@api';
+import { RootState } from 'src/services/store';
 
 interface IOrderState {
   order: TOrder[];
@@ -104,6 +105,28 @@ const orderSlice = createSlice({
       });
   }
 });
+
+export const orderDataSelector = (number: string) => (state: RootState) => {
+  if (state.order.order?.length) {
+    const data = state.order.order.find(
+      (order) => order.number === Number(number)
+    );
+    if (data) return data;
+  }
+
+  if (state.feed.feed?.orders.length) {
+    const data = state.feed.feed?.orders?.find(
+      (order) => order.number === Number(number)
+    );
+    if (data) return data;
+  }
+
+  if (state.order.orderModalData?.number) {
+    return state.order.orderModalData;
+  }
+
+  return null;
+};
 
 export const selectOrders = (state: { order: IOrderState }): TOrder[] =>
   state.order.order;

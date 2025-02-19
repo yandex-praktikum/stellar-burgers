@@ -5,24 +5,22 @@ import { TIngredient } from '@utils-types';
 import { useSelector, useDispatch } from '../../services/store';
 import { selectIngredients } from '../../slices/ingredientsListSlice';
 import { useParams } from 'react-router-dom';
-import { fetchOrderNumber, selectOrders } from '../../slices/orderSlice';
+import { fetchOrderNumber, orderDataSelector } from '../../slices/orderSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const { number } = useParams<{ number: string }>();
+  const { number = '' } = useParams<{ number: string }>();
 
   const dispatch = useDispatch();
   const ingredients: TIngredient[] = useSelector(selectIngredients);
 
-  const orders = useSelector(selectOrders);
-
-  const orderData = orders.find((order) => order.number === Number(number));
+  const orderData = useSelector(orderDataSelector(number));
 
   useEffect(() => {
-    if (number) {
+    if (!orderData) {
       dispatch(fetchOrderNumber(Number(number)));
-    }
-  }, [dispatch, number]);
+    } // orderData кэшируется
+  }, [dispatch, orderData, number]);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

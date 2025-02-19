@@ -57,17 +57,4 @@ export const selectError = (state: { feed: FeedState }) => state.feed.error;
 export const selectOrders = (state: { feed: FeedState }) =>
   state.feed?.feed?.orders || [];
 
-// Селектор для получения конкретного заказа по ID
-export const selectOrderById = (
-  state: { feed: FeedState },
-  orderId: string
-) => {
-  if (state.feed.feed) {
-    return (
-      state.feed.feed.orders.find((order) => order._id === orderId) || null
-    ); // Возвращает заказ по ID или null
-  }
-  return null; // Если feed отсутствует, возвращаем null
-};
-
 export const feedReducer = feedSlice.reducer;
