@@ -42,12 +42,13 @@ export const BurgerIngredientsUI: FC<BurgerIngredientsUIProps> = memo(
             </Tab>
           </ul>
         </nav>
-        <div className={styles.content}>
+        <div className={styles.content} data-cy='content-ingredients'>
           <IngredientsCategory
             title='Булки'
             titleRef={titleBunRef}
             ingredients={buns}
             ref={bunsRef}
+            data-cy='bun-ingredients'
           />
           <IngredientsCategory
             title='Начинки'
