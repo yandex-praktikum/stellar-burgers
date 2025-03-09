@@ -38,3 +38,9 @@ export type TUser = {
 };
 
 export type TTabMode = 'bun' | 'sauce' | 'main';
+
+export type TFeedState = {
+  feed: null,
+  loading: false,
+  error: null,
+};
