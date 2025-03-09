@@ -124,6 +124,9 @@ describe('тест на оформление заказа', () => {
       .find('h2')
       .should('have.text', orderFixture.order.number);
 
+    // Нажатие на кнопку закрытия заказа
+    cy.get('[data-cy=modal-close-button]').click();
+
     // После успешной отправки данных на сервер конструктор должен быть очищен
     cy.get('[data-cy=constructor]')
       .contains('Краторная булка N-200i')
