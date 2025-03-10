@@ -7,7 +7,7 @@ import { TOrder, TOrdersData } from '@utils-types';
 import { orderBurgerApi, getOrderByNumberApi, getOrdersApi } from '@api';
 import { RootState } from 'src/services/store';
 
-interface IOrderState {
+export interface IOrderState {
   order: TOrder[];
   orderRequest: boolean;
   orderError: null | SerializedError;
