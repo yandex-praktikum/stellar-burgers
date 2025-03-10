@@ -21,11 +21,14 @@ describe('Конструктор бургера', () => {
     })
 
     it('должно открываться при клике на ингредиент', () => {
-      // Проверяем содержимое модального окна
-      cy.contains('Детали ингредиента').should('exist')
-      cy.contains('Краторная булка N-200i').should('exist')
-      cy.contains('Калории').should('exist')
-      cy.contains('420').should('exist')
+      // Находим модальное окно
+      cy.get('[data-testid="modal"]').within(() => {
+        // Проверяем содержимое модального окна
+        cy.contains('Детали ингредиента').should('exist')
+        cy.contains('Краторная булка N-200i').should('exist')
+        cy.contains('Калории').should('exist')
+        cy.contains('420').should('exist')
+      })
     })
 
     it('должно закрываться при клике на крестик', () => {
@@ -55,39 +58,66 @@ describe('Конструктор бургера', () => {
     // Сначала проверим, что ингредиенты загрузились
     cy.contains('Краторная булка N-200i').should('exist')
     
-    // Добавляем булку
+    // Шаг 1: Проверяем наличие элементов в конструкторе
+    cy.get('[class*="constructor-element"]').should(($elements) => {
+      // Если элементы есть, проверяем что среди них нет нашей булки
+      if ($elements.length > 0) {
+        expect($elements.text()).to.not.include('Краторная булка N-200i')
+      }
+    })
+    
+    // Шаг 2: Добавляем булку
     cy.contains('Краторная булка N-200i')
       .parent()
       .find('button')
       .click()
 
-    // Проверяем, что булка добавилась в конструктор
+    // Шаг 3: Проверяем, что булка добавилась в конструктор
     cy.get('[class*="constructor-element"]')
-      .should('contain', 'Краторная булка N-200i')
+      .contains('Краторная булка N-200i')
+      .should('exist')
   })
 
   it('должен добавлять начинку в конструктор', () => {
-    // Добавляем начинку
+    // Шаг 1: Проверяем наличие элементов в конструкторе
+    cy.get('[class*="constructor-element"]').should(($elements) => {
+      // Если элементы есть, проверяем что среди них нет нашей начинки
+      if ($elements.length > 0) {
+        expect($elements.text()).to.not.include('Биокотлета из марсианской говядины')
+      }
+    })
+
+    // Шаг 2: Добавляем начинку
     cy.contains('Биокотлета из марсианской говядины')
       .parent()
       .find('button')
       .click()
 
-    // Проверяем, что начинка добавилась
+    // Шаг 3: Проверяем, что начинка добавилась в конструктор
     cy.get('[class*="constructor-element"]')
-      .should('contain', 'Биокотлета из марсианской говядины')
+      .contains('Биокотлета из марсианской говядины')
+      .should('exist')
   })
 
   it('должен добавлять соус в конструктор', () => {
-    // Добавляем соус
+    // Шаг 1: Проверяем наличие элементов в конструкторе
+    cy.get('[class*="constructor-element"]').should(($elements) => {
+      // Если элементы есть, проверяем что среди них нет нашего соуса
+      if ($elements.length > 0) {
+        expect($elements.text()).to.not.include('Соус фирменный Space Sauce')
+      }
+    })
+
+    // Шаг 2: Добавляем соус
     cy.contains('Соус фирменный Space Sauce')
       .parent()
       .find('button')
       .click()
 
-    // Проверяем, что соус добавился
+    // Шаг 3: Проверяем, что соус добавился в конструктор
     cy.get('[class*="constructor-element"]')
-      .should('contain', 'Соус фирменный Space Sauce')
+      .contains('Соус фирменный Space Sauce')
+      .should('exist')
   })
 })
 
@@ -119,6 +149,15 @@ describe('Создание заказа', () => {
     })
 
     cy.visit('/')
+  })
+
+  afterEach(() => {
+    // Очищаем localStorage
+    window.localStorage.clear()
+    
+    // Очищаем куки
+    cy.clearCookies()
+    cy.clearLocalStorage()
   })
 
   it('должен создавать и очищать заказ', () => {

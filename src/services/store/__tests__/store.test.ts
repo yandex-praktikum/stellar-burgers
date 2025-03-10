@@ -1,9 +1,13 @@
 import store from '../store'
 
 describe('store', () => {
-  it('должен иметь корректное начальное состояние', () => {
+  it('должен возвращать корректное начальное состояние при неизвестном экшене', () => {
+    // Вызываем dispatch с экшеном, который не обрабатывается ни одним редьюсером
+    const action = { type: 'UNKNOWN_ACTION' }
+    store.dispatch(action)
     const state = store.getState()
     
+    // Проверяем, что состояние соответствует начальному
     expect(state).toEqual({
       ingredientsState: {
         ingredients: [],
