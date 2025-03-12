@@ -3,19 +3,10 @@ import orderReducer, {
   fetchOrderNumber,
   fetchOrder,
   createOrder,
-  IOrderState
+  initialState
 } from '../slices/orderSlice';
 
 describe('тест orderSlice reducer', () => {
-  const initialState: IOrderState = {
-    order: [],
-    orderRequest: false,
-    orderError: null,
-    orderModalData: null,
-    isLoadingNumber: true,
-    isLoadingOrder: true
-  };
-
   test('начальное состояние', () => {
     expect(orderReducer(undefined, { type: 'unknown' })).toEqual(initialState);
   });

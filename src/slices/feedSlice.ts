@@ -12,7 +12,7 @@ export interface FeedState {
   error: SerializedError | null;
 }
 
-const initialState: FeedState = {
+export const initialState: FeedState = {
   feed: null,
   loading: false,
   error: null

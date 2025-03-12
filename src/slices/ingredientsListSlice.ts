@@ -12,7 +12,7 @@ export interface IIngredientsState {
   data: TIngredient[];
 }
 
-const initialState: IIngredientsState = {
+export const initialState: IIngredientsState = {
   isLoading: true,
   error: null,
   data: []

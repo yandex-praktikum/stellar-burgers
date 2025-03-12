@@ -16,7 +16,7 @@ export interface IOrderState {
   isLoadingOrder: boolean;
 }
 
-const initialState: IOrderState = {
+export const initialState: IOrderState = {
   order: [],
   orderRequest: false,
   orderError: null,

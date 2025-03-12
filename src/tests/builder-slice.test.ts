@@ -3,18 +3,12 @@ import builderReducer, {
   addItemBuilder,
   deleteItemBuilder,
   moveItems,
-  clearBuilder
+  clearBuilder,
+  initialState
 } from '../slices/builderSlice';
 import { TIngredient, TConstructorIngredient } from '@utils-types';
 
 describe('builderSlice reducer', () => {
-  const initialState = {
-    constructorItems: {
-      bun: null,
-      ingredients: []
-    }
-  };
-
   it('тест на возвращение начального состояния', () => {
     expect(builderReducer(undefined, { type: 'unknown' })).toEqual(
       initialState

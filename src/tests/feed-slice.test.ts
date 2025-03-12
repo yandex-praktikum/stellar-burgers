@@ -1,13 +1,6 @@
-import { feedSlice, feedThunk } from '../slices/feedSlice';
-import { TFeedState } from '@utils-types';
+import { feedSlice, feedThunk, initialState } from '../slices/feedSlice';
 
 describe('feedSlice', () => {
-  const initialState: TFeedState = {
-    feed: null,
-    loading: false,
-    error: null
-  };
-
   it('обработка начального состояния', () => {
     expect(feedSlice.reducer(undefined, { type: 'unknown' })).toEqual(
       initialState
