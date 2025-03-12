@@ -16,7 +16,7 @@ describe('тест главной страницы сайта', () => {
     );
 
     cy.viewport(1300, 800);
-    
+
     if (testUrl) {
       cy.visit(testUrl);
     } else {
@@ -49,7 +49,7 @@ describe('Тестирование модального окна ингреди�
     );
 
     cy.viewport(1300, 800);
-    
+
     if (testUrl) {
       cy.visit(testUrl);
     } else {
@@ -62,9 +62,7 @@ describe('Тестирование модального окна ингреди�
       cy.contains(INGREDIENTS_DETAILS_TEXT).should('not.exist');
       cy.contains(BUN_INGREDIENT_TEXT).click();
       cy.contains(INGREDIENTS_DETAILS_TEXT).should('exist');
-      cy.get(MODAL_SELECTOR)
-        .contains(BUN_INGREDIENT_TEXT)
-        .should('exist');
+      cy.get(MODAL_SELECTOR).contains(BUN_INGREDIENT_TEXT).should('exist');
     });
 
     it('Модальное окно с ингредиентом будет открыто после перезагрузки страницы', () => {

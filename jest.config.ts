@@ -14,15 +14,15 @@ const config: JestConfigWithTsJest = {
     '^.+\\.tsx?$': ['ts-jest', {}]
   },
   moduleNameMapper: {
-    "@pages": "<rootDir>/src/pages",
-    "@components": "<rootDir>/src/components",
-    "@ui": "<rootDir>/src/components/ui",
-    "@ui-pages": "<rootDir>/src/components/ui/pages",
-    "@utils-types": "<rootDir>/src/utils/types",
-    "@api": "<rootDir>/src/utils/burger-api.ts",
-    "@hooks": "<rootDir>/src/services/hooks",
-    "@slices": "<rootDir>/src/services/slices"
-   },
+    '@pages': '<rootDir>/src/pages',
+    '@components': '<rootDir>/src/components',
+    '@ui': '<rootDir>/src/components/ui',
+    '@ui-pages': '<rootDir>/src/components/ui/pages',
+    '@utils-types': '<rootDir>/src/utils/types',
+    '@api': '<rootDir>/src/utils/burger-api.ts',
+    '@hooks': '<rootDir>/src/services/hooks',
+    '@slices': '<rootDir>/src/services/slices'
+  },
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
