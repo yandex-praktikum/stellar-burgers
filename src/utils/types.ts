@@ -1,5 +1,6 @@
 export type TIngredient = {
   _id: string;
+  title?: string;
   name: string;
   type: string;
   proteins: number;
