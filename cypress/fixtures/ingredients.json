@@ -1,0 +1,83 @@
+{
+	"success": true,
+  "data": [
+		{
+			"_id": "bun1",
+			"name": "Булка небесная",
+			"type": "bun",
+			"proteins": 80,
+			"fat": 24,
+			"carbohydrates": 53,
+			"calories": 420,
+			"price": 1255,
+			"image": "https://code.s3.yandex.net/react/code/bun-02.png",
+			"image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+			"image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png"
+		},
+		{
+			"_id": "bun2",
+			"name": "Булка земная",
+			"type": "bun",
+			"proteins": 44,
+			"fat": 26,
+			"carbohydrates": 85,
+			"calories": 643,
+			"price": 988,
+			"image": "https://code.s3.yandex.net/react/code/bun-01.png",
+			"image_mobile": "https://code.s3.yandex.net/react/code/bun-01-mobile.png",
+			"image_large": "https://code.s3.yandex.net/react/code/bun-01-large.png"
+		},
+		{
+			"_id": "main1",
+			"name": "Котлета классическая",
+			"type": "main",
+			"proteins": 420,
+			"fat": 142,
+			"carbohydrates": 242,
+			"calories": 4242,
+			"price": 424,
+			"image": "https://code.s3.yandex.net/react/code/meat-01.png",
+			"image_mobile": "https://code.s3.yandex.net/react/code/meat-01-mobile.png",
+			"image_large": "https://code.s3.yandex.net/react/code/meat-01-large.png"
+		},
+		{
+			"_id": "main2",
+			"name": "Котлета двойная",
+			"type": "main",
+			"proteins": 44,
+			"fat": 26,
+			"carbohydrates": 85,
+			"calories": 643,
+			"price": 988,
+			"image": "https://code.s3.yandex.net/react/code/meat-03.png",
+			"image_mobile": "https://code.s3.yandex.net/react/code/meat-03-mobile.png",
+			"image_large": "https://code.s3.yandex.net/react/code/meat-03-large.png"
+		},
+		{
+			"_id": "sauce1",
+			"name": "Соус сырный",
+			"type": "sauce",
+			"proteins": 30,
+			"fat": 20,
+			"carbohydrates": 40,
+			"calories": 30,
+			"price": 90,
+			"image": "https://code.s3.yandex.net/react/code/sauce-02.png",
+			"image_mobile": "https://code.s3.yandex.net/react/code/sauce-02-mobile.png",
+			"image_large": "https://code.s3.yandex.net/react/code/sauce-02-large.png"
+		},
+		{
+			"_id": "sauce2",
+			"name": "Соус барбекю",
+			"type": "sauce",
+			"proteins": 50,
+			"fat": 22,
+			"carbohydrates": 11,
+			"calories": 14,
+			"price": 80,
+			"image": "https://code.s3.yandex.net/react/code/sauce-04.png",
+			"image_mobile": "https://code.s3.yandex.net/react/code/sauce-04-mobile.png",
+			"image_large": "https://code.s3.yandex.net/react/code/sauce-04-large.png"
+		}
+	]
+}
