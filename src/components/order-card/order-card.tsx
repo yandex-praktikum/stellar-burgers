@@ -1,54 +1,67 @@
-import { FC, memo } from 'react';
-import { useLocation } from 'react-router-dom';
-
+import { FC, memo, useMemo } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import { OrderCardProps } from './type';
+import { TIngredient } from '@utils-types';
+import { OrderCardUI } from '../ui/order-card';
+import { useSelector } from '../../services/store';
+import { getIngredientsWithSelector } from '../../services/slices/IngredientsSlice';
+import { getUserOrdersHistory } from '../../services/slices/UserOrdersHistory'; //
+import { TOrder } from '@utils-types'; //
 
 const maxIngredients = 6;
 
+// Компонент отображает информацию о заказе в виде карточки
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const location = useLocation();
 
-  // const orderInfo = useMemo(() => {
-  //   if (!ingredients.length) return null;
+  const orders = useSelector(getUserOrdersHistory); // Получаем список заказов из состояния Redux
 
-  //   const ingredientsInfo = order.ingredients.reduce(
-  //     (acc: TIngredient[], item: string) => {
-  //       const ingredient = ingredients.find((ing) => ing._id === item);
-  //       if (ingredient) return [...acc, ingredient];
-  //       return acc;
-  //     },
-  //     []
-  //   );
+  //подключаем из стора еще и ингридиенты, так как с сервера получаем только id ингридиентов
+  const ingredients: TIngredient[] = useSelector(getIngredientsWithSelector);
 
-  //   const total = ingredientsInfo.reduce((acc, item) => acc + item.price, 0);
+  const orderInfo = useMemo(() => {
+    if (!ingredients.length) return;
 
-  //   const ingredientsToShow = ingredientsInfo.slice(0, maxIngredients);
+    // Собираем информацию о каждом ингредиенте заказа на основе ID, полученных с сервера
+    const ingredientsInfo = order.ingredients.reduce(
+      (acc: TIngredient[], item: string) => {
+        const ingredient = ingredients.find((ing) => ing._id === item);
+        if (ingredient) return [...acc, ingredient];
+        return acc;
+      },
+      []
+    );
 
-  //   const remains =
-  //     ingredientsInfo.length > maxIngredients
-  //       ? ingredientsInfo.length - maxIngredients
-  //       : 0;
+    // Подсчитываем общую стоимость ингредиентов в заказе
+    const total = ingredientsInfo.reduce((acc, item) => acc + item.price, 0);
 
-  //   const date = new Date(order.createdAt);
-  //   return {
-  //     ...order,
-  //     ingredientsInfo,
-  //     ingredientsToShow,
-  //     remains,
-  //     total,
-  //     date
-  //   };
-  // }, [order, ingredients]);
+    // Ограничиваем количество отображаемых ингредиентов до maxIngredients
+    const ingredientsToShow = ingredientsInfo.slice(0, maxIngredients);
 
-  // if (!orderInfo) return null;
+    // Вычисляем, сколько ингредиентов не вошло в отображение (если их больше maxIngredients)
+    const remains =
+      ingredientsInfo.length > maxIngredients
+        ? ingredientsInfo.length - maxIngredients
+        : 0;
 
-  // return (
-  //   <OrderCardUI
-  //     orderInfo={orderInfo}
-  //     maxIngredients={maxIngredients}
-  //     locationState={{ background: location }}
-  //   />
-  // );
+    const date = new Date(order.createdAt);
+    return {
+      ...order,
+      ingredientsInfo,
+      ingredientsToShow,
+      remains,
+      total,
+      date
+    };
+  }, [order, ingredients]);
 
-  return null;
+  if (!orderInfo) return null;
+
+  return (
+    <OrderCardUI
+      orderInfo={orderInfo}
+      maxIngredients={maxIngredients}
+      locationState={{ background: location }}
+    />
+  );
 });

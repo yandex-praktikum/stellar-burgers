@@ -1,28 +1,36 @@
-import { forwardRef } from 'react';
+import { forwardRef, useMemo } from 'react';
 import { TIngredientsCategoryProps } from './type';
+import { TIngredient } from '@utils-types';
+import { IngredientsCategoryUI } from '../ui/ingredients-category';
+import { useSelector } from '../../services/store';
+import { getConstructorItems } from '../../services/slices/BurgerConstructorSlice';
 
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,
   TIngredientsCategoryProps
->(
-  ({ title, titleRef, ingredients }, ref) =>
-    // const ingredientsCounters = useMemo(() => {
-    //   const counters: { [key: string]: number } = {};
-    //   ingredients.forEach((ingredient: TIngredient) => {
-    //     if (!counters[ingredient._id]) counters[ingredient._id] = 0;
-    //     counters[ingredient._id]++;
-    //   });
-    //   if (bun) counters[bun._id] = 2;
-    //   return counters;
-    // }, [burgerConstructor]);
+>(({ title, titleRef, ingredients, ...rest }, ref) => {
+  const burgerConstructor = useSelector(getConstructorItems);
 
-    // <IngredientsCategoryUI
-    //   title={title}
-    //   titleRef={titleRef}
-    //   ingredients={ingredients}
-    //   ingredientsCounters={ingredientsCounters}
-    //   ref={ref}
-    // />
+  //счетчик для подсчета количества элементов массива конструктора, который мы получили выше. Если элемент === bun, то значение переменной counters*2
+  const ingredientsCounters = useMemo(() => {
+    const { bun, ingredients } = burgerConstructor;
+    const counters: { [key: string]: number } = {};
+    ingredients.forEach((ingredient: TIngredient) => {
+      if (!counters[ingredient._id]) counters[ingredient._id] = 0;
+      counters[ingredient._id]++;
+    });
+    if (bun) counters[bun._id] = 2;
+    return counters; //объект counters содержит точное количество каждого ингредиента
+  }, [burgerConstructor]);
 
-    null
-);
+  return (
+    <IngredientsCategoryUI
+      title={title}
+      titleRef={titleRef}
+      ingredients={ingredients}
+      ingredientsCounters={ingredientsCounters}
+      ref={ref}
+      {...rest}
+    />
+  );
+});

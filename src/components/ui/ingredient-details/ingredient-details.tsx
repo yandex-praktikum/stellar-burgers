@@ -5,7 +5,7 @@ import { IngredientDetailsUIProps } from './type';
 export const IngredientDetailsUI: FC<IngredientDetailsUIProps> = memo(
   ({ ingredientData }) => {
     const { name, image_large, calories, proteins, fat, carbohydrates } =
-      ingredientData;
+      ingredientData; //достали из объекта нужные поля и записали их в переменные
 
     return (
       <div className={styles.content}>

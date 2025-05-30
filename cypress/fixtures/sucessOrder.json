@@ -1,0 +1,63 @@
+{
+    "success": true,
+    "name": "Краторный био-марсианский бургер",
+    "order": {
+        "ingredients": [
+            {
+                "_id": "1",
+                "name": "Ингредиент_1",
+                "type": "bun",
+                "proteins": 80,
+                "fat": 24,
+                "carbohydrates": 53,
+                "calories": 420,
+                "price": 1255,
+                "image": "https://code.s3.yandex.net/react/code/bun-02.png",
+                "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+                "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png",
+                "__v": 0
+            },
+            {
+                "_id": "2",
+                "name": "Ингредиент_2",
+                "type": "main",
+                "proteins": 420,
+                "fat": 142,
+                "carbohydrates": 242,
+                "calories": 4242,
+                "price": 424,
+                "image": "https://code.s3.yandex.net/react/code/meat-01.png",
+                "image_mobile": "https://code.s3.yandex.net/react/code/meat-01-mobile.png",
+                "image_large": "https://code.s3.yandex.net/react/code/meat-01-large.png",
+                "__v": 0
+            },
+            {
+                "_id": "3",
+                "name": "Ингредиент_3",
+                "type": "bun",
+                "proteins": 80,
+                "fat": 24,
+                "carbohydrates": 53,
+                "calories": 420,
+                "price": 1255,
+                "image": "https://code.s3.yandex.net/react/code/bun-02.png",
+                "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+                "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png",
+                "__v": 0
+            }
+        ],
+        "_id": "66d1e84b119d45001b50306c",
+        "owner": {
+            "name": "test",
+            "email": "test33@mail.ru",
+            "createdAt": "2024-08-30T15:37:31.457Z",
+            "updatedAt": "2024-08-30T15:37:31.457Z"
+        },
+        "status": "done",
+        "name": "Краторный био-марсианский бургер",
+        "createdAt": "2024-08-30T15:42:03.569Z",
+        "updatedAt": "2024-08-30T15:42:04.119Z",
+        "number": 2128506,
+        "price": 2934
+    }
+}
