@@ -20,6 +20,10 @@
   color: var(--text-inactive-color);
 }
 
+.navlink {
+    text-decoration: none;
+}
+
 .link_active {
   color: var(--text-primary-color);
 }
