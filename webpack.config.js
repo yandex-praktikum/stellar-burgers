@@ -58,7 +58,7 @@ module.exports = {
   ],
   resolve: {
     extensions: [
-      '*',
+      '.*',
       '.js',
       '.jsx',
       '.ts',
@@ -86,6 +86,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   devServer: {
+    open: true,
     static: path.join(__dirname, './dist'),
     compress: true,
     historyApiFallback: true,

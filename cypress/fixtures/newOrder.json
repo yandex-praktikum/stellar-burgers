@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "order": {
+    "status": "success",
+    "name": "newOrder",
+    "number": 1234,
+    "createdAt": "string",
+    "updatedAt": "string",
+    "ingredients": ["Булка", "Булка", "Котлета", "Соус"]
+  },
+  "name": "newOrder"
+}
