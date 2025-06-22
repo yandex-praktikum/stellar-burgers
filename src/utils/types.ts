@@ -1,3 +1,5 @@
+import { SerializedError } from '@reduxjs/toolkit';
+
 export type TIngredient = {
   _id: string;
   name: string;
@@ -38,3 +40,24 @@ export type TUser = {
 };
 
 export type TTabMode = 'bun' | 'sauce' | 'main';
+
+export type TBun = TIngredient | null;
+
+export type TConstructorState = {
+  bun: TBun;
+  ingredients: TConstructorIngredient[];
+};
+
+export type TError = null | SerializedError;
+
+export type TFeed = {
+  orders?: TOrder[];
+  total: number;
+  totalToday: number;
+  isLoading?: boolean;
+  error?: TError;
+};
+
+export type TIsModal = {
+  isModal?: boolean;
+};
