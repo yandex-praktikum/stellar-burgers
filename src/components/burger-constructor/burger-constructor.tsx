@@ -1,24 +1,49 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../../services/store';
+import {
+  createOrder,
+  selectCurrentOrder
+} from '../../services/slices/orderSlice';
+import { clearCurrentOrder } from '../../services/slices/orderSlice';
+import { clearConstructor } from '../../services/slices/constructorSlice';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
+  const dispatch: AppDispatch = useDispatch();
+  console.log(
+    'Current state:',
+    useSelector((state) => state)
+  );
+  const constructorItems = useSelector(
+    (state: RootState) => state.constructorBurger
+  );
 
-  const orderRequest = false;
+  const orderRequest = useSelector((state: RootState) => state.order.isLoading);
 
-  const orderModalData = null;
+  const orderModalData = useSelector(selectCurrentOrder);
+
+  console.log('ordermodaldata', orderModalData);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+    // Подготавливаем массив ингредиентов для отправки
+    const ingredientsForOrder = [
+      constructorItems.bun._id, // добавляем булку дважды — сверху и снизу
+      ...constructorItems.ingredients.map((ingredient) => ingredient._id),
+      constructorItems.bun._id // второй раз для нижней булки
+    ];
+    // Отправляем заказ с помощью экшена createOrder
+
+    console.log('ТО ЧТО Я КИДАЮ В АПИ', ingredientsForOrder);
+    dispatch(createOrder(ingredientsForOrder));
   };
-  const closeOrderModal = () => {};
+
+  const closeOrderModal = () => {
+    dispatch(clearCurrentOrder());
+    dispatch(clearConstructor());
+  };
 
   const price = useMemo(
     () =>
@@ -29,8 +54,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  return null;
 
   return (
     <BurgerConstructorUI
