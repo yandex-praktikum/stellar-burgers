@@ -1,21 +1,48 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
-import { TIngredient } from '@utils-types';
+import { TIngredient, TOrder, TOrdersData } from '@utils-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../services/store';
+import { useParams } from 'react-router-dom';
+import { fetchOrderByNumber } from '../../services/slices/orderSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
 
-  const ingredients: TIngredient[] = [];
+  const dispatch: AppDispatch = useDispatch();
+
+  // const orderData: TOrder = {
+  //   createdAt: '',
+  //   ingredients: [],
+  //   _id: '',
+  //   status: '',
+  //   name: '',
+  //   updatedAt: 'string',
+  //   number: 0
+  // };
+
+  const orderNumber = Number(useParams().number);
+
+  console.log('номер заказа', orderNumber);
+
+  const ingredients: TIngredient[] = useSelector(
+    (state: RootState) => state.ingredients.ingredients
+  );
+
+  useEffect(() => {
+    dispatch(fetchOrderByNumber(orderNumber));
+  }, [dispatch, orderNumber]);
+
+  const orderData: TOrder | null = useSelector(
+    (state: RootState) => state.order.currentOrder
+  );
+
+  // getOrderbyNumber -это поставит в теории ордер из парамс в currentOrder что позволит взять orderData из currentData
+
+  // const orderData: TOrder | null = useSelector(
+  //   (state: RootState) => state.order.currentOrder
+  // );
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
