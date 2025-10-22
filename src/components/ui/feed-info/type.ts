@@ -1,10 +1,12 @@
-export type FeedInfoUIProps = {
-  feed: any;
+import { TFeed } from '@utils-types';
+
+export type TFeedInfoUI = {
+  feed: TFeed;
   readyOrders: number[];
   pendingOrders: number[];
 };
 
-export type HalfColumnProps = {
+export type THalfColumn = {
   orders: number[];
   title: string;
   textColor?: string;

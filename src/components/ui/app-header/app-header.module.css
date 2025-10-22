@@ -1,6 +1,8 @@
 .header {
   background-color: var(--background);
+  width: 100%;
 }
+
 .menu {
   display: flex;
   align-items: center;
@@ -12,6 +14,10 @@
 .menu_part_left {
   display: flex;
   flex-basis: 35%;
+}
+
+.navlink {
+  text-decoration: none;
 }
 
 .link {
