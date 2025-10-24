@@ -48,6 +48,7 @@ export const DefaultIngredient: Story = {
         state: null
       }
     },
-    handleAdd: () => {}
+    handleAdd: () => {},
+    index: 1
   }
 };

@@ -3,7 +3,14 @@
   width: 640px;
 }
 .number {
+  /* position: absolute;
+  top: 63px; */
   text-align: center;
+}
+
+.number_modal {
+  position: absolute;
+  top: 63px;
 }
 
 .status {
@@ -12,6 +19,7 @@
 
 .header {
   margin: 0;
+  margin-top: 35px;
 }
 
 .img_wrap {
