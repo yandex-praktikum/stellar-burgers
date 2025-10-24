@@ -2,3 +2,6 @@ node_modules
 .env
 .idea
 dist
+.DS_Store
+cypress/screenshots/
+cypress/videos/
