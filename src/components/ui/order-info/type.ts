@@ -2,6 +2,7 @@ import { TIngredient } from '@utils-types';
 
 export type OrderInfoUIProps = {
   orderInfo: TOrderInfo;
+  title?: string;
 };
 
 type TOrderInfo = {
