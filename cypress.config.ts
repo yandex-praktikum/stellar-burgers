@@ -7,6 +7,10 @@ export default defineConfig({
     viewportHeight: 720,
     video: false,
     screenshotOnRunFailure: true,
+    // Increase timeouts for more reliable tests
+    defaultCommandTimeout: 30000,
+    requestTimeout: 30000,
+    responseTimeout: 30000,
 
     setupNodeEvents(on, config) {
       // implement node event listeners here

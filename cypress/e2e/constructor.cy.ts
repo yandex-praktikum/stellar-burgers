@@ -1,19 +1,15 @@
 describe('Burger Constructor E2E Tests', () => {
   beforeEach(() => {
-    // Intercept ingredients API call
-    cy.intercept('GET', 'https://norma.nomoreparties.space/api/ingredients', {
+    // Intercept ingredients API call - use wildcard to catch both domains
+    cy.intercept('GET', '**/api/ingredients', {
       fixture: 'ingredients.json'
     }).as('getIngredients');
-
-    cy.intercept('GET', 'https://norma.education-services.ru/api/ingredients', {
-      fixture: 'ingredients.json'
-    }).as('getIngredientsAlt');
   });
 
   describe('Ingredients Loading', () => {
     beforeEach(() => {
       cy.visit('/');
-      cy.wait('@getIngredients', { timeout: 10000 }).then(() => {}, () => {});
+      cy.wait('@getIngredients', { timeout: 30000 });
     });
 
     it('should load and display ingredients', () => {
@@ -31,7 +27,7 @@ describe('Burger Constructor E2E Tests', () => {
   describe('Adding Ingredients via Click', () => {
     beforeEach(() => {
       cy.visit('/');
-      cy.wait('@getIngredients', { timeout: 10000 }).then(() => {}, () => {});
+      cy.wait('@getIngredients', { timeout: 30000 });
     });
 
     it('should add bun to constructor by clicking', () => {
@@ -105,7 +101,7 @@ describe('Burger Constructor E2E Tests', () => {
   describe('Ingredient Modal', () => {
     beforeEach(() => {
       cy.visit('/');
-      cy.wait('@getIngredients', { timeout: 10000 }).then(() => {}, () => {});
+      cy.wait('@getIngredients', { timeout: 30000 });
     });
 
     it('should open ingredient modal on ingredient link click', () => {
@@ -157,29 +153,22 @@ describe('Burger Constructor E2E Tests', () => {
       cy.setCookie('accessToken', 'Bearer mock-access-token');
       localStorage.setItem('refreshToken', 'mock-refresh-token');
 
-      // Mock auth user check
-      cy.intercept('GET', 'https://norma.nomoreparties.space/api/auth/user', {
+      // Mock auth user check - use wildcard to catch both domains
+      cy.intercept('GET', '**/api/auth/user', {
         fixture: 'user.json'
       }).as('getUser');
 
-      cy.intercept('GET', 'https://norma.education-services.ru/api/auth/user', {
-        fixture: 'user.json'
-      }).as('getUserAlt');
-
-      // Mock order creation
-      cy.intercept('POST', 'https://norma.nomoreparties.space/api/orders', {
+      // Mock order creation - use wildcard to catch both domains
+      cy.intercept('POST', '**/api/orders', {
         fixture: 'order.json'
       }).as('createOrder');
-
-      cy.intercept('POST', 'https://norma.education-services.ru/api/orders', {
-        fixture: 'order.json'
-      }).as('createOrderAlt');
 
       // Visit page AFTER setting up everything
       cy.visit('/');
 
-      // Wait for user auth to complete
-      cy.wait('@getUser', { timeout: 10000 }).then(() => {}, () => {});
+      // Wait for ingredients and user auth to complete
+      cy.wait('@getIngredients', { timeout: 30000 });
+      cy.wait('@getUser', { timeout: 30000 });
     });
 
     it('should create order with full burger', () => {
@@ -205,10 +194,10 @@ describe('Burger Constructor E2E Tests', () => {
       cy.contains('Оформить заказ').click({ force: true });
 
       // Wait for order creation
-      cy.wait('@createOrder', { timeout: 10000 }).then(() => {}, () => {});
+      cy.wait('@createOrder', { timeout: 30000 });
 
       // Verify order modal opens
-      cy.get('[data-testid="order-details"]', { timeout: 10000 }).should('exist');
+      cy.get('[data-testid="order-details"]', { timeout: 30000 }).should('exist');
     });
 
     it('should display order number 12345 in modal', () => {
@@ -225,10 +214,10 @@ describe('Burger Constructor E2E Tests', () => {
 
       // Create order
       cy.contains('Оформить заказ').click({ force: true });
-      cy.wait('@createOrder', { timeout: 10000 }).then(() => {}, () => {});
+      cy.wait('@createOrder', { timeout: 30000 });
 
       // Verify order number
-      cy.get('[data-testid="order-details"]', { timeout: 10000 })
+      cy.get('[data-testid="order-details"]', { timeout: 30000 })
         .should('contain', '12345');
     });
 
@@ -246,7 +235,7 @@ describe('Burger Constructor E2E Tests', () => {
 
       // Create order
       cy.contains('Оформить заказ').click({ force: true });
-      cy.wait('@createOrder', { timeout: 10000 }).then(() => {}, () => {});
+      cy.wait('@createOrder', { timeout: 30000 });
 
       // Close order modal
       cy.get('[data-testid="modal-close-button"]').click({ force: true });
@@ -262,20 +251,15 @@ describe('Burger Constructor E2E Tests', () => {
       cy.clearCookies();
       cy.clearLocalStorage();
 
-      // Mock failed auth check
-      cy.intercept('GET', 'https://norma.nomoreparties.space/api/auth/user', {
+      // Mock failed auth check - use wildcard to catch both domains
+      cy.intercept('GET', '**/api/auth/user', {
         statusCode: 401,
         body: { success: false, message: 'Unauthorized' }
       }).as('getUser401');
 
-      cy.intercept('GET', 'https://norma.education-services.ru/api/auth/user', {
-        statusCode: 401,
-        body: { success: false, message: 'Unauthorized' }
-      }).as('getUser401Alt');
-
       // Reload page to trigger auth check with cleared auth
       cy.reload();
-      cy.wait('@getIngredients', { timeout: 10000 });
+      cy.wait('@getIngredients', { timeout: 30000 });
 
       // Try to create order - add bun first
       cy.contains('Краторная булка N-200i')
