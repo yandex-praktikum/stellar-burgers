@@ -80,7 +80,7 @@
     "storybook": "^7.6.10",
     "storybook-addon-react-router-v6": "^2.0.10",
     "style-loader": "^3.3.3",
-    "ts-jest": "^29.1.1",
+    "ts-jest": "^29.4.6",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "url-loader": "^4.1.1"
@@ -91,7 +91,13 @@
     "build-storybook": "storybook build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint:fix": "npm run lint -- --fix",
-    "format": "prettier ./src --write"
+    "format": "prettier ./src --write",
+    "test": "npx jest",
+    "test:watch": "npx jest --watch",
+    "test:coverage": "npx jest --coverage",
+    "cypress": "cypress open",
+    "cypress:headless": "cypress run",
+    "test:e2e": "cypress run"
   },
   "eslintConfig": {
     "extends": [
