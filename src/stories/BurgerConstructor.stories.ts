@@ -25,3 +25,14 @@ export const DefaultConstructor: Story = {
     closeOrderModal: () => {}
   }
 };
+
+export const FilledConstructor: Story = {
+  args: {
+    constructorItems: { bun: null, ingredients: [] },
+    orderRequest: false,
+    price: 0,
+    orderModalData: null,
+    onOrderClick: () => {},
+    closeOrderModal: () => {}
+  }
+};

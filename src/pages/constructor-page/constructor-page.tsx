@@ -1,4 +1,12 @@
-import { useSelector } from '../../services/store';
+import { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../services/store';
+import {
+  fetchIngredients,
+  clearOrderModalData,
+  clearViewOrderData,
+  clearSelectedOrderData,
+  clearAllModals
+} from '../../services/slices/BurgerSlice';
 
 import styles from './constructor-page.module.css';
 
@@ -7,9 +15,21 @@ import { BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
 import { FC } from 'react';
 
-export const ConstructorPage: FC = () => {
-  /** TODO: взять переменную из стора */
-  const isIngredientsLoading = false;
+const ConstructorPage: FC = () => {
+  const dispatch = useAppDispatch();
+  const isIngredientsLoading = useAppSelector((state) => state.burger.loading);
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+    dispatch(clearOrderModalData());
+    dispatch(clearViewOrderData());
+    dispatch(clearSelectedOrderData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+    dispatch(clearAllModals());
+  }, [dispatch]);
 
   return (
     <>
@@ -31,3 +51,5 @@ export const ConstructorPage: FC = () => {
     </>
   );
 };
+
+export default ConstructorPage;
