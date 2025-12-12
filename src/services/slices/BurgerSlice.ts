@@ -37,7 +37,7 @@ export type TFeedState = {
 
 export const fetchIngredients = createAsyncThunk<
   TIngredient[],
-  void, 
+  void,
   { rejectValue: string }
 >('burger/fetchIngredients', async (_, thunkAPI) => {
   try {

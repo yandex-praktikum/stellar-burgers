@@ -34,8 +34,7 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
       ingredientsInfo.length > maxIngredients
         ? ingredientsInfo.length - maxIngredients
         : 0;
-
-        return {
+    return {
       ...order,
       ingredientsInfo,
       ingredientsToShow,
