@@ -1,5 +1,4 @@
 import { FC, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
@@ -7,7 +6,7 @@ import {
   clearOrderModalData,
   createOrder
 } from '../../services/slices/BurgerSlice';
-import { useAppSelector, useAppDispatch } from 'src/services/store';
+import { useAppSelector, useAppDispatch } from '../../services/store';
 import { getCookie } from '../../utils/cookie';
 
 export const BurgerConstructor: FC = () => {
@@ -17,12 +16,8 @@ export const BurgerConstructor: FC = () => {
   const constructorItems = useAppSelector(
     (state) => state.burger.constructorItems
   );
-  const orderRequest = useAppSelector(
-    (state) => state.burger.orderRequest
-  );
-  const orderModalData = useAppSelector(
-    (state) => state.burger.orderModalData
-  );
+  const orderRequest = useAppSelector((state) => state.burger.orderRequest);
+  const orderModalData = useAppSelector((state) => state.burger.orderModalData);
 
   const isAuth = !!getCookie('accessToken');
 
