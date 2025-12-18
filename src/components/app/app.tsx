@@ -18,20 +18,20 @@ import { AppHeader } from '@components';
 import { Modal } from '@components';
 import { OrderInfo } from '@components';
 import { IngredientDetails } from '@components';
-import { useAppDispatch } from '../../services/store';
-import { clearViewOrderData } from '../../services/slices/BurgerSlice';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import {
+  clearViewOrderData,
+  fetchIngredients
+} from '../../services/slices/BurgerSlice';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   getUser,
   clearAuth,
   selectIsAuthenticated
 } from '../../services/slices/AuthSlice';
 import { getCookie } from '../../utils/cookie';
-import { AppDispatch } from '../../services/store';
-
 export const useAuthCheck = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,11 +52,15 @@ export const useAuthCheck = () => {
 
 function App(): JSX.Element {
   useAuthCheck();
-  const isAuth = useSelector(selectIsAuthenticated);
+  const isAuth = useAppSelector(selectIsAuthenticated);
   const location = useLocation();
   const background = location.state && location.state.background;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
   const handleCloseOrderModal = () => {
     dispatch(clearViewOrderData());
@@ -69,6 +73,8 @@ function App(): JSX.Element {
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
         <Route path='*' element={<NotFound404 />} />
 
         <Route

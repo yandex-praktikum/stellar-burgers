@@ -3,7 +3,8 @@ import {
   getIngredientsApi,
   getFeedsApi,
   getOrdersApi,
-  orderBurgerApi
+  orderBurgerApi,
+  getOrderByNumberApi
 } from '@api';
 import {
   TIngredient,
@@ -15,6 +16,7 @@ import {
 export type TBurgerState = {
   ingredients: TIngredient[];
   loading: boolean;
+  ingredientsLoading: boolean;
   error: string | null;
   constructorItems: {
     bun: TIngredient | null;
@@ -87,8 +89,22 @@ export const fetchOrders = createAsyncThunk<
   }
 });
 
+export const fetchOrderByNumber = createAsyncThunk<
+  TOrder,
+  number,
+  { rejectValue: string }
+>('burger/fetchOrderByNumber', async (number, thunkAPI) => {
+  try {
+    const response = await getOrderByNumberApi(number);
+    return response.orders[0];
+  } catch (error) {
+    return thunkAPI.rejectWithValue('Failed to fetch order');
+  }
+});
+
 const burgerInitialState: TBurgerState = {
   ingredients: [],
+  ingredientsLoading: false,
   loading: false,
   error: null,
   constructorItems: {
@@ -184,15 +200,15 @@ export const burgerSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchIngredients.pending, (state) => {
-        state.loading = true;
+        state.ingredientsLoading = true;
         state.error = null;
       })
       .addCase(fetchIngredients.fulfilled, (state, action) => {
-        state.loading = false;
+        state.ingredientsLoading = false;
         state.ingredients = action.payload;
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
-        state.loading = false;
+        state.ingredientsLoading = false;
         state.error = action.payload || 'Unknown error';
       })
       .addCase(createOrder.pending, (state) => {
@@ -210,6 +226,18 @@ export const burgerSlice = createSlice({
       .addCase(createOrder.rejected, (state, action) => {
         state.orderRequest = false;
         state.error = action.payload || 'Failed to create order';
+      })
+      .addCase(fetchOrderByNumber.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchOrderByNumber.fulfilled, (state, action) => {
+        state.loading = false;
+        state.viewOrderData = action.payload;
+      })
+      .addCase(fetchOrderByNumber.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to fetch order';
       });
   }
 });

@@ -17,14 +17,9 @@ import { FC } from 'react';
 
 const ConstructorPage: FC = () => {
   const dispatch = useAppDispatch();
-  const isIngredientsLoading = useAppSelector((state) => state.burger.loading);
-
-  useEffect(() => {
-    dispatch(fetchIngredients());
-    dispatch(clearOrderModalData());
-    dispatch(clearViewOrderData());
-    dispatch(clearSelectedOrderData());
-  }, [dispatch]);
+  const isIngredientsLoading = useAppSelector(
+    (state) => state.burger.ingredientsLoading
+  );
 
   useEffect(() => {
     dispatch(fetchIngredients());

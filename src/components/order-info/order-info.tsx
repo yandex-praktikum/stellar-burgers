@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../services/store';
 import {
   setViewOrderData,
-  clearViewOrderData
+  clearViewOrderData,
+  fetchOrderByNumber
 } from '../../services/slices/BurgerSlice';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
@@ -13,16 +14,19 @@ export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const dispatch = useAppDispatch();
 
-  const { viewOrderData, ingredients, feedOrders } = useAppSelector(
+  const { viewOrderData, ingredients, feedOrders, loading } = useAppSelector(
     (state) => ({
       viewOrderData: state.burger.viewOrderData,
       ingredients: state.burger.ingredients,
-      feedOrders: state.feed.orders
+      feedOrders: state.feed.orders,
+      loading: state.burger.loading
     })
   );
 
   useEffect(() => {
-    if (number && feedOrders.length > 0) {
+    if (!number) return;
+
+    if (feedOrders.length > 0) {
       const orderFromUrl = feedOrders.find(
         (order) => order.number.toString() === number
       );
@@ -32,7 +36,12 @@ export const OrderInfo: FC = () => {
         (!viewOrderData || viewOrderData.number.toString() !== number)
       ) {
         dispatch(setViewOrderData(orderFromUrl));
+        return;
       }
+    }
+
+    if (!viewOrderData || viewOrderData.number.toString() !== number) {
+      dispatch(fetchOrderByNumber(Number(number)));
     }
   }, [number, feedOrders, viewOrderData, dispatch]);
 
@@ -67,7 +76,6 @@ export const OrderInfo: FC = () => {
         } else {
           acc[item].count++;
         }
-
         return acc;
       },
       {}
@@ -86,7 +94,7 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (!orderInfo) {
+  if (!orderInfo || loading) {
     return <Preloader />;
   }
 

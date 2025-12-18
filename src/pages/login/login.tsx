@@ -1,21 +1,20 @@
 import { FC, SyntheticEvent, useState, useEffect } from 'react';
 import { LoginUI } from '@ui-pages';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   loginUser,
   clearError,
   selectAuth
 } from '../../services/slices/AuthSlice';
-import { AppDispatch } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { error, isAuthenticated } = useSelector(selectAuth);
+  const { error, isAuthenticated } = useAppSelector(selectAuth);
 
   useEffect(() => {
     if (isAuthenticated) {

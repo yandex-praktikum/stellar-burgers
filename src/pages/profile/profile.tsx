@@ -1,6 +1,5 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   updateUser,
@@ -9,13 +8,13 @@ import {
   clearError,
   selectAuth
 } from '../../services/slices/AuthSlice';
-import { AppDispatch } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 
 export const Profile: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { user, error, updateRequest, isAuthenticated } =
-    useSelector(selectAuth);
+    useAppSelector(selectAuth);
 
   const [formValue, setFormValue] = useState({
     name: user?.name || '',
@@ -106,11 +105,9 @@ export const Profile: FC = () => {
   };
 
   const handleLogout = () => {
-    console.log('Profile: handleLogout called');
     dispatch(logoutUser())
       .unwrap()
       .then(() => {
-        console.log('Logout successful, navigating to login');
         navigate('/login', { replace: true });
       })
       .catch((error) => {

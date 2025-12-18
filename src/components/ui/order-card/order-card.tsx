@@ -8,7 +8,7 @@ import {
 import styles from './order-card.module.css';
 import { OrderCardUIProps } from './type';
 import { OrderStatus } from '@components';
-import { useAppDispatch } from '@hooks';
+import { useAppDispatch } from '../../../services/store';
 import { setOrderModalData } from '../../../services/slices/BurgerSlice';
 
 export const OrderCardUI: FC<OrderCardUIProps> = memo(

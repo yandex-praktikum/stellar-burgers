@@ -7,22 +7,21 @@ import {
   clearOrderModalData,
   createOrder
 } from '../../services/slices/BurgerSlice';
-import { RootState } from 'src/services/store';
-import { AppDispatch } from 'src/services/store';
+import { useAppSelector, useAppDispatch } from 'src/services/store';
 import { getCookie } from '../../utils/cookie';
 
 export const BurgerConstructor: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const constructorItems = useSelector(
-    (state: RootState) => state.burger.constructorItems
+  const constructorItems = useAppSelector(
+    (state) => state.burger.constructorItems
   );
-  const orderRequest = useSelector(
-    (state: RootState) => state.burger.orderRequest
+  const orderRequest = useAppSelector(
+    (state) => state.burger.orderRequest
   );
-  const orderModalData = useSelector(
-    (state: RootState) => state.burger.orderModalData
+  const orderModalData = useAppSelector(
+    (state) => state.burger.orderModalData
   );
 
   const isAuth = !!getCookie('accessToken');
