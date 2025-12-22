@@ -1,6 +1,6 @@
-import { FC, SyntheticEvent, useState, useEffect } from 'react';
+import { FC, SyntheticEvent, useState, useEffect, useRef } from 'react';
 import { RegisterUI } from '@ui-pages';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   registerUser,
   clearError,
@@ -15,8 +15,10 @@ export const Register: FC = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { error, registerRequest, isAuthenticated } =
     useAppSelector(selectAuth);
+  const fromRef = useRef(location.state?.from?.pathname || '/');
 
   useEffect(
     () => () => {
@@ -28,7 +30,7 @@ export const Register: FC = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate(fromRef.current, { replace: true });
     }
   }, [isAuthenticated, navigate]);
 

@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   CurrencyIcon,
   FormattedDate
@@ -8,25 +8,17 @@ import {
 import styles from './order-card.module.css';
 import { OrderCardUIProps } from './type';
 import { OrderStatus } from '@components';
-import { useAppDispatch } from '../../../services/store';
-import { setOrderModalData } from '../../../services/slices/BurgerSlice';
 
 export const OrderCardUI: FC<OrderCardUIProps> = memo(
   ({ orderInfo, maxIngredients, locationState }) => {
     const location = useLocation();
-    const dispatch = useAppDispatch();
-
-    const handleOrderClick = () => {
-      dispatch(setOrderModalData(orderInfo));
-    };
 
     return (
-      <Link
+      <NavLink
         to={orderInfo.number.toString()}
         relative='path'
         state={locationState}
         className={`p-6 mb-4 mr-2 ${styles.order}`}
-        onClick={handleOrderClick}
       >
         <div className={styles.order_info}>
           <span className={`text text_type_digits-default ${styles.number}`}>
@@ -45,22 +37,11 @@ export const OrderCardUI: FC<OrderCardUIProps> = memo(
         <div className={`pt-6 ${styles.order_content}`}>
           <ul className={styles.ingredients}>
             {orderInfo.ingredientsToShow.map((ingredient, index) => {
-              let zIndex = maxIngredients - index;
-              let right = 20 * index;
+              const isFaded = orderInfo.remains && maxIngredients === index + 1;
               return (
-                <li
-                  className={styles.img_wrap}
-                  style={{ zIndex: zIndex, right: right }}
-                  key={index}
-                >
+                <li className={styles.img_wrap} key={index}>
                   <img
-                    style={{
-                      opacity:
-                        orderInfo.remains && maxIngredients === index + 1
-                          ? '0.5'
-                          : '1'
-                    }}
-                    className={styles.img}
+                    className={`${styles.img} ${isFaded ? styles.img_faded : ''}`}
                     src={ingredient.image_mobile}
                     alt={ingredient.name}
                   />
@@ -84,7 +65,7 @@ export const OrderCardUI: FC<OrderCardUIProps> = memo(
             <CurrencyIcon type='primary' />
           </div>
         </div>
-      </Link>
+      </NavLink>
     );
   }
 );

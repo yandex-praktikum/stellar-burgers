@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import { logoutUser } from '../../services/slices/AuthSlice';
-import { fetchOrders } from '../../services/slices/BurgerSlice';
+import { fetchOrders } from '../../services/slices/FeedSlice';
 
 export const ProfileOrders: FC = () => {
   const navigate = useNavigate();

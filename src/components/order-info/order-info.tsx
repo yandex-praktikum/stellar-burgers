@@ -14,35 +14,29 @@ export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const dispatch = useAppDispatch();
 
-  const { viewOrderData, ingredients, feedOrders, loading } = useAppSelector(
-    (state) => ({
-      viewOrderData: state.burger.viewOrderData,
-      ingredients: state.burger.ingredients,
-      feedOrders: state.feed.orders,
-      loading: state.burger.loading
-    })
-  );
+  const viewOrderData = useAppSelector((state) => state.burger.viewOrderData);
+  const ingredients = useAppSelector((state) => state.burger.ingredients);
+  const feedOrders = useAppSelector((state) => state.feed.orders);
 
   useEffect(() => {
     if (!number) return;
+
+    if (viewOrderData && viewOrderData.number.toString() === number) {
+      return;
+    }
 
     if (feedOrders.length > 0) {
       const orderFromUrl = feedOrders.find(
         (order) => order.number.toString() === number
       );
 
-      if (
-        orderFromUrl &&
-        (!viewOrderData || viewOrderData.number.toString() !== number)
-      ) {
+      if (orderFromUrl) {
         dispatch(setViewOrderData(orderFromUrl));
         return;
       }
     }
 
-    if (!viewOrderData || viewOrderData.number.toString() !== number) {
-      dispatch(fetchOrderByNumber(Number(number)));
-    }
+    dispatch(fetchOrderByNumber(Number(number)));
   }, [number, feedOrders, viewOrderData, dispatch]);
 
   useEffect(
@@ -55,7 +49,6 @@ export const OrderInfo: FC = () => {
 
   const orderData = viewOrderData;
 
-  /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -94,8 +87,16 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (!orderInfo || loading) {
+  if (!viewOrderData || !ingredients.length) {
     return <Preloader />;
+  }
+
+  if (!orderInfo) {
+    return (
+      <div>
+        <p>Не удалось отобразить заказ</p>
+      </div>
+    );
   }
 
   return <OrderInfoUI orderInfo={orderInfo} />;

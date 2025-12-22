@@ -18,12 +18,13 @@ import { AppHeader } from '@components';
 import { Modal } from '@components';
 import { OrderInfo } from '@components';
 import { IngredientDetails } from '@components';
+import { ProtectedRoute } from '@components';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import {
   clearViewOrderData,
   fetchIngredients
 } from '../../services/slices/BurgerSlice';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   getUser,
   clearAuth,
@@ -32,22 +33,28 @@ import {
 import { getCookie } from '../../utils/cookie';
 export const useAuthCheck = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const isCheckedRef = useRef(false);
 
   useEffect(() => {
+    if (isCheckedRef.current) {
+      return;
+    }
+
+    isCheckedRef.current = true;
+
     const token = getCookie('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
 
     if (token && refreshToken) {
       dispatch(getUser())
         .unwrap()
-        .catch(() => {
+        .catch((error) => {
           dispatch(clearAuth());
         });
     } else {
       dispatch(clearAuth());
     }
-  }, [dispatch, navigate]);
+  }, [dispatch]);
 };
 
 function App(): JSX.Element {
@@ -77,35 +84,35 @@ function App(): JSX.Element {
         <Route path='/feed/:number' element={<OrderInfo />} />
         <Route path='*' element={<NotFound404 />} />
 
-        <Route
-          path='/login'
-          element={!isAuth ? <Login /> : <Navigate to='/' replace />}
-        />
-        <Route
-          path='/register'
-          element={!isAuth ? <Register /> : <Navigate to='/' replace />}
-        />
-        <Route
-          path='/forgot-password'
-          element={!isAuth ? <ForgotPassword /> : <Navigate to='/' replace />}
-        />
-        <Route
-          path='/reset-password'
-          element={!isAuth ? <ResetPassword /> : <Navigate to='/' replace />}
-        />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
         <Route
           path='/profile'
-          element={isAuth ? <Profile /> : <Navigate to='/login' replace />}
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
         />
         <Route
           path='/profile/orders'
           element={
-            isAuth ? <ProfileOrders /> : <Navigate to='/login' replace />
+            isAuth ? (
+              <ProfileOrders />
+            ) : (
+              <Navigate to='/login' state={{ from: location }} replace />
+            )
           }
         />
         <Route
           path='/profile/orders/:number'
-          element={isAuth ? <OrderInfo /> : <Navigate to='/login' replace />}
+          element={
+            <ProtectedRoute>
+              <OrderInfo />
+            </ProtectedRoute>
+          }
         />
       </Routes>
 
@@ -136,16 +143,14 @@ function App(): JSX.Element {
             <Route
               path='/profile/orders/:number'
               element={
-                isAuth ? (
+                <ProtectedRoute>
                   <Modal
                     title='Информация о заказе'
                     onClose={handleCloseOrderModal}
                   >
                     <OrderInfo />
                   </Modal>
-                ) : (
-                  <Navigate to='/login' replace />
-                )
+                </ProtectedRoute>
               }
             />
           </Routes>

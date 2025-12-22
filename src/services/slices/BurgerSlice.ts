@@ -1,22 +1,12 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import {
-  getIngredientsApi,
-  getFeedsApi,
-  getOrdersApi,
-  orderBurgerApi,
-  getOrderByNumberApi
-} from '@api';
-import {
-  TIngredient,
-  TConstructorIngredient,
-  TOrder,
-  TOrdersData
-} from '@utils-types';
+import { getIngredientsApi, orderBurgerApi, getOrderByNumberApi } from '@api';
+import { TIngredient, TConstructorIngredient, TOrder } from '@utils-types';
 
 export type TBurgerState = {
   ingredients: TIngredient[];
   loading: boolean;
   ingredientsLoading: boolean;
+  orderLoading: boolean;
   error: string | null;
   constructorItems: {
     bun: TIngredient | null;
@@ -27,14 +17,6 @@ export type TBurgerState = {
   selectedIngredient: TIngredient | null;
   selectedOrderData: TOrder | null;
   viewOrderData: TOrder | null;
-};
-
-export type TFeedState = {
-  orders: TOrder[];
-  total: number;
-  totalToday: number;
-  loading: boolean;
-  error: string | null;
 };
 
 export const fetchIngredients = createAsyncThunk<
@@ -63,32 +45,6 @@ export const createOrder = createAsyncThunk<
   }
 });
 
-export const fetchFeeds = createAsyncThunk<
-  TOrdersData,
-  void,
-  { rejectValue: string }
->('feed/fetchFeeds', async (_, thunkAPI) => {
-  try {
-    const response = await getFeedsApi();
-    return response;
-  } catch (error) {
-    return thunkAPI.rejectWithValue('Failed to fetch feeds');
-  }
-});
-
-export const fetchOrders = createAsyncThunk<
-  TOrder[],
-  void,
-  { rejectValue: string }
->('feed/fetchOrders', async (_, thunkAPI) => {
-  try {
-    const response = await getOrdersApi();
-    return response;
-  } catch (error) {
-    return thunkAPI.rejectWithValue('Failed to fetch orders');
-  }
-});
-
 export const fetchOrderByNumber = createAsyncThunk<
   TOrder,
   number,
@@ -106,6 +62,7 @@ const burgerInitialState: TBurgerState = {
   ingredients: [],
   ingredientsLoading: false,
   loading: false,
+  orderLoading: false,
   error: null,
   constructorItems: {
     bun: null,
@@ -118,14 +75,6 @@ const burgerInitialState: TBurgerState = {
   viewOrderData: null
 };
 
-const feedInitialState: TFeedState = {
-  orders: [],
-  total: 0,
-  totalToday: 0,
-  loading: false,
-  error: null
-};
-
 export const burgerSlice = createSlice({
   name: 'burger',
   initialState: burgerInitialState,
@@ -133,12 +82,8 @@ export const burgerSlice = createSlice({
     setBun(state, action: PayloadAction<TIngredient>) {
       state.constructorItems.bun = action.payload;
     },
-    addIngredient(state, action: PayloadAction<TIngredient>) {
-      const constructorIngredient: TConstructorIngredient = {
-        ...action.payload,
-        id: `${action.payload._id}_${Date.now()}_${Math.random()}`
-      };
-      state.constructorItems.ingredients.push(constructorIngredient);
+    addIngredient(state, action: PayloadAction<TConstructorIngredient>) {
+      state.constructorItems.ingredients.push(action.payload);
     },
     removeIngredient(state, action: PayloadAction<string>) {
       state.constructorItems.ingredients =
@@ -228,78 +173,16 @@ export const burgerSlice = createSlice({
         state.error = action.payload || 'Failed to create order';
       })
       .addCase(fetchOrderByNumber.pending, (state) => {
-        state.loading = true;
+        state.orderLoading = true;
         state.error = null;
       })
       .addCase(fetchOrderByNumber.fulfilled, (state, action) => {
-        state.loading = false;
+        state.orderLoading = false;
         state.viewOrderData = action.payload;
       })
       .addCase(fetchOrderByNumber.rejected, (state, action) => {
-        state.loading = false;
+        state.orderLoading = false;
         state.error = action.payload || 'Failed to fetch order';
-      });
-  }
-});
-
-export const feedSlice = createSlice({
-  name: 'feed',
-  initialState: feedInitialState,
-  reducers: {
-    setOrders(state, action: PayloadAction<TOrder[]>) {
-      state.orders = action.payload;
-    },
-    setTotal(state, action: PayloadAction<number>) {
-      state.total = action.payload;
-    },
-    setTotalToday(state, action: PayloadAction<number>) {
-      state.totalToday = action.payload;
-    },
-    clearFeed(state) {
-      state.orders = [];
-      state.total = 0;
-      state.totalToday = 0;
-    },
-    updateOrderStatus(
-      state,
-      action: PayloadAction<{ orderId: string; status: string }>
-    ) {
-      const { orderId, status } = action.payload;
-      const orderIndex = state.orders.findIndex(
-        (order: TOrder) => order._id === orderId
-      );
-      if (orderIndex !== -1) {
-        state.orders[orderIndex].status = status;
-      }
-    }
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchFeeds.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchFeeds.fulfilled, (state, action) => {
-        state.loading = false;
-        state.orders = action.payload.orders;
-        state.total = action.payload.total;
-        state.totalToday = action.payload.totalToday;
-      })
-      .addCase(fetchFeeds.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload || 'Unknown error';
-      })
-      .addCase(fetchOrders.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchOrders.fulfilled, (state, action) => {
-        state.loading = false;
-        state.orders = action.payload;
-      })
-      .addCase(fetchOrders.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload || 'Unknown error';
       });
   }
 });
@@ -321,13 +204,4 @@ export const {
   clearAllModals
 } = burgerSlice.actions;
 
-export const {
-  setOrders,
-  setTotal,
-  setTotalToday,
-  clearFeed,
-  updateOrderStatus
-} = feedSlice.actions;
-
 export const burgerReducer = burgerSlice.reducer;
-export const feedReducer = feedSlice.reducer;

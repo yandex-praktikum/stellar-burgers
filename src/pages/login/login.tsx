@@ -1,6 +1,6 @@
-import { FC, SyntheticEvent, useState, useEffect } from 'react';
+import { FC, SyntheticEvent, useState, useEffect, useRef } from 'react';
 import { LoginUI } from '@ui-pages';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   loginUser,
   clearError,
@@ -14,15 +14,16 @@ export const Login: FC = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { error, isAuthenticated } = useAppSelector(selectAuth);
+
+  const fromRef = useRef(location.state?.from?.pathname || '/');
 
   useEffect(() => {
     if (isAuthenticated) {
-      if (window.location.pathname !== '/profile') {
-        navigate('/profile', { replace: true });
-      }
+      navigate(fromRef.current, { replace: true });
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
   useEffect(
     () => () => {

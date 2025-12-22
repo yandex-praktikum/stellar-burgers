@@ -30,8 +30,10 @@ export function setCookie(
   if (exp && exp instanceof Date) {
     props.expires = exp.toUTCString();
   }
+
   value = encodeURIComponent(value);
   let updatedCookie = name + '=' + value;
+
   for (const propName in props) {
     updatedCookie += '; ' + propName;
     const propValue = props[propName];
@@ -39,6 +41,7 @@ export function setCookie(
       updatedCookie += '=' + propValue;
     }
   }
+
   document.cookie = updatedCookie;
 }
 

@@ -1,12 +1,6 @@
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../services/store';
-import {
-  fetchIngredients,
-  clearOrderModalData,
-  clearViewOrderData,
-  clearSelectedOrderData,
-  clearAllModals
-} from '../../services/slices/BurgerSlice';
+import { clearAllModals } from '../../services/slices/BurgerSlice';
 
 import styles from './constructor-page.module.css';
 
@@ -22,7 +16,6 @@ const ConstructorPage: FC = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchIngredients());
     dispatch(clearAllModals());
   }, [dispatch]);
 

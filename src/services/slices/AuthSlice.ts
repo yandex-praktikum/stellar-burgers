@@ -30,7 +30,7 @@ export const registerUser = createAsyncThunk<
   try {
     const response = await registerUserApi(userData);
     localStorage.setItem('refreshToken', response.refreshToken);
-    setCookie('accessToken', response.accessToken);
+    setCookie('accessToken', response.accessToken, { expires: 1200 });
     return response.user;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message || 'Registration failed');
@@ -45,7 +45,7 @@ export const loginUser = createAsyncThunk<
   try {
     const response = await loginUserApi(loginData);
     localStorage.setItem('refreshToken', response.refreshToken);
-    setCookie('accessToken', response.accessToken);
+    setCookie('accessToken', response.accessToken, { expires: 1200 });
     return response.user;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message || 'Login failed');

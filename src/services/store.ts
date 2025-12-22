@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { burgerSlice, feedSlice } from './slices/BurgerSlice';
+import { burgerSlice } from './slices/BurgerSlice';
+import { feedReducer } from './slices/FeedSlice';
 import { authReducer } from './slices/AuthSlice';
 
 import {
@@ -11,7 +12,7 @@ import {
 export const store = configureStore({
   reducer: {
     burger: burgerSlice.reducer,
-    feed: feedSlice.reducer,
+    feed: feedReducer,
     auth: authReducer
   }
 });

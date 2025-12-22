@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styles from './burger-ingredient.module.css';
 
 import {
@@ -16,7 +16,7 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
 
     return (
       <li className={styles.container}>
-        <Link
+        <NavLink
           className={styles.article}
           to={`/ingredients/${_id}`}
           state={locationState}
@@ -28,7 +28,7 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
             <CurrencyIcon type='primary' />
           </div>
           <p className={`text text_type_main-default ${styles.text}`}>{name}</p>
-        </Link>
+        </NavLink>
         <AddButton
           text='Добавить'
           onClick={handleAdd}

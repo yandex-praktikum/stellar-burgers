@@ -3,9 +3,10 @@ import { useAppSelector, useAppDispatch } from '../../services/store';
 import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
-import { TIngredient } from '@utils-types';
+import { TIngredient, TConstructorIngredient } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { setBun, addIngredient } from '../../services/slices/BurgerSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 export const BurgerIngredients: FC = () => {
   const dispatch = useAppDispatch();
@@ -58,7 +59,11 @@ export const BurgerIngredients: FC = () => {
     if (ingredient.type === 'bun') {
       dispatch(setBun(ingredient));
     } else {
-      dispatch(addIngredient(ingredient));
+      const constructorIngredient: TConstructorIngredient = {
+        ...ingredient,
+        id: uuidv4()
+      };
+      dispatch(addIngredient(constructorIngredient));
     }
   };
 

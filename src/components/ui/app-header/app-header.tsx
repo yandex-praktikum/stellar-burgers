@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import styles from './app-header.module.css';
 import { TAppHeaderUIProps } from './type';
 import {
@@ -16,7 +16,14 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
         <div className={styles.menu_part_left}>
-          <Link to='/' className={styles.link}>
+          <NavLink
+            to='/'
+            className={({ isActive }) =>
+              `text text_type_main-medium text_color_inactive pt-4 pb-4 ${
+                styles.link
+              } ${isActive ? styles.link_active : ''}`
+            }
+          >
             <BurgerIcon
               type={location.pathname === '/' ? 'primary' : 'secondary'}
             />
@@ -29,9 +36,16 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
             >
               Конструктор
             </p>
-          </Link>
+          </NavLink>
 
-          <Link to='/feed' className={styles.link}>
+          <NavLink
+            to='/feed'
+            className={({ isActive }) =>
+              `text text_type_main-medium text_color_inactive pt-4 pb-4 ${
+                styles.link
+              } ${isActive ? styles.link_active : ''}`
+            }
+          >
             <ListIcon
               type={location.pathname === '/feed' ? 'primary' : 'secondary'}
             />
@@ -44,7 +58,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
             >
               Лента заказов
             </p>
-          </Link>
+          </NavLink>
         </div>
 
         <div className={styles.logo}>
@@ -52,7 +66,15 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
         </div>
 
         <div className={styles.link_position_last}>
-          <Link to='/profile' className={styles.link}>
+          <NavLink
+            to='/profile'
+            className={({ isActive }) =>
+              `text text_type_main-medium text_color_inactive pt-4 pb-4 ${
+                styles.link
+              } ${isActive ? styles.link_active : ''}`
+            }
+            end
+          >
             <ProfileIcon
               type={
                 location.pathname.startsWith('/profile')
@@ -69,7 +91,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
             >
               {userName || 'Личный кабинет'}
             </p>
-          </Link>
+          </NavLink>
         </div>
       </nav>
     </header>

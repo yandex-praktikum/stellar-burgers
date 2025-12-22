@@ -5,7 +5,7 @@ import {
   PasswordInput
 } from '@zlden/react-developer-burger-ui-components';
 import styles from '../common.module.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { ResetPasswordUIProps } from './type';
 
 export const ResetPasswordUI: FC<ResetPasswordUIProps> = ({
@@ -56,9 +56,9 @@ export const ResetPasswordUI: FC<ResetPasswordUIProps> = ({
       </form>
       <div className={`${styles.question} text text_type_main-default pb-6`}>
         Вспомнили пароль?
-        <Link to='/login' className={`pl-2 ${styles.link}`}>
+        <NavLink to='/login' className={`pl-2 ${styles.link}`}>
           Войти
-        </Link>
+        </NavLink>
       </div>
     </div>
   </main>
