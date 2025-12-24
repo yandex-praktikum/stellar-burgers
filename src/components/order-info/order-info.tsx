@@ -99,5 +99,10 @@ export const OrderInfo: FC = () => {
     );
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  return (
+    <div>
+      <p className='text text_type_digits-default mb-6'>#{number}</p>
+      <OrderInfoUI orderInfo={orderInfo} />
+    </div>
+  );
 };

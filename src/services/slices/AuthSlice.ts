@@ -14,6 +14,7 @@ import { setCookie, deleteCookie, getCookie } from '../../utils/cookie';
 export type TAuthState = {
   user: TUser | null;
   isAuthenticated: boolean;
+  isAuthChecked: boolean;
   loading: boolean;
   error: string | null;
   loginRequest: boolean;
@@ -82,6 +83,7 @@ export const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
   async (_, thunkAPI) => {
     try {
       await logoutApi();
+      localStorage.clear();
       localStorage.removeItem('refreshToken');
       deleteCookie('accessToken');
     } catch (error: any) {
@@ -95,6 +97,7 @@ export const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
 const authInitialState: TAuthState = {
   user: null,
   isAuthenticated: false,
+  isAuthChecked: false,
   loading: false,
   error: null,
   loginRequest: false,
@@ -118,6 +121,7 @@ export const authSlice = createSlice({
     clearAuth: (state) => {
       state.user = null;
       state.isAuthenticated = false;
+      state.isAuthChecked = true;
       state.error = null;
       state.loading = false;
       state.loginRequest = false;
@@ -140,6 +144,7 @@ export const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
+        state.isAuthChecked = true;
         state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -147,6 +152,7 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'Registration failed';
         state.isAuthenticated = false;
+        state.isAuthChecked = true;
       })
 
       .addCase(loginUser.pending, (state) => {
@@ -159,6 +165,7 @@ export const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
+        state.isAuthChecked = true;
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -166,6 +173,7 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'Login failed';
         state.isAuthenticated = false;
+        state.isAuthChecked = true;
       })
 
       .addCase(getUser.pending, (state) => {
@@ -176,6 +184,7 @@ export const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
+        state.isAuthChecked = true;
         state.error = null;
       })
       .addCase(getUser.rejected, (state, action) => {
@@ -183,6 +192,7 @@ export const authSlice = createSlice({
         state.error = action.payload || 'Failed to get user';
         state.user = null;
         state.isAuthenticated = false;
+        state.isAuthChecked = true;
         localStorage.removeItem('refreshToken');
         deleteCookie('accessToken');
       })
@@ -214,6 +224,7 @@ export const authSlice = createSlice({
         state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
+        state.isAuthChecked = true;
         state.error = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
@@ -221,6 +232,7 @@ export const authSlice = createSlice({
         state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
+        state.isAuthChecked = true;
         state.error = null;
       });
   }
@@ -234,6 +246,8 @@ export const selectAuth = (state: { auth: TAuthState }) => state.auth;
 export const selectUser = (state: { auth: TAuthState }) => state.auth.user;
 export const selectIsAuthenticated = (state: { auth: TAuthState }) =>
   state.auth.isAuthenticated;
+export const selectIsAuthChecked = (state: { auth: TAuthState }) =>
+  state.auth.isAuthChecked;
 export const selectAuthLoading = (state: { auth: TAuthState }) =>
   state.auth.loading;
 export const selectAuthError = (state: { auth: TAuthState }) =>

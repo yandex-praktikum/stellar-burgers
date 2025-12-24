@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../services/store';
 import { setSelectedIngredient } from '../../services/slices/BurgerSlice';
 import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
+import styles from './ingredient-details.module.css';
 
 export const IngredientDetails: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,5 +33,12 @@ export const IngredientDetails: FC = () => {
     return <Preloader />;
   }
 
-  return <IngredientDetailsUI ingredientData={ingredientData} />;
+  return (
+    <>
+      <p className={'text text_type_main-medium mt-2 mb-4'}>
+        Детали ингредиента
+      </p>
+      <IngredientDetailsUI ingredientData={ingredientData} />
+    </>
+  );
 };

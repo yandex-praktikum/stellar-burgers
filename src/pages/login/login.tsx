@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useState, useEffect, useRef } from 'react';
+import { FC, SyntheticEvent, useState, useEffect } from 'react';
 import { LoginUI } from '@ui-pages';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -17,13 +17,13 @@ export const Login: FC = () => {
   const location = useLocation();
   const { error, isAuthenticated } = useAppSelector(selectAuth);
 
-  const fromRef = useRef(location.state?.from?.pathname || '/');
+  const from = location.state?.from?.pathname || '/';
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(fromRef.current, { replace: true });
+      navigate(from, { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, from]);
 
   useEffect(
     () => () => {

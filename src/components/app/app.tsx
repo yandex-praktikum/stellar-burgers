@@ -2,7 +2,7 @@ import { ConstructorPage } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
 import { useNavigate } from 'react-router-dom';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import {
   Feed,
   Login,
@@ -24,24 +24,22 @@ import {
   clearViewOrderData,
   fetchIngredients
 } from '../../services/slices/BurgerSlice';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import {
   getUser,
   clearAuth,
   selectIsAuthenticated
 } from '../../services/slices/AuthSlice';
 import { getCookie } from '../../utils/cookie';
-export const useAuthCheck = () => {
+
+function App(): JSX.Element {
   const dispatch = useAppDispatch();
-  const isCheckedRef = useRef(false);
+  const isAuth = useAppSelector(selectIsAuthenticated);
+  const location = useLocation();
+  const background = location.state && location.state.background;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (isCheckedRef.current) {
-      return;
-    }
-
-    isCheckedRef.current = true;
-
     const token = getCookie('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
 
@@ -55,15 +53,6 @@ export const useAuthCheck = () => {
       dispatch(clearAuth());
     }
   }, [dispatch]);
-};
-
-function App(): JSX.Element {
-  useAuthCheck();
-  const isAuth = useAppSelector(selectIsAuthenticated);
-  const location = useLocation();
-  const background = location.state && location.state.background;
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -82,12 +71,40 @@ function App(): JSX.Element {
         <Route path='/feed' element={<Feed />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed/:number' element={<OrderInfo />} />
-        <Route path='*' element={<NotFound404 />} />
 
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/forgot-password' element={<ForgotPassword />} />
-        <Route path='/reset-password' element={<ResetPassword />} />
+        <Route
+          path='/login'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <Login />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/register'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <Register />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/forgot-password'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <ForgotPassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/reset-password'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <ResetPassword />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path='/profile'
           element={
@@ -99,11 +116,9 @@ function App(): JSX.Element {
         <Route
           path='/profile/orders'
           element={
-            isAuth ? (
+            <ProtectedRoute>
               <ProfileOrders />
-            ) : (
-              <Navigate to='/login' state={{ from: location }} replace />
-            )
+            </ProtectedRoute>
           }
         />
         <Route
@@ -114,6 +129,8 @@ function App(): JSX.Element {
             </ProtectedRoute>
           }
         />
+
+        <Route path='*' element={<NotFound404 />} />
       </Routes>
 
       {background && (
@@ -122,10 +139,7 @@ function App(): JSX.Element {
             <Route
               path='/feed/:number'
               element={
-                <Modal
-                  title='Информация о заказе'
-                  onClose={handleCloseOrderModal}
-                >
+                <Modal title='' onClose={handleCloseOrderModal}>
                   <OrderInfo />
                 </Modal>
               }
@@ -144,10 +158,7 @@ function App(): JSX.Element {
               path='/profile/orders/:number'
               element={
                 <ProtectedRoute>
-                  <Modal
-                    title='Информация о заказе'
-                    onClose={handleCloseOrderModal}
-                  >
+                  <Modal title='' onClose={handleCloseOrderModal}>
                     <OrderInfo />
                   </Modal>
                 </ProtectedRoute>
