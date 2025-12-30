@@ -1,14 +1,22 @@
 import { useState, useRef, useEffect, FC } from 'react';
+import { useAppSelector, useAppDispatch } from '../../services/store';
 import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
+import { TIngredient, TConstructorIngredient } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
+import { setBun, addIngredient } from '../../services/slices/BurgerSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 export const BurgerIngredients: FC = () => {
-  /** TODO: взять переменные из стора */
-  const buns = [];
-  const mains = [];
-  const sauces = [];
+  const dispatch = useAppDispatch();
+  const ingredients = useAppSelector((state) => state.burger.ingredients);
+
+  const buns = ingredients.filter((item: TIngredient) => item.type === 'bun');
+  const mains = ingredients.filter((item: TIngredient) => item.type === 'main');
+  const sauces = ingredients.filter(
+    (item: TIngredient) => item.type === 'sauce'
+  );
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
@@ -47,7 +55,17 @@ export const BurgerIngredients: FC = () => {
       titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  return null;
+  const handleAddIngredient = (ingredient: TIngredient) => {
+    if (ingredient.type === 'bun') {
+      dispatch(setBun(ingredient));
+    } else {
+      const constructorIngredient: TConstructorIngredient = {
+        ...ingredient,
+        id: uuidv4()
+      };
+      dispatch(addIngredient(constructorIngredient));
+    }
+  };
 
   return (
     <BurgerIngredientsUI
@@ -62,6 +80,7 @@ export const BurgerIngredients: FC = () => {
       mainsRef={mainsRef}
       saucesRef={saucesRef}
       onTabClick={onTabClick}
+      onIngredientClick={handleAddIngredient}
     />
   );
 };

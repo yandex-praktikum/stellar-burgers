@@ -13,11 +13,12 @@ export const ProfileUI: FC<ProfileUIProps> = ({
   updateUserError,
   handleSubmit,
   handleCancel,
-  handleInputChange
+  handleInputChange,
+  onLogout
 }) => (
   <main className={`${commonStyles.container}`}>
     <div className={`mt-30 mr-15 ${styles.menu}`}>
-      <ProfileMenu />
+      <ProfileMenu onLogout={onLogout} />
     </div>
     <form
       className={`mt-30 ${styles.form} ${commonStyles.form}`}
@@ -61,6 +62,7 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             errorText={''}
             size={'default'}
             icon={'EditIcon'}
+            autoComplete='current-password'
           />
         </div>
         {isFormChanged && (

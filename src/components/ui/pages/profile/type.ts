@@ -7,8 +7,10 @@ export type ProfileUIProps = {
     password: string;
   };
   isFormChanged: boolean;
+  updateUserRequest: boolean;
   handleSubmit: (e: SyntheticEvent) => void;
   handleCancel: (e: SyntheticEvent) => void;
   handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   updateUserError?: string;
+  onLogout: () => void;
 };

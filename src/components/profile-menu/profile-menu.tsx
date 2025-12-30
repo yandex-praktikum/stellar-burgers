@@ -2,10 +2,16 @@ import { FC } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ProfileMenuUI } from '@ui';
 
-export const ProfileMenu: FC = () => {
+interface ProfileMenuProps {
+  onLogout: () => void;
+}
+
+export const ProfileMenu: FC<ProfileMenuProps> = ({ onLogout }) => {
   const { pathname } = useLocation();
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    onLogout();
+  };
 
   return <ProfileMenuUI handleLogout={handleLogout} pathname={pathname} />;
 };

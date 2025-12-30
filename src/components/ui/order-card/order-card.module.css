@@ -58,6 +58,10 @@
   height: 56px;
 }
 
+.img_faded {
+  opacity: 0.5;
+}
+
 .remains {
   position: absolute;
   left: 50%;
