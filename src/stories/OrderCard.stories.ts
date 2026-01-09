@@ -1,5 +1,5 @@
-import { OrderCardUI } from '@ui';
 import type { Meta, StoryObj } from '@storybook/react';
+import { OrderCardUI } from '@ui';
 
 const meta = {
   title: 'Example/OrderCard',

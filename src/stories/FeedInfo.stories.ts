@@ -1,5 +1,5 @@
-import { FeedInfoUI } from '@ui';
 import type { Meta, StoryObj } from '@storybook/react';
+import { FeedInfoUI } from '@ui';
 
 const meta = {
   title: 'Example/FeedInfo',

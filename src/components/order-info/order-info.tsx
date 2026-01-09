@@ -1,21 +1,28 @@
-import { FC, useMemo } from 'react';
-import { Preloader } from '../ui/preloader';
-import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { FC, useMemo } from 'react';
+import { redirect, useParams } from 'react-router-dom';
+import { useAppSelector } from '../../services/store';
+import {
+  selectIngredients,
+  selectOrders
+} from '../../slices/stellarBurgerSlice';
+import { OrderInfoUI } from '../ui/order-info';
+import { Preloader } from '../ui/preloader';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+  const params = useParams<{ number: string }>();
+  if (!params.number) {
+    redirect('/feed');
+    return null;
+  }
 
-  const ingredients: TIngredient[] = [];
+  const orders = useAppSelector(selectOrders);
+
+  const orderData = orders.find(
+    (item) => item.number === parseInt(params.number!)
+  );
+
+  const ingredients: TIngredient[] = useAppSelector(selectIngredients);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

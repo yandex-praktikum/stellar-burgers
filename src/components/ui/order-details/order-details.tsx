@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './order-details.module.css';
 import doneImg from '../../../images/done.svg';
+import styles from './order-details.module.css';
 import { OrderDetailsUIProps } from './type';
 
 export const OrderDetailsUI: React.FC<OrderDetailsUIProps> = ({

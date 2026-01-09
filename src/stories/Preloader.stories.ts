@@ -1,5 +1,5 @@
-import { Preloader } from '@ui';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Preloader } from '@ui';
 
 const meta = {
   title: 'Example/Preloader',

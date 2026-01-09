@@ -1,5 +1,5 @@
-import { RefObject } from 'react';
 import { TIngredient, TTabMode } from '@utils-types';
+import { RefObject } from 'react';
 
 export type BurgerIngredientsUIProps = {
   currentTab: TTabMode;

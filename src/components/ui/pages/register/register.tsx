@@ -1,11 +1,11 @@
-import { FC, useState } from 'react';
 import {
-  Input,
   Button,
+  Input,
   PasswordInput
 } from '@zlden/react-developer-burger-ui-components';
-import styles from '../common.module.css';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
+import styles from '../common.module.css';
 import { RegisterUIProps } from './type';
 
 export const RegisterUI: FC<RegisterUIProps> = ({
@@ -31,29 +31,33 @@ export const RegisterUI: FC<RegisterUIProps> = ({
             <Input
               type='text'
               placeholder='Имя'
-              onChange={(e) => setUserName(e.target.value)}
+              onChange={setUserName}
               value={userName}
-              name='name'
+              name='userName'
               error={false}
               errorText=''
               size='default'
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
             />
           </div>
           <div className='pb-6'>
             <Input
               type='email'
               placeholder='E-mail'
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={setEmail}
               value={email}
               name={'email'}
               error={false}
               errorText=''
               size={'default'}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
             />
           </div>
           <div className='pb-6'>
             <PasswordInput
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={setPassword}
               value={password}
               name='password'
             />
