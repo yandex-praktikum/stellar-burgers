@@ -24,6 +24,7 @@ import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useDispatch } from '../../services/store';
 import { fetchUser } from '../../services/slices/slice-auth';
+import { fetchIngredients } from '../../services/slices/slice-Ingridients';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchUser());
+    dispatch(fetchIngredients());
   }, [dispatch]);
 
   return (

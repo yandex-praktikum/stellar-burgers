@@ -5,7 +5,6 @@ import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
 import { fetchOrderByNumber } from '../../services/slices/slice-order';
-import { fetchIngredients } from '../../services/slices/slice-Ingridients';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
@@ -25,11 +24,11 @@ export const OrderInfo: FC = () => {
   const orderData =
     listOrder?.number === orderNumber ? listOrder : orderDetails;
 
-  useEffect(() => {
-    if (!ingredients.length && !ingredientsLoading) {
-      dispatch(fetchIngredients());
-    }
-  }, [dispatch, ingredients.length, ingredientsLoading]);
+  // useEffect(() => {
+  //   if (!ingredients.length && !ingredientsLoading) {
+  //     dispatch(fetchIngredients());
+  //   }
+  // }, [dispatch, ingredients.length, ingredientsLoading]);
 
   useEffect(() => {
     if (
