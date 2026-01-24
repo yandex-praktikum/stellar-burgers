@@ -7,6 +7,29 @@
   width: 520px;
 }
 
+.imageWrap {
+  width: 100%;
+  min-height: 240px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  object-fit: contain;
+  transition: opacity 0.2s ease;
+}
+
+.imgHidden {
+  opacity: 0;
+}
+
 .nutritional_values {
   display: flex;
   justify-content: space-between;

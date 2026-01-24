@@ -1,19 +1,28 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useState } from 'react';
 import styles from './ingredient-details.module.css';
 import { IngredientDetailsUIProps } from './type';
+import { Preloader } from '../preloader';
 
 export const IngredientDetailsUI: FC<IngredientDetailsUIProps> = memo(
   ({ ingredientData }) => {
     const { name, image_large, calories, proteins, fat, carbohydrates } =
       ingredientData;
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
 
     return (
       <div className={styles.content}>
-        <img
-          className={styles.img}
-          alt='изображение ингредиента.'
-          src={image_large}
-        />
+        <div className={styles.imageWrap}>
+          {!isImageLoaded && <Preloader />}
+          <img
+            className={`${styles.img} ${
+              !isImageLoaded ? styles.imgHidden : ''
+            }`}
+            alt='изображение ингредиента.'
+            src={image_large}
+            onLoad={() => setIsImageLoaded(true)}
+            onError={() => setIsImageLoaded(true)}
+          />
+        </div>
         <h3 className='text text_type_main-medium mt-2 mb-4'>{name}</h3>
         <ul className={`${styles.nutritional_values} text_type_main-default`}>
           <li className={styles.nutritional_value}>
