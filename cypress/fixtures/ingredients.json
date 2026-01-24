@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "01",
+      "name": "Лучший бургер",
+      "type": "bun",
+      "proteins": 15,
+      "fat": 25,
+      "carbohydrates": 12,
+      "calories": 23,
+      "price": 233,
+      "image": "unknown",
+      "image_large": "asd",
+      "image_mobile": "asd"
+    },
+    {
+      "_id": "02",
+      "name": "Соус",
+      "type": "sauce",
+      "proteins": 5,
+      "fat": 10,
+      "carbohydrates": 3,
+      "calories": 50,
+      "price": 50,
+      "image": "unknown",
+      "image_large": "asd",
+      "image_mobile": "asd"
+    }
+  ]
+}
