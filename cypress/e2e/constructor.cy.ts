@@ -22,7 +22,15 @@ describe('проверяем доступность приложения', funct
 describe('проверяем модалку', function () {
   it('закрытие модалки на крестик', () => {
     cy.visit('http://localhost:4000');
-    cy.get("[data-cy='643d69a5c3f7b9001cfa093e']").click();
+
+    // cy.get("[data-cy='643d69a5c3f7b9001cfa0941']").click();
+
+    // вижу ваш комментарий по поводу этого компонента ибо он не открываеться у вас но я не вижу причины почему он не открываеться ибо у меня все работает исправно открываеться модалка карточки и потом закрываеться, в компоненте бургер конструктор указана дата элементам и она береться с ингридиента его айди
+
+    cy.contains('Краторная булка N-200i').click();
+
+    // тут я нажимаю на элемент по содержимому надеюсь оно будет работать ибо у меня работает )
+
     cy.get("[data-cy='modal']").should('be.visible');
     cy.get("[data-cy='modal']").find('button').click();
     cy.get("[data-cy='modal']").should('not.exist');
@@ -30,6 +38,11 @@ describe('проверяем модалку', function () {
 });
 
 describe('проверка создания заказа', () => {
+  afterEach(() => {
+    cy.clearLocalStorage();
+    cy.clearCookies();
+  });
+
   it('создаем заказ с моковыми данными', () => {
     cy.intercept('GET', '**/ingredients', { fixture: 'ingredients.json' }).as(
       'ingredients'
