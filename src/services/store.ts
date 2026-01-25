@@ -1,4 +1,4 @@
-import { feedsReducer } from './slices/slice-feed';
+import { feedsReducer } from './slices/slice-feed/slice-feed';
 import { configureStore } from '@reduxjs/toolkit';
 
 import {
@@ -6,11 +6,11 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-import { ingredientsReducer } from './slices/slice-Ingridients';
-import { constructorReducer } from './slices/slice-constructor';
-import { authReducer } from './slices/slice-auth';
-import { profileOrdersReducer } from './slices/slice-profile-orders';
-import { orderReducer } from './slices/slice-order';
+import { ingredientsReducer } from './slices/slice-ingridients/slice-Ingridients';
+import { constructorReducer } from './slices/slice-constructor/slice-constructor';
+import { authReducer } from './slices/slice-auth/slice-auth';
+import { profileOrdersReducer } from './slices/slice-profile-orders/slice-profile-orders';
+import { orderReducer } from './slices/slice-order/slice-order';
 
 const rootReducer = {
   ingredients: ingredientsReducer,

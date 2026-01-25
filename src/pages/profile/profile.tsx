@@ -2,7 +2,7 @@ import { ProfileUI } from '@ui-pages';
 import { ChangeEvent, FC, SyntheticEvent, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
-import { updateUser } from '../../services/slices/slice-auth';
+import { updateUser } from '../../services/slices/slice-auth/slice-auth';
 
 export const Profile: FC = () => {
   const dispatch = useDispatch();

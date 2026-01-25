@@ -2,7 +2,7 @@ import { ProfileOrdersUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
 import { Preloader } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
-import { fetchProfileOrders } from '../../services/slices/slice-profile-orders';
+import { fetchProfileOrders } from '../../services/slices/slice-profile-orders/slice-profile-orders';
 
 export const ProfileOrders: FC = () => {
   const dispatch = useDispatch();

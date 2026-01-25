@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { TIngredient, TConstructorIngredient } from '@utils-types';
-import { placeOrder } from './slice-order';
+import { placeOrder } from '../slice-order/slice-order';
 
 type ConstructorState = {
   bun: TConstructorIngredient | null;

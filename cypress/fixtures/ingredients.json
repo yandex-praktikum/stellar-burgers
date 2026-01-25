@@ -17,7 +17,7 @@
     {
       "_id": "02",
       "name": "Соус",
-      "type": "sauce",
+      "type": "main",
       "proteins": 5,
       "fat": 10,
       "carbohydrates": 3,

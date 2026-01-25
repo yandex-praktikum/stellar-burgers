@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from '../../services/store';
 import {
   resetPassword,
   resetResetPasswordState
-} from '../../services/slices/slice-auth';
+} from '../../services/slices/slice-auth/slice-auth';
 
 export const ResetPassword: FC = () => {
   const navigate = useNavigate();

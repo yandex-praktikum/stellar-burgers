@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from '../../services/store';
 import {
   forgotPassword,
   resetForgotPasswordState
-} from '../../services/slices/slice-auth';
+} from '../../services/slices/slice-auth/slice-auth';
 
 export const ForgotPassword: FC = () => {
   const [email, setEmail] = useState('');
