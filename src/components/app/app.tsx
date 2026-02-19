@@ -9,7 +9,7 @@ const App = () => {
   /** TODO: взять переменные из стора */
   const isIngredientsLoading = false;
   const ingredients = [];
-  const error = 'Byaka';
+  const error = null;
 
   return (
     <div className={styles.app}>
