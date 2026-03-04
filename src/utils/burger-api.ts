@@ -1,10 +1,15 @@
 import { setCookie, getCookie } from './cookie';
 import { TIngredient, TOrder, TOrdersData, TUser } from './types';
 
-const URL = process.env.BURGER_API_URL;
+const URL = 'https://norma.education-services.ru/api';
 
-const checkResponse = <T>(res: Response): Promise<T> =>
-  res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+export const checkResponse = <T>(res: Response): Promise<T> =>
+  res.ok
+    ? res.json()
+    : res
+        .json()
+        .catch(() => ({}))
+        .then((err) => Promise.reject(err));
 
 type TServerResponse<T> = {
   success: boolean;
