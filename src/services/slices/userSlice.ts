@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   loginUserApi,
   registerUserApi,
@@ -11,15 +11,42 @@ import {
 import { TUser } from '../../utils/types';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 
-export const checkUserAuth = createAsyncThunk('user/checkAuth', getUserApi);
-export const login = createAsyncThunk('user/login', loginUserApi);
-export const register = createAsyncThunk('user/register', registerUserApi);
-export const logout = createAsyncThunk('user/logout', logoutApi);
+// Thunks — теперь вся работа с API и хранилищем (cookie/localStorage) здесь
+export const checkUserAuth = createAsyncThunk('user/checkAuth', async () =>
+  getUserApi()
+);
+
+export const login = createAsyncThunk(
+  'user/login',
+  async (data: TLoginData) => {
+    const res = await loginUserApi(data);
+    setCookie('accessToken', res.accessToken);
+    localStorage.setItem('refreshToken', res.refreshToken);
+    return res;
+  }
+);
+
+export const register = createAsyncThunk(
+  'user/register',
+  async (data: TRegisterData) => {
+    const res = await registerUserApi(data);
+    setCookie('accessToken', res.accessToken);
+    localStorage.setItem('refreshToken', res.refreshToken);
+    return res;
+  }
+);
+
+export const logout = createAsyncThunk('user/logout', async () => {
+  await logoutApi();
+  deleteCookie('accessToken');
+  localStorage.removeItem('refreshToken');
+});
+
 export const updateUser = createAsyncThunk('user/update', updateUserApi);
 
 interface UserState {
   user: TUser | null;
-  isAuthChecked: boolean; // Важно для ProtectedRoute
+  isAuthChecked: boolean;
   error: string | null;
 }
 
@@ -46,25 +73,27 @@ const userSlice = createSlice({
       .addCase(checkUserAuth.rejected, (state) => {
         state.isAuthChecked = true;
       })
+      // Логин
       .addCase(login.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.isAuthChecked = true;
         state.error = null;
-        setCookie('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
       .addCase(login.rejected, (state, action) => {
         state.isAuthChecked = true;
         state.error = action.error.message || 'Login failed';
       })
+      // Регистрация
       .addCase(register.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.isAuthChecked = true;
+        state.error = null;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.error = action.error.message || 'Registration failed';
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
-        deleteCookie('accessToken');
-        localStorage.removeItem('refreshToken');
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
