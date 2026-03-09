@@ -16,7 +16,6 @@ import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import {
   Navigate,
   Route,
-  Router,
   Routes,
   useLocation,
   useNavigate
@@ -37,6 +36,7 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const location = useLocation();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   if (
     (location.pathname === '/login' || location.pathname === '/register') &&
     isAuthenticated
@@ -48,8 +48,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       location.pathname === '/forgot-password' ||
       location.pathname === '/reset-password') &&
     !isAuthenticated
-  )
+  ) {
     return <>{children}</>;
+  }
 
   return isAuthenticated ? <>{children}</> : <Navigate to='/login' />;
 };
@@ -57,7 +58,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const background = location.state?.background;
 
   useEffect(() => {
     dispatch(getIngredientsThunk());
@@ -72,11 +76,11 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+
+      <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
 
-        {/* Защищённые маршруты */}
         <Route
           path='/login'
           element={
@@ -126,38 +130,50 @@ const App = () => {
           }
         />
 
-        {/* Страница 404 */}
-        <Route path='*' element={<NotFound404 />} />
-
-        {/* Модалки  */}
-        <Route
-          path='/feed/:number'
-          element={
-            <Modal title={'Заказ'} onClose={(): void => navigate(-1)}>
-              <OrderInfo />
-            </Modal>
-          }
-        />
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal title={'Ингредиент'} onClose={(): void => navigate(-1)}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-        {/* Защищенная модалка */}
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
         <Route
           path='/profile/orders/:number'
           element={
             <ProtectedRoute>
-              <Modal title={'Мой заказ'} onClose={(): void => navigate(-1)}>
-                <OrderInfo />
-              </Modal>
+              <OrderInfo />
             </ProtectedRoute>
           }
         />
+
+        <Route path='*' element={<NotFound404 />} />
       </Routes>
+
+      {background && (
+        <Routes>
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title={'Ингредиент'} onClose={(): void => navigate(-1)}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal title={'Заказ'} onClose={(): void => navigate(-1)}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute>
+                <Modal title={'Мой заказ'} onClose={(): void => navigate(-1)}>
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };

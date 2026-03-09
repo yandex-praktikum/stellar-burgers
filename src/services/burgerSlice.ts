@@ -129,15 +129,17 @@ const burgerSlice = createSlice({
         (el) => el._id === action.payload
       );
     },
-    addIngridientsToOrder: (state, action) => {
-      if (action.payload.type === 'bun') {
-        state.constructorItems.bun = action.payload;
-        return;
-      }
-      state.constructorItems.ingredients.push({
-        ...action.payload,
-        id: nanoid()
-      });
+    addIngridientsToOrder: {
+      reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
+        if (action.payload.type === 'bun') {
+          state.constructorItems.bun = action.payload;
+        } else {
+          state.constructorItems.ingredients.push(action.payload);
+        }
+      },
+      prepare: (ingredient: TIngredient) => ({
+        payload: { ...ingredient, id: nanoid() }
+      })
     },
     moveUpIngridient: (state, action) => {
       state.constructorItems.ingredients.splice(action.payload.index, 1);
@@ -147,6 +149,7 @@ const burgerSlice = createSlice({
         action.payload.ingredient
       );
     },
+
     moveDownIngridient: (state, action) => {
       state.constructorItems.ingredients.splice(action.payload.index, 1);
       state.constructorItems.ingredients.splice(
@@ -155,9 +158,11 @@ const burgerSlice = createSlice({
         action.payload.ingredient
       );
     },
+
     deleteIngridientInOrder: (state, action) => {
       state.constructorItems.ingredients.splice(action.payload, 1);
     },
+
     resetOrderData: (state) => {
       state.myOrderModalData = {
         _id: '',
@@ -168,6 +173,9 @@ const burgerSlice = createSlice({
         number: 0,
         ingredients: []
       };
+    },
+
+    resetConstructor: (state) => {
       state.constructorItems = {
         bun: {
           _id: '',
@@ -235,6 +243,17 @@ const burgerSlice = createSlice({
         state.myOrders.push(action.payload.order);
         state.myOrderModalData = action.payload.order;
       });
+    builder
+      .addCase(getOrderByNumberThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrderByNumberThunk.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(getOrderByNumberThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orderData = action.payload.orders[0];
+      });
   }
 });
 
@@ -246,5 +265,6 @@ export const {
   moveUpIngridient,
   moveDownIngridient,
   deleteIngridientInOrder,
-  resetOrderData
+  resetOrderData,
+  resetConstructor
 } = burgerSlice.actions;

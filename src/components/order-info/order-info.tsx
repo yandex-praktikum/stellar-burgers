@@ -1,23 +1,35 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
-import { useSelector } from '../../services/store';
-import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../services/store';
+import { useParams } from 'react-router-dom';
+import { getOrderByNumberThunk } from '../../services/burgerSlice';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const location = useLocation();
-  const orderData =
-    location.pathname === '/profile/orders/:number'
-      ? useSelector((state) => state.burgers.myOrderModalData)
-      : useSelector((state) => state.burgers.orderData);
+  const { number } = useParams<{ number: string }>();
+  const dispatch = useDispatch();
+
+  const orderFromFeed = useSelector((state) =>
+    state.burgers.orders.find((o) => o.number === Number(number))
+  );
+  const orderFromHistory = useSelector((state) =>
+    state.burgers.myOrders.find((o) => o.number === Number(number))
+  );
+  const orderFromDirect = useSelector((state) => state.burgers.orderData);
+
+  const orderData = orderFromFeed || orderFromHistory || orderFromDirect;
 
   const ingredients: TIngredient[] = useSelector(
     (state) => state.burgers.ingridients
   );
 
-  /* Готовим данные для отображения */
+  useEffect(() => {
+    if (!orderData && number) {
+      dispatch(getOrderByNumberThunk(+number));
+    }
+  }, [dispatch, number]);
+
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -40,7 +52,6 @@ export const OrderInfo: FC = () => {
         } else {
           acc[item].count++;
         }
-
         return acc;
       },
       {}
