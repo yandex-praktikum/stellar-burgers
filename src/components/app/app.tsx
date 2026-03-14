@@ -22,56 +22,45 @@ import {
 } from 'react-router-dom';
 import { ReactNode, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
-import {
-  getFeedsThunk,
-  getIngredientsThunk,
-  getOrdersThunk
-} from '../../services/burgerSlice';
+import { getFeedsThunk, getIngredientsThunk } from '../../services/burgerSlice';
 import { getUserThunk } from '../../services/authSlice';
 
 interface ProtectedRouteProps {
   children: ReactNode;
+  onlyUnAuth?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const location = useLocation();
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  onlyUnAuth = false
+}) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  if (
-    (location.pathname === '/login' || location.pathname === '/register') &&
-    isAuthenticated
-  ) {
+  if (onlyUnAuth && isAuthenticated) {
     return <Navigate to='/profile' />;
-  } else if (
-    (location.pathname === '/login' ||
-      location.pathname === '/register' ||
-      location.pathname === '/forgot-password' ||
-      location.pathname === '/reset-password') &&
-    !isAuthenticated
-  ) {
-    return <>{children}</>;
   }
 
-  return isAuthenticated ? <>{children}</> : <Navigate to='/login' />;
+  if (!onlyUnAuth && !isAuthenticated) {
+    return <Navigate to='/login' />;
+  }
+
+  return <>{children}</>;
 };
 
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const background = location.state?.background;
+
+  const handleClose = () => navigate(-1);
 
   useEffect(() => {
     dispatch(getIngredientsThunk());
     dispatch(getFeedsThunk());
     dispatch(getUserThunk());
   }, []);
-
-  useEffect(() => {
-    dispatch(getOrdersThunk());
-  }, [isAuthenticated]);
 
   return (
     <div className={styles.app}>
@@ -84,7 +73,7 @@ const App = () => {
         <Route
           path='/login'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Login />
             </ProtectedRoute>
           }
@@ -92,7 +81,7 @@ const App = () => {
         <Route
           path='/register'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Register />
             </ProtectedRoute>
           }
@@ -100,7 +89,7 @@ const App = () => {
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <ForgotPassword />
             </ProtectedRoute>
           }
@@ -108,11 +97,12 @@ const App = () => {
         <Route
           path='/reset-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <ResetPassword />
             </ProtectedRoute>
           }
         />
+
         <Route
           path='/profile'
           element={
@@ -149,7 +139,7 @@ const App = () => {
           <Route
             path='/ingredients/:id'
             element={
-              <Modal title={'Ингредиент'} onClose={(): void => navigate(-1)}>
+              <Modal title={'Ингредиент'} onClose={handleClose}>
                 <IngredientDetails />
               </Modal>
             }
@@ -157,7 +147,7 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title={'Заказ'} onClose={(): void => navigate(-1)}>
+              <Modal title={'Заказ'} onClose={handleClose}>
                 <OrderInfo />
               </Modal>
             }
@@ -166,7 +156,7 @@ const App = () => {
             path='/profile/orders/:number'
             element={
               <ProtectedRoute>
-                <Modal title={'Мой заказ'} onClose={(): void => navigate(-1)}>
+                <Modal title={'Мой заказ'} onClose={handleClose}>
                   <OrderInfo />
                 </Modal>
               </ProtectedRoute>

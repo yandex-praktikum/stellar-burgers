@@ -124,11 +124,6 @@ const burgerSlice = createSlice({
         (order) => order.number === action.payload
       );
     },
-    setIngridientToModal: (state, action) => {
-      state.ingredientData = state.ingridients.find(
-        (el) => el._id === action.payload
-      );
-    },
     addIngridientsToOrder: {
       reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
         if (action.payload.type === 'bun') {
@@ -260,7 +255,6 @@ const burgerSlice = createSlice({
 export const burgerReducer = burgerSlice.reducer;
 export const {
   setOrderToModal,
-  setIngridientToModal,
   addIngridientsToOrder,
   moveUpIngridient,
   moveDownIngridient,
