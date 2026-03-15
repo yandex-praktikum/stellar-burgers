@@ -7,9 +7,9 @@ import {
   updateUserApi,
   TLoginData,
   TRegisterData
-} from '../../utils/burger-api';
-import { TUser } from '../../utils/types';
-import { deleteCookie, setCookie } from '../../utils/cookie';
+} from '../../../utils/burger-api';
+import { TUser } from '../../../utils/types';
+import { deleteCookie, setCookie } from '../../../utils/cookie';
 
 // Thunks — теперь вся работа с API и хранилищем (cookie/localStorage) здесь
 export const checkUserAuth = createAsyncThunk('user/checkAuth', async () =>

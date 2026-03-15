@@ -36,7 +36,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         Выберите булки
       </div>
     )}
-    <ul className={styles.elements}>
+    <ul className={styles.elements} data-testid='constructor-list'>
       {constructorItems.ingredients.length > 0 ? (
         constructorItems.ingredients.map(
           (item: TConstructorIngredient, index: number) => (

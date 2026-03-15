@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 
-import { fetchIngredients } from '../../services/slices/ingredientsSlice';
-import { checkUserAuth } from '../../services/slices/userSlice';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice/ingredientsSlice';
+import { checkUserAuth } from '../../services/slices/userSlice/userSlice';
 
 import {
   ConstructorPage,
