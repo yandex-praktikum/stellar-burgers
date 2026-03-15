@@ -19,7 +19,7 @@ describe('Тестирование конструктора бургера', () 
             cy.get('[data-testid="ingredient-bun"]').contains('Добавить').click();
             cy.get('[data-testid="ingredient-sauce"]').contains('Добавить').click();
             cy.get('[data-testid="ingredient-main"]').contains('Добавить').click();
-            
+
             // Проверка, что в списке появилась начинка
             cy.get('[data-testid="constructor-list"]').should('not.contain', 'Выберите начинку');
         });
@@ -30,8 +30,16 @@ describe('Тестирование конструктора бургера', () 
             cy.get('[data-testid="ingredient-main"]').first().click();
         });
 
-        it('должно открываться и содержать заголовок "Детали ингредиента"', () => {
-            cy.get(MODAL_SELECTOR).should('be.visible').and('contain', 'Детали ингредиента');
+        it('должно открываться и содержать название выбранного ингредиента', () => {
+            cy.get('[data-testid="ingredient-main"]')
+                .first()
+                .find('p')
+                .last() 
+                .invoke('text')
+                .then((expectedName) => {
+                    cy.get(MODAL_SELECTOR).should('be.visible').and('contain', 'Детали ингредиента');
+                    cy.get(MODAL_SELECTOR).should('contain', expectedName);
+                });
         });
 
         it('должно закрываться при клике на крестик', () => {
