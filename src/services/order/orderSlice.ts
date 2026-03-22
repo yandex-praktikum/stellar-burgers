@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-import { createOrder } from './actions';
-import { BooleanLiteral } from 'typescript';
+import { createOrder, getOrderByNumber } from './actions';
 
 export interface OrderState {
   orderRequest: boolean;
   orderModalData: TOrder | null;
+  currentOrder: TOrder | null;
 }
 
 const initialState: OrderState = {
   orderRequest: false,
-  orderModalData: null
+  orderModalData: null,
+  currentOrder: null
 };
 
 export const orderSlice = createSlice({
@@ -33,6 +34,15 @@ export const orderSlice = createSlice({
         (state, action: PayloadAction<TOrder>) => {
           state.orderRequest = false;
           state.orderModalData = action.payload;
+        }
+      )
+      .addCase(getOrderByNumber.pending, (state) => {
+        state.currentOrder = null;
+      })
+      .addCase(
+        getOrderByNumber.fulfilled,
+        (state, action: PayloadAction<TOrder>) => {
+          state.currentOrder = action.payload;
         }
       );
   }

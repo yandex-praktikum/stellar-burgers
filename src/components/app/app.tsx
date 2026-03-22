@@ -38,6 +38,9 @@ const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const handleCloseModal = () => {
+    navigate(-1);
+  };
 
   const isLoading = useSelector(selectIsLoading);
   const Error = useSelector(selectIngredientsError);
@@ -141,7 +144,7 @@ const App = () => {
               <Route
                 path='ingredients/:id'
                 element={
-                  <Modal title='' onClose={() => navigate(-1)}>
+                  <Modal title='' onClose={handleCloseModal}>
                     <IngredientDetails />
                   </Modal>
                 }
@@ -150,7 +153,7 @@ const App = () => {
               <Route
                 path='feed/:number'
                 element={
-                  <Modal title='' onClose={() => navigate(-1)}>
+                  <Modal title='' onClose={handleCloseModal}>
                     <OrderInfo />
                   </Modal>
                 }
@@ -160,7 +163,7 @@ const App = () => {
                 path='profile/orders/:number'
                 element={
                   <AuthRoute>
-                    <Modal title='' onClose={() => navigate(-1)}>
+                    <Modal title='' onClose={handleCloseModal}>
                       <OrderInfo />
                     </Modal>
                   </AuthRoute>

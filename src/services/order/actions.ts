@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { orderBurgerApi } from '@api';
+import { orderBurgerApi, getOrderByNumberApi } from '@api';
 import { TOrder } from '@utils-types';
 import { RootState } from '../../services/store';
 
@@ -27,3 +27,19 @@ export const createOrder = createAsyncThunk<TOrder, void, { state: RootState }>(
     }
   }
 );
+
+export const getOrderByNumber = createAsyncThunk<
+  TOrder,
+  number,
+  { rejectValue: string }
+>('order/getOrderByNumber', async (number, { rejectWithValue }) => {
+  try {
+    const response = await getOrderByNumberApi(number);
+    if (!response.success || !response.orders?.length) {
+      return rejectWithValue('Заказ не найден');
+    }
+    return response.orders[0];
+  } catch (e) {
+    return rejectWithValue('Не удалось получить заказ');
+  }
+});
