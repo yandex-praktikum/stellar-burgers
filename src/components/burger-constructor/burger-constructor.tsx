@@ -32,7 +32,8 @@ export const BurgerConstructor: FC = () => {
 
   const price = useMemo(() => {
     if (!constructorItems) return 0;
-
+    console.log('constructorItems', constructorItems);
+    ``;
     return (
       (constructorItems.bun?.price || 0) * 2 +
       constructorItems.ingredients.reduce(
