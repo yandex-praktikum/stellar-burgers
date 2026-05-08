@@ -8,7 +8,7 @@ export const IngredientDetailsUI: FC<IngredientDetailsUIProps> = memo(
       ingredientData;
 
     return (
-      <div className={styles.content}>
+      <div className={styles.content} data-testid='ingredient-details'>
         <img
           className={styles.img}
           alt='изображение ингредиента.'
@@ -18,7 +18,12 @@ export const IngredientDetailsUI: FC<IngredientDetailsUIProps> = memo(
         <ul className={`${styles.nutritional_values} text_type_main-default`}>
           <li className={styles.nutritional_value}>
             <p className={`text mb-2 ${styles.text}`}>Калории, ккал</p>
-            <p className={`text text_type_digits-default`}>{calories}</p>
+            <p
+              className={`text text_type_digits-default`}
+              data-testid='ingredient-calories'
+            >
+              {calories}
+            </p>
           </li>
           <li className={styles.nutritional_value}>
             <p className={`text mb-2 ${styles.text}`}>Белки, г</p>
