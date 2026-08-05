@@ -32,6 +32,16 @@ export type TOrdersData = {
   totalToday: number;
 };
 
+export type TNewOrder = {
+  _id: string;
+  status: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+  price: number;
+};
+
 export type TUser = {
   email: string;
   name: string;

@@ -106,7 +106,7 @@ type TOwner = {
   updatedAt: string;
 };
 
-type TNewOrder = {
+export type TNewOrder = {
   _id: string;
   status: string;
   name: string;
@@ -117,7 +117,7 @@ type TNewOrder = {
   price: number;
 };
 
-type TNewOrderResponse = TServerResponse<{
+export type TNewOrderResponse = TServerResponse<{
   order: TNewOrder;
   name: string;
 }>;
