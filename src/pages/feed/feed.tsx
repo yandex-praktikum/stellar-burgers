@@ -7,7 +7,7 @@ import { getFeeds } from '../../services/slices/feedSlice';
 export const Feed: FC = () => {
   const dispatch = useDispatch();
 
-  const orders = useSelector((state: RootState) => state.feed.orders);
+  const orders = useSelector((state: RootState) => state.feed.feedOrders);
 
   const isLoading = useSelector((state: RootState) => state.feed.isLoading);
 

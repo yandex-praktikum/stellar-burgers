@@ -8,7 +8,8 @@ import {
 
 type TFeedState = {
   feed: TOrdersData | null;
-  orders: TOrder[];
+  feedOrders: TOrder[];
+  profileOrders: TOrder[];
   currentOrder: TOrder | null;
   isLoading: boolean;
   error: string | null;
@@ -16,7 +17,8 @@ type TFeedState = {
 
 const initialState: TFeedState = {
   feed: null,
-  orders: [],
+  feedOrders: [],
+  profileOrders: [],
   currentOrder: null,
   isLoading: false,
   error: null
@@ -48,7 +50,7 @@ export const feedSlice = createSlice({
       .addCase(getFeeds.fulfilled, (state, action) => {
         state.isLoading = false;
         state.feed = action.payload;
-        state.orders = action.payload.orders;
+        state.feedOrders = action.payload.orders;
       })
       .addCase(getFeeds.rejected, (state, action) => {
         state.isLoading = false;
@@ -60,7 +62,7 @@ export const feedSlice = createSlice({
       })
       .addCase(getOrders.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.orders = action.payload;
+        state.profileOrders = action.payload;
       })
       .addCase(getOrders.rejected, (state, action) => {
         state.isLoading = false;

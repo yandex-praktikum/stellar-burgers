@@ -11,6 +11,7 @@ import {
   TLoginData,
   TRegisterData
 } from '../../utils/burger-api';
+import { deleteCookie } from '../../utils/cookie';
 
 type TUserState = {
   user: TUser | null;
@@ -40,10 +41,12 @@ export const registerUser = createAsyncThunk<
   TRegisterData
 >('user/register', async (data) => await registerUserApi(data));
 
-export const logoutUser = createAsyncThunk(
-  'user/logout',
-  async () => await logoutApi()
-);
+export const logoutUser = createAsyncThunk('user/logout', async () => {
+  await logoutApi();
+
+  deleteCookie('accessToken');
+  localStorage.removeItem('refreshToken');
+});
 
 export const updateUser = createAsyncThunk<
   Awaited<ReturnType<typeof updateUserApi>>,
@@ -82,11 +85,10 @@ export const userSlice = createSlice({
         state.user = action.payload.user;
         state.isAuthChecked = true;
       })
-      .addCase(getUser.rejected, (state, action) => {
+      .addCase(getUser.rejected, (state) => {
         state.isLoading = false;
         state.user = null;
         state.isAuthChecked = true;
-        state.error = action.error.message ?? 'Не удалось найти пользователя';
       })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;

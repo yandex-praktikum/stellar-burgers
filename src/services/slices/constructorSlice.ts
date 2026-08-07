@@ -19,11 +19,19 @@ export const constructorSlice = createSlice({
       state.bun = action.payload;
     },
 
-    addIngredient(state, action: PayloadAction<TIngredient>) {
-      state.ingredients.push({
-        ...action.payload,
-        id: crypto.randomUUID()
-      });
+    addIngredient: {
+      reducer(state, action: PayloadAction<TConstructorIngredient>) {
+        state.ingredients.push(action.payload);
+      },
+
+      prepare(ingredient: TIngredient) {
+        return {
+          payload: {
+            ...ingredient,
+            id: crypto.randomUUID()
+          } satisfies TConstructorIngredient
+        };
+      }
     },
     removeIngredient(state, action: PayloadAction<string>) {
       state.ingredients = state.ingredients.filter(

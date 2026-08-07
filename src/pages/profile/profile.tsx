@@ -15,11 +15,11 @@ export const Profile: FC = () => {
   });
 
   useEffect(() => {
-    setFormValue((prevState) => ({
-      ...prevState,
+    setFormValue({
       name: user?.name || '',
-      email: user?.email || ''
-    }));
+      email: user?.email || '',
+      password: ''
+    });
   }, [user]);
 
   const isFormChanged =
@@ -27,16 +27,26 @@ export const Profile: FC = () => {
     formValue.email !== user?.email ||
     !!formValue.password;
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    dispatch(
-      updateUser({
-        name: formValue.name,
-        email: formValue.email,
-        password: formValue.password
-      })
-    );
+    const data = {
+      name: formValue.name,
+      email: formValue.email,
+      ...(formValue.password && { password: formValue.password })
+    };
+
+    try {
+      await dispatch(updateUser(data)).unwrap();
+
+      setFormValue({
+        name: data.name,
+        email: data.email,
+        password: ''
+      });
+    } catch {
+      // Ошибка уже обработана в Redux
+    }
   };
 
   const handleCancel = (e: SyntheticEvent) => {

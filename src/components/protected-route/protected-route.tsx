@@ -15,6 +15,8 @@ export const ProtectedRoute = ({
 }: ProtectedRouteProps) => {
   const location = useLocation();
 
+  const from = location.state?.from || { pathname: '/' };
+
   const user = useSelector((state: RootState) => state.user.user);
 
   const isAuthChecked = useSelector(
@@ -26,7 +28,7 @@ export const ProtectedRoute = ({
   }
 
   if (onlyUnAuth && user) {
-    return <Navigate to='/' replace />;
+    return <Navigate to={from} replace />;
   }
 
   if (!onlyUnAuth && !user) {
