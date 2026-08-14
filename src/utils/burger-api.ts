@@ -106,7 +106,7 @@ type TOwner = {
   updatedAt: string;
 };
 
-type TNewOrder = {
+export type TNewOrder = {
   _id: string;
   status: string;
   name: string;
@@ -117,7 +117,7 @@ type TNewOrder = {
   price: number;
 };
 
-type TNewOrderResponse = TServerResponse<{
+export type TNewOrderResponse = TServerResponse<{
   order: TNewOrder;
   name: string;
 }>;
@@ -155,6 +155,11 @@ export type TRegisterData = {
   password: string;
 };
 
+export type TLoginData = {
+  email: string;
+  password: string;
+};
+
 type TAuthResponse = TServerResponse<{
   refreshToken: string;
   accessToken: string;
@@ -171,14 +176,15 @@ export const registerUserApi = (data: TRegisterData) =>
   })
     .then((res) => checkResponse<TAuthResponse>(res))
     .then((data) => {
-      if (data?.success) return data;
-      return Promise.reject(data);
-    });
+      if (!data.success) {
+        return Promise.reject(data);
+      }
 
-export type TLoginData = {
-  email: string;
-  password: string;
-};
+      localStorage.setItem('refreshToken', data.refreshToken);
+      setCookie('accessToken', data.accessToken);
+
+      return data;
+    });
 
 export const loginUserApi = (data: TLoginData) =>
   fetch(`${URL}/auth/login`, {
@@ -190,8 +196,14 @@ export const loginUserApi = (data: TLoginData) =>
   })
     .then((res) => checkResponse<TAuthResponse>(res))
     .then((data) => {
-      if (data?.success) return data;
-      return Promise.reject(data);
+      if (!data.success) {
+        return Promise.reject(data);
+      }
+
+      localStorage.setItem('refreshToken', data.refreshToken);
+      setCookie('accessToken', data.accessToken);
+
+      return data;
     });
 
 export const forgotPasswordApi = (data: { email: string }) =>
