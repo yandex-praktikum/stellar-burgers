@@ -39,21 +39,35 @@ export const fetchWithRefresh = async <T>(
   url: RequestInfo,
   options: RequestInit
 ) => {
+  console.log('REQUEST:', url);
+
   try {
     const res = await fetch(url, options);
+
+    console.log('STATUS:', res.status);
+
     return await checkResponse<T>(res);
   } catch (err) {
+    console.log('ERROR:', err);
+
     if ((err as { message: string }).message === 'jwt expired') {
+      console.log('REFRESH TOKEN');
+
       const refreshData = await refreshToken();
+
       if (options.headers) {
         (options.headers as { [key: string]: string }).authorization =
           refreshData.accessToken;
       }
+
       const res = await fetch(url, options);
+
+      console.log('STATUS AFTER REFRESH:', res.status);
+
       return await checkResponse<T>(res);
-    } else {
-      return Promise.reject(err);
     }
+
+    return Promise.reject(err);
   }
 };
 
@@ -236,12 +250,17 @@ export const resetPasswordApi = (data: { password: string; token: string }) =>
 
 type TUserResponse = TServerResponse<{ user: TUser }>;
 
-export const getUserApi = () =>
-  fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
+export const getUserApi = () => {
+  console.log('===== GET USER API =====');
+  console.log('document.cookie =', document.cookie);
+  console.log('getCookie =', getCookie('accessToken'));
+
+  return fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
     headers: {
       authorization: getCookie('accessToken')
     } as HeadersInit
   });
+};
 
 export const updateUserApi = (user: Partial<TRegisterData>) =>
   fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {

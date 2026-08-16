@@ -40,7 +40,12 @@ const App = () => {
   const background = (location.state as { background?: Location })?.background;
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log('APP useEffect');
+
     dispatch(fetchIngredients());
+
+    console.log('dispatch getUser');
+
     dispatch(getUser());
   }, [dispatch]);
   return (

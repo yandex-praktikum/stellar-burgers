@@ -10,6 +10,8 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     const dispatch = useDispatch();
     const location = useLocation();
     const handleAdd = () => {
+      console.log('ADD CLICK', ingredient.name);
+
       if (ingredient.type === 'bun') {
         dispatch(addBun(ingredient));
       } else {

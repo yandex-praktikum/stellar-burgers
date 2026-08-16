@@ -87,9 +87,9 @@ module.exports = {
   },
   devServer: {
     static: path.join(__dirname, './dist'),
-    compress: true,
     historyApiFallback: true,
-    port: 4000,
-    open: true
+    hot: false,
+    liveReload: false,
+    port: 4000
   }
 };
