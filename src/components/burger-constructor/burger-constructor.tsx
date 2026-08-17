@@ -24,6 +24,13 @@ export const BurgerConstructor: FC = () => {
   );
 
   const onOrderClick = async () => {
+    console.log('CLICK ORDER');
+
+    if (!constructorItems.bun || orderRequest) return;
+
+    console.log('USER', user);
+    console.log('BUN', constructorItems.bun);
+
     if (!constructorItems.bun || orderRequest) return;
 
     if (!user) {
@@ -40,10 +47,15 @@ export const BurgerConstructor: FC = () => {
     ];
 
     try {
+      console.log('SEND ORDER');
+
       await dispatch(orderBurger(ingredientsIds)).unwrap();
+
+      console.log('ORDER SUCCESS');
+
       dispatch(clearConstructor());
-    } catch {
-      // обработка ошибки при необходимости
+    } catch (e) {
+      console.log('ORDER ERROR', e);
     }
   };
   const closeOrderModal = () => {

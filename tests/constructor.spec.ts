@@ -2,13 +2,27 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Конструктор бургеров', () => {
   test.beforeEach(async ({ page }) => {
+    await page.routeFromHAR('./tests/hars/ingredients.har', {
+      url: '**/api/ingredients',
+      update: false
+    });
+
+    await page.routeFromHAR('./tests/hars/user.har', {
+      url: '**/api/auth/user',
+      update: false
+    });
+
     await page.goto('/');
+
+    await expect(page.getByTestId('ingredient-card').first()).toBeVisible();
   });
 
   test('открытие модального окна ингредиента', async ({ page }) => {
     await page.getByTestId('ingredient-card').first().locator('a').click();
+    const modal = page.getByRole('dialog');
 
-    await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(modal).toBeVisible();
+    await expect(modal).toContainText('Краторная булка N-200i');
   });
 
   test('закрытие модального окна по крестику', async ({ page }) => {
@@ -34,68 +48,34 @@ test.describe('Конструктор бургеров', () => {
   test('добавление ингредиента в конструктор', async ({ page }) => {
     await page
       .getByTestId('ingredient-card')
-      .nth(2)
+      .filter({ hasText: 'Биокотлета из марсианской Магнолии' })
       .getByRole('button', { name: 'Добавить' })
       .click();
 
-    await expect(
-      page.getByTestId('constructor-ingredients').locator('li')
-    ).toHaveCount(1);
+    const constructor = page.getByTestId('constructor-ingredients');
+
+    await expect(constructor.locator('li')).toHaveCount(1);
+    await expect(constructor).toContainText(
+      'Биокотлета из марсианской Магнолии'
+    );
   });
 });
 
 test.describe('Оформление заказа', () => {
   test.beforeEach(async ({ page, context }) => {
-    // Ингредиенты из HAR
     await page.routeFromHAR('./tests/hars/ingredients.har', {
       url: '**/api/ingredients',
       update: false
     });
 
-    // Авторизованный пользователь
-    await page.route('**/api/auth/user', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          user: {
-            email: 'test@test.ru',
-            name: 'Test User'
-          }
-        })
-      });
+    await page.routeFromHAR('./tests/hars/user.har', {
+      url: '**/api/auth/user',
+      update: false
     });
 
-    // Создание заказа
-    await page.route('**/api/orders', async (route) => {
-      if (route.request().method() !== 'POST') {
-        return route.fallback();
-      }
-
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          name: 'Test Burger',
-          order: {
-            _id: '1',
-            status: 'done',
-            name: 'Test Burger',
-            number: 12345,
-            price: 1000,
-            createdAt: '',
-            updatedAt: '',
-            owner: {
-              name: 'Test User',
-              email: 'test@test.ru',
-              createdAt: '',
-              updatedAt: ''
-            }
-          }
-        })
-      });
+    await page.routeFromHAR('./tests/hars/order.har', {
+      url: '**/api/orders',
+      update: false
     });
 
     await context.addCookies([
@@ -116,30 +96,48 @@ test.describe('Оформление заказа', () => {
   });
 
   test('создание заказа', async ({ page }) => {
+    // булка
     await page
       .getByTestId('ingredient-card')
-      .first()
+      .filter({ hasText: 'Краторная булка N-200i' })
       .getByRole('button', { name: 'Добавить' })
       .click();
 
+    // начинка
     await page
       .getByTestId('ingredient-card')
-      .nth(2)
+      .filter({ hasText: 'Биокотлета из марсианской Магнолии' })
       .getByRole('button', { name: 'Добавить' })
       .click();
 
-    await page.getByRole('button', { name: 'Оформить заказ' }).click();
+    // соус
+    await page
+      .getByTestId('ingredient-card')
+      .filter({ hasText: 'Соус фирменный Space Sauce' })
+      .getByRole('button', { name: 'Добавить' })
+      .click();
 
-    await expect(page.getByRole('dialog')).toBeVisible();
+    const orderButton = page.getByRole('button', {
+      name: 'Оформить заказ'
+    });
 
-    await expect(page.getByTestId('order-number')).toHaveText('12345');
+    await expect(orderButton).toBeEnabled();
+    await orderButton.click();
 
-    await page.getByTestId('modal-close').click();
+    const modal = page.getByRole('dialog');
 
-    await expect(page.getByRole('dialog')).toHaveCount(0);
+    await expect(modal).toBeVisible();
+
+    await expect(page.getByTestId('order-number')).toHaveText('109091'); // или тот номер, который записан в твоем HAR
+
+    await modal.getByTestId('modal-close').click();
+    await expect(modal).toBeHidden();
 
     await expect(
       page.getByTestId('constructor-ingredients').locator('li')
     ).toHaveCount(0);
+
+    // Дополнительно проверить, что булка тоже очищена
+    await expect(page.getByText('Выберите булки')).toHaveCount(2);
   });
 });
