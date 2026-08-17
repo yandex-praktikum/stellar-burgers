@@ -39,21 +39,35 @@ export const fetchWithRefresh = async <T>(
   url: RequestInfo,
   options: RequestInit
 ) => {
+  console.log('REQUEST:', url);
+
   try {
     const res = await fetch(url, options);
+
+    console.log('STATUS:', res.status);
+
     return await checkResponse<T>(res);
   } catch (err) {
+    console.log('ERROR:', err);
+
     if ((err as { message: string }).message === 'jwt expired') {
+      console.log('REFRESH TOKEN');
+
       const refreshData = await refreshToken();
+
       if (options.headers) {
         (options.headers as { [key: string]: string }).authorization =
           refreshData.accessToken;
       }
+
       const res = await fetch(url, options);
+
+      console.log('STATUS AFTER REFRESH:', res.status);
+
       return await checkResponse<T>(res);
-    } else {
-      return Promise.reject(err);
     }
+
+    return Promise.reject(err);
   }
 };
 
@@ -106,7 +120,7 @@ type TOwner = {
   updatedAt: string;
 };
 
-type TNewOrder = {
+export type TNewOrder = {
   _id: string;
   status: string;
   name: string;
@@ -117,7 +131,7 @@ type TNewOrder = {
   price: number;
 };
 
-type TNewOrderResponse = TServerResponse<{
+export type TNewOrderResponse = TServerResponse<{
   order: TNewOrder;
   name: string;
 }>;
@@ -155,6 +169,11 @@ export type TRegisterData = {
   password: string;
 };
 
+export type TLoginData = {
+  email: string;
+  password: string;
+};
+
 type TAuthResponse = TServerResponse<{
   refreshToken: string;
   accessToken: string;
@@ -171,14 +190,15 @@ export const registerUserApi = (data: TRegisterData) =>
   })
     .then((res) => checkResponse<TAuthResponse>(res))
     .then((data) => {
-      if (data?.success) return data;
-      return Promise.reject(data);
-    });
+      if (!data.success) {
+        return Promise.reject(data);
+      }
 
-export type TLoginData = {
-  email: string;
-  password: string;
-};
+      localStorage.setItem('refreshToken', data.refreshToken);
+      setCookie('accessToken', data.accessToken);
+
+      return data;
+    });
 
 export const loginUserApi = (data: TLoginData) =>
   fetch(`${URL}/auth/login`, {
@@ -190,8 +210,14 @@ export const loginUserApi = (data: TLoginData) =>
   })
     .then((res) => checkResponse<TAuthResponse>(res))
     .then((data) => {
-      if (data?.success) return data;
-      return Promise.reject(data);
+      if (!data.success) {
+        return Promise.reject(data);
+      }
+
+      localStorage.setItem('refreshToken', data.refreshToken);
+      setCookie('accessToken', data.accessToken);
+
+      return data;
     });
 
 export const forgotPasswordApi = (data: { email: string }) =>
@@ -224,12 +250,17 @@ export const resetPasswordApi = (data: { password: string; token: string }) =>
 
 type TUserResponse = TServerResponse<{ user: TUser }>;
 
-export const getUserApi = () =>
-  fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
+export const getUserApi = () => {
+  console.log('===== GET USER API =====');
+  console.log('document.cookie =', document.cookie);
+  console.log('getCookie =', getCookie('accessToken'));
+
+  return fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
     headers: {
       authorization: getCookie('accessToken')
     } as HeadersInit
   });
+};
 
 export const updateUserApi = (user: Partial<TRegisterData>) =>
   fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
