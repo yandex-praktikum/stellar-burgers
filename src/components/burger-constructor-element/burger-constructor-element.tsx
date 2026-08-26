@@ -1,24 +1,33 @@
-import { FC, memo } from 'react';
 import { BurgerConstructorElementUI } from '@ui';
-import { BurgerConstructorElementProps } from './type';
+import { memo } from 'react';
 
-export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
-  ({ ingredient, index, totalItems }) => {
-    const handleMoveDown = () => {};
+import type { BurgerConstructorElementProps } from './type';
 
-    const handleMoveUp = () => {};
+export const BurgerConstructorElement = memo(function BurgerConstructorElement({
+  ingredient,
+  index,
+  totalItems,
+}: BurgerConstructorElementProps): React.JSX.Element {
+  const handleMoveDown = (): void => {
+    // TODO
+  };
 
-    const handleClose = () => {};
+  const handleMoveUp = (): void => {
+    // TODO
+  };
 
-    return (
-      <BurgerConstructorElementUI
-        ingredient={ingredient}
-        index={index}
-        totalItems={totalItems}
-        handleMoveUp={handleMoveUp}
-        handleMoveDown={handleMoveDown}
-        handleClose={handleClose}
-      />
-    );
-  }
-);
+  const handleClose = (): void => {
+    // TODO
+  };
+
+  return (
+    <BurgerConstructorElementUI
+      ingredient={ingredient}
+      index={index}
+      totalItems={totalItems}
+      handleMoveUp={handleMoveUp}
+      handleMoveDown={handleMoveDown}
+      handleClose={handleClose}
+    />
+  );
+});

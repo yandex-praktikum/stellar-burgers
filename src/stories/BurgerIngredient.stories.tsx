@@ -1,5 +1,8 @@
-import React from 'react';
 import { BurgerIngredientUI } from '@ui';
+import { fn } from 'storybook/test';
+
+import ingredientImage from './assets/ingredient-placeholder.svg';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
@@ -9,15 +12,15 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    layout: 'fullscreen'
+    layout: 'fullscreen',
   },
   decorators: [
-    (Story) => (
-      <div style={{ width: 'fit-content', margin: 20 }}>
+    (Story): React.JSX.Element => (
+      <ul style={{ width: 'fit-content', margin: 20, listStyle: 'none', padding: 0 }}>
         <Story />
-      </div>
-    )
-  ]
+      </ul>
+    ),
+  ],
 } satisfies Meta<typeof BurgerIngredientUI>;
 
 export default meta;
@@ -34,9 +37,9 @@ export const DefaultIngredient: Story = {
       carbohydrates: 22,
       calories: 33,
       price: 123,
-      image: '',
-      image_large: '',
-      image_mobile: ''
+      image: ingredientImage,
+      image_large: ingredientImage,
+      image_mobile: ingredientImage,
     },
     count: 2,
     locationState: {
@@ -45,9 +48,9 @@ export const DefaultIngredient: Story = {
         key: 'eitkep27',
         pathname: '/',
         search: '',
-        state: null
-      }
+        state: null,
+      },
     },
-    handleAdd: () => {}
-  }
+    handleAdd: fn(),
+  },
 };

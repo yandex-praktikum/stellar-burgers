@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { AppHeaderUI } from '@ui';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Example/Header',
@@ -9,8 +9,8 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    layout: 'fullscreen'
-  }
+    layout: 'fullscreen',
+  },
 } satisfies Meta<typeof AppHeaderUI>;
 
 export default meta;
@@ -18,12 +18,12 @@ type Story = StoryObj<typeof meta>;
 
 export const LoggedIn: Story = {
   args: {
-    userName: 'John Doe'
-  }
+    userName: 'John Doe',
+  },
 };
 
 export const LoggedOut: Story = {
   args: {
-    userName: undefined
-  }
+    userName: undefined,
+  },
 };

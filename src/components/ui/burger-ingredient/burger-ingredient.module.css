@@ -9,15 +9,15 @@
   display: flex;
   flex-direction: column;
   width: 260px;
-  cursor: pointer;
-  text-decoration: none;
   color: #ffff;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .cost {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .text {
@@ -25,6 +25,6 @@
 }
 
 .addButton {
-  width: 260px;
   justify-content: center;
+  width: 260px;
 }

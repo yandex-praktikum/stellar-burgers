@@ -1,4 +1,8 @@
 import { OrderInfoUI } from '@ui';
+
+import ingredientImage from './assets/ingredient-placeholder.svg';
+import { withModalSurface } from './modal-surface-decorator';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
@@ -8,8 +12,9 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    layout: 'fullscreen'
-  }
+    layout: 'fullscreen',
+  },
+  decorators: [withModalSurface],
 } satisfies Meta<typeof OrderInfoUI>;
 
 export default meta;
@@ -28,11 +33,11 @@ export const DefaultOrderInfo: Story = {
           carbohydrates: 45,
           calories: 56,
           price: 67,
-          image: '',
-          image_large: '',
-          image_mobile: '',
-          count: 2
-        }
+          image: ingredientImage,
+          image_large: ingredientImage,
+          image_mobile: ingredientImage,
+          count: 2,
+        },
       },
       date: new Date('2024-01-25'),
       total: 134,
@@ -42,7 +47,7 @@ export const DefaultOrderInfo: Story = {
       createdAt: '',
       updatedAt: '',
       number: 2,
-      ingredients: ['Булка', 'Начинка']
-    }
-  }
+      ingredients: ['Булка', 'Начинка'],
+    },
+  },
 };

@@ -1,24 +1,24 @@
 import { ProfileUI } from '@ui-pages';
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { type SyntheticEvent, useEffect, useState } from 'react';
 
-export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
+export const Profile = (): React.JSX.Element => {
+  /** TODO: Взять переменную из стора */
   const user = {
     name: '',
-    email: ''
+    email: '',
   };
 
   const [formValue, setFormValue] = useState({
     name: user.name,
     email: user.email,
-    password: ''
+    password: '',
   });
 
   useEffect(() => {
     setFormValue((prevState) => ({
       ...prevState,
       name: user?.name || '',
-      email: user?.email || ''
+      email: user?.email || '',
     }));
   }, [user]);
 
@@ -27,23 +27,23 @@ export const Profile: FC = () => {
     formValue.email !== user?.email ||
     !!formValue.password;
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = (e: SyntheticEvent): void => {
     e.preventDefault();
   };
 
-  const handleCancel = (e: SyntheticEvent) => {
+  const handleCancel = (e: SyntheticEvent): void => {
     e.preventDefault();
     setFormValue({
       name: user.name,
       email: user.email,
-      password: ''
+      password: '',
     });
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormValue((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -56,6 +56,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };

@@ -1,30 +1,25 @@
-import { FC } from 'react';
-
-import { Button, Input } from '@zlden/react-developer-burger-ui-components';
-import styles from './profile.module.css';
-import commonStyles from '../common.module.css';
-
-import { ProfileUIProps } from './type';
 import { ProfileMenu } from '@components';
+import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
 
-export const ProfileUI: FC<ProfileUIProps> = ({
+import type { ProfileUIProps } from './type';
+
+import styles from './profile.module.css';
+
+export const ProfileUI = ({
   formValue,
   isFormChanged,
   updateUserError,
   handleSubmit,
   handleCancel,
-  handleInputChange
-}) => (
-  <main className={`${commonStyles.container}`}>
+  handleInputChange,
+}: ProfileUIProps): React.JSX.Element => (
+  <main className={styles.container}>
     <div className={`mt-30 mr-15 ${styles.menu}`}>
       <ProfileMenu />
     </div>
-    <form
-      className={`mt-30 ${styles.form} ${commonStyles.form}`}
-      onSubmit={handleSubmit}
-    >
+    <form className={`mt-30 ${styles.form}`} onSubmit={handleSubmit}>
       <>
-        <div className='pb-6'>
+        <div className="pb-6">
           <Input
             type={'text'}
             placeholder={'Имя'}
@@ -37,7 +32,7 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             icon={'EditIcon'}
           />
         </div>
-        <div className='pb-6'>
+        <div className="pb-6">
           <Input
             type={'email'}
             placeholder={'E-mail'}
@@ -50,7 +45,7 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             icon={'EditIcon'}
           />
         </div>
-        <div className='pb-6'>
+        <div className="pb-6">
           <Input
             type={'password'}
             placeholder={'Пароль'}
@@ -64,24 +59,22 @@ export const ProfileUI: FC<ProfileUIProps> = ({
           />
         </div>
         {isFormChanged && (
-          <div className={styles.button}>
+          <div>
             <Button
-              type='secondary'
-              htmlType='button'
-              size='medium'
+              type="secondary"
+              htmlType="button"
+              size="medium"
               onClick={handleCancel}
             >
               Отменить
             </Button>
-            <Button type='primary' size='medium' htmlType='submit'>
+            <Button type="primary" size="medium" htmlType="submit">
               Сохранить
             </Button>
           </div>
         )}
         {updateUserError && (
-          <p
-            className={`${commonStyles.error} pt-5 text text_type_main-default`}
-          >
+          <p className={`${styles.error} pt-5 text text_type_main-default`}>
             {updateUserError}
           </p>
         )}

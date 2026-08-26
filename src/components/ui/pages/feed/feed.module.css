@@ -1,25 +1,25 @@
 .containerMain {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   max-width: 1240px;
-  margin-left: auto;
   margin-right: auto;
+  margin-left: auto;
+  overflow: hidden;
 }
 
 .titleBox {
-  width: 100%;
-  max-width: 1240px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  width: 100%;
+  max-width: 1240px;
 }
 
 .main {
   display: flex;
   justify-content: space-between;
-  height: 100%;
   width: 1240px;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -28,7 +28,6 @@
 }
 
 .columnInfo {
-  overflow-y: auto;
-  overflow-x: hidden;
   width: 580px;
+  overflow: hidden auto;
 }

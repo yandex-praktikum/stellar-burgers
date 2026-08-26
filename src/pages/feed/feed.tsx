@@ -1,15 +1,19 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
-import { FC } from 'react';
 
-export const Feed: FC = () => {
-  /** TODO: взять переменную из стора */
+import type { TOrder } from '@utils-types';
+
+export const Feed = (): React.JSX.Element => {
+  // TODO: Взять переменную из стора
   const orders: TOrder[] = [];
+
+  const handleGetFeeds = (): void => {
+    // TODO: Запросить ленту заказов
+  };
 
   if (!orders.length) {
     return <Preloader />;
   }
 
-  <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  return <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />;
 };

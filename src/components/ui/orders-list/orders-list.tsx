@@ -1,11 +1,10 @@
-import { FC } from 'react';
+import { OrderCard } from '@components';
+
+import type { OrdersListUIProps } from './type';
 
 import styles from './orders-list.module.css';
 
-import { OrdersListUIProps } from './type';
-import { OrderCard } from '@components';
-
-export const OrdersListUI: FC<OrdersListUIProps> = ({ orderByDate }) => (
+export const OrdersListUI = ({ orderByDate }: OrdersListUIProps): React.JSX.Element => (
   <div className={`${styles.content}`}>
     {orderByDate.map((order) => (
       <OrderCard order={order} key={order._id} />

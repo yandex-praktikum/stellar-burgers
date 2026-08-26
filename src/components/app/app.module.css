@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #131316;
   color: #f2f2f3;
+  background-color: #131316;
 }
 
 ::-webkit-scrollbar {
@@ -15,8 +15,13 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  border: 3px solid #8585ad;
   background: #8585ad;
+  border: 3px solid #8585ad;
+}
+
+.message {
+  margin: 120px auto;
+  text-align: center;
 }
 
 .detailPageWrap {
@@ -25,13 +30,4 @@
 
 .detailHeader {
   text-align: center;
-}
-
-.title {
-  margin: 0 auto;
-}
-
-.error {
-  margin: 0 auto;
-  color: red;
 }

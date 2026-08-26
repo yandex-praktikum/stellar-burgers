@@ -3,20 +3,20 @@
   justify-content: left;
   align-items: flex-start;
 }
+
 .column {
   display: inline;
   min-width: 50%;
 }
 
 .list {
-  list-style: none;
+  display: flex;
+  flex-flow: column wrap;
+  max-height: 180px;
   margin: 0;
   padding-left: 0;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  max-height: 180px;
   overflow: hidden;
+  list-style: none;
 }
 
 .title {
@@ -25,8 +25,8 @@
 }
 
 .list_item {
-  text-align: left;
   min-width: 50%;
+  text-align: left;
 }
 
 .content {

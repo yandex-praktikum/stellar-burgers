@@ -1,30 +1,27 @@
-import { useState, useRef, useEffect, FC } from 'react';
+import { BurgerIngredientsUI } from '@ui';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { TTabMode } from '@utils-types';
-import { BurgerIngredientsUI } from '../ui/burger-ingredients';
+import type { TIngredient, TTabMode } from '@utils-types';
 
-export const BurgerIngredients: FC = () => {
-  /** TODO: взять переменные из стора */
-  const buns = [];
-  const mains = [];
-  const sauces = [];
-
+export const BurgerIngredients = (): React.JSX.Element => {
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
   const titleMainRef = useRef<HTMLHeadingElement>(null);
   const titleSaucesRef = useRef<HTMLHeadingElement>(null);
+  // TODO: Взять ингредиенты из стора
+  const ingredients: TIngredient[] = [];
 
   const [bunsRef, inViewBuns] = useInView({
-    threshold: 0
+    threshold: 0,
   });
 
   const [mainsRef, inViewFilling] = useInView({
-    threshold: 0
+    threshold: 0,
   });
 
   const [saucesRef, inViewSauces] = useInView({
-    threshold: 0
+    threshold: 0,
   });
 
   useEffect(() => {
@@ -37,17 +34,27 @@ export const BurgerIngredients: FC = () => {
     }
   }, [inViewBuns, inViewFilling, inViewSauces]);
 
-  const onTabClick = (tab: string) => {
+  const onTabClick = (tab: string): void => {
     setCurrentTab(tab as TTabMode);
-    if (tab === 'bun')
-      titleBunRef.current?.scrollIntoView({ behavior: 'smooth' });
-    if (tab === 'main')
-      titleMainRef.current?.scrollIntoView({ behavior: 'smooth' });
-    if (tab === 'sauce')
-      titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (tab === 'bun') titleBunRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (tab === 'main') titleMainRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (tab === 'sauce') titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  return null;
+  const buns = useMemo(
+    () => ingredients.filter((item: TIngredient) => item.type === 'bun'),
+    [ingredients]
+  );
+
+  const mains = useMemo(
+    () => ingredients.filter((item: TIngredient) => item.type === 'main'),
+    [ingredients]
+  );
+
+  const sauces = useMemo(
+    () => ingredients.filter((item: TIngredient) => item.type === 'sauce'),
+    [ingredients]
+  );
 
   return (
     <BurgerIngredientsUI

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, SyntheticEvent } from 'react';
+import type { Dispatch, SetStateAction, SyntheticEvent } from 'react';
 
 export type PageUIProps = {
   errorText: string | undefined;

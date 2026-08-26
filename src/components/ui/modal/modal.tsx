@@ -1,26 +1,28 @@
-import { FC, memo } from 'react';
+import { CloseIcon } from '@krgaa/react-developer-burger-ui-components';
+import { ModalOverlayUI } from '@ui';
+import { memo } from 'react';
+
+import type { TModalUIProps } from './type';
 
 import styles from './modal.module.css';
 
-import { CloseIcon } from '@zlden/react-developer-burger-ui-components';
-import { TModalUIProps } from './type';
-import { ModalOverlayUI } from '@ui';
-
-export const ModalUI: FC<TModalUIProps> = memo(
-  ({ title, onClose, children }) => (
+export const ModalUI = memo(function ModalUI({
+  title,
+  onClose,
+  children,
+}: TModalUIProps): React.JSX.Element {
+  return (
     <>
       <div className={styles.modal}>
         <div className={styles.header}>
-          <h3 className={`${styles.title} text text_type_main-large`}>
-            {title}
-          </h3>
-          <button className={styles.button} type='button'>
-            <CloseIcon type='primary' onClick={onClose} />
+          <h3 className="text text_type_main-large">{title}</h3>
+          <button className={styles.button} type="button" aria-label="Закрыть">
+            <CloseIcon type="primary" onClick={onClose} />
           </button>
         </div>
         <div className={styles.content}>{children}</div>
       </div>
       <ModalOverlayUI onClick={onClose} />
     </>
-  )
-);
+  );
+});

@@ -30,7 +30,7 @@ export default defineConfig({
     baseURL: 'http://localhost:4000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry'
+    trace: 'on-first-retry',
   },
 
   /* Configure projects for major browsers */
@@ -38,7 +38,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    }
+    },
 
     // {
     //   name: 'firefox',
@@ -75,6 +75,6 @@ export default defineConfig({
   webServer: {
     command: 'npm run start',
     url: 'http://localhost:4000',
-    reuseExistingServer: !process.env.CI
+    reuseExistingServer: !process.env.CI,
   }
 });
