@@ -1,9 +1,8 @@
 .link {
   display: block;
   width: 100%;
-  text-decoration: none;
-  display: block;
   color: #8585ad;
+  text-decoration: none;
 }
 
 .link_active {
@@ -11,9 +10,9 @@
 }
 
 .button {
-  text-decoration: none;
   display: block;
   color: #8585ad;
+  text-decoration: none;
   background-color: unset;
   border: none;
 }

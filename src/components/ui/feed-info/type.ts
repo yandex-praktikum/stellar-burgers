@@ -1,5 +1,7 @@
+import type { TFeedState } from '@utils-types';
+
 export type FeedInfoUIProps = {
-  feed: any;
+  feed: TFeedState;
   readyOrders: number[];
   pendingOrders: number[];
 };

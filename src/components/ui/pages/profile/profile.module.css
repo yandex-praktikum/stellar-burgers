@@ -1,7 +1,16 @@
+.container {
+  composes: container from '../common.module.css';
+}
+
 .menu {
   width: 320px;
 }
 
 .form {
+  composes: form from '../common.module.css';
   max-width: 480px;
+}
+
+.error {
+  composes: error from '../common.module.css';
 }

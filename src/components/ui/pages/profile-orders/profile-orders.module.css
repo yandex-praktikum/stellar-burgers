@@ -4,10 +4,10 @@
 
 .main {
   display: flex;
-  height: 100%;
   width: 1240px;
-  overflow: hidden;
+  height: 100%;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .orders {

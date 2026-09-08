@@ -1,6 +1,9 @@
 import { BurgerConstructorElementUI } from '@ui';
+import { fn } from 'storybook/test';
+
+import ingredientImage from './assets/ingredient-placeholder.svg';
+
 import type { Meta, StoryObj } from '@storybook/react';
-import { totalmem } from 'os';
 
 const meta = {
   title: 'Example/BurgerConstructorElement',
@@ -9,8 +12,15 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    layout: 'fullscreen'
-  }
+    layout: 'fullscreen',
+  },
+  decorators: [
+    (Story): React.JSX.Element => (
+      <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+        <Story />
+      </ul>
+    ),
+  ],
 } satisfies Meta<typeof BurgerConstructorElementUI>;
 
 export default meta;
@@ -28,14 +38,14 @@ export const DefaultElement: Story = {
       carbohydrates: 22,
       calories: 33,
       price: 123,
-      image: '',
-      image_large: '',
-      image_mobile: ''
+      image: ingredientImage,
+      image_large: ingredientImage,
+      image_mobile: ingredientImage,
     },
     index: 0,
     totalItems: 1,
-    handleMoveUp: () => {},
-    handleMoveDown: () => {},
-    handleClose: () => {}
-  }
+    handleMoveUp: fn(),
+    handleMoveDown: fn(),
+    handleClose: fn(),
+  },
 };

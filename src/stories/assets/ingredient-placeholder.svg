@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="56" viewBox="0 0 112 56" role="img" aria-label="Ingredient placeholder">
+  <!--
+    Mirrors the real ingredient artwork: a 112x56 canvas with a transparent
+    background and the subject centred. Cards crop these images to a round
+    frame roughly 60px across (see .img_wrap / .border), so all visible parts
+    stay inside a circle of radius 24 around the centre.
+  -->
+  <circle cx="56" cy="28" r="24" fill="#2F2F37" />
+  <circle cx="56" cy="28" r="24" fill="none" stroke="#8585AD" stroke-width="2" />
+  <ellipse cx="56" cy="24" rx="13" ry="5" fill="#8585AD" />
+  <rect x="43" y="30" width="26" height="4" rx="2" fill="#8585AD" />
+</svg>

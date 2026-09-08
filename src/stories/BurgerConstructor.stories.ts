@@ -1,4 +1,6 @@
 import { BurgerConstructorUI } from '@ui';
+import { fn } from 'storybook/test';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
@@ -8,8 +10,8 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    layout: 'fullscreen'
-  }
+    layout: 'fullscreen',
+  },
 } satisfies Meta<typeof BurgerConstructorUI>;
 
 export default meta;
@@ -21,7 +23,7 @@ export const DefaultConstructor: Story = {
     orderRequest: false,
     price: 0,
     orderModalData: null,
-    onOrderClick: () => {},
-    closeOrderModal: () => {}
-  }
+    onOrderClick: fn(),
+    closeOrderModal: fn(),
+  },
 };

@@ -1,4 +1,8 @@
 import { IngredientDetailsUI } from '@ui';
+
+import ingredientImage from './assets/ingredient-placeholder.svg';
+import { withModalSurface } from './modal-surface-decorator';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
@@ -8,8 +12,9 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    layout: 'fullscreen'
-  }
+    layout: 'fullscreen',
+  },
+  decorators: [withModalSurface],
 } satisfies Meta<typeof IngredientDetailsUI>;
 
 export default meta;
@@ -26,9 +31,9 @@ export const DefaultIngredientDetails: Story = {
       carbohydrates: 45,
       calories: 56,
       price: 67,
-      image: '',
-      image_large: '',
-      image_mobile: ''
-    }
-  }
+      image: ingredientImage,
+      image_large: ingredientImage,
+      image_mobile: ingredientImage,
+    },
+  },
 };

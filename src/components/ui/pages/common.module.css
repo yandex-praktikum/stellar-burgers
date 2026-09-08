@@ -1,18 +1,18 @@
 .container {
   display: flex;
-  max-width: 1240px;
   width: 100%;
+  max-width: 1240px;
   height: 100%;
   margin: 0 auto;
 }
 
 .wrapCenter {
-  margin: auto;
-  width: 480px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 480px;
+  margin: auto;
 }
 
 .form {
@@ -22,10 +22,6 @@
 .form div {
   width: 100%;
   text-align: right;
-}
-
-.title {
-  margin: 0;
 }
 
 .button {
@@ -43,6 +39,6 @@
 }
 
 .error {
-  color: #ff0000;
+  color: #f00;
   text-align: center;
 }

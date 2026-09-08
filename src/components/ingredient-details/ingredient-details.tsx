@@ -1,9 +1,7 @@
-import { FC } from 'react';
-import { Preloader } from '../ui/preloader';
-import { IngredientDetailsUI } from '../ui/ingredient-details';
+import { Preloader, IngredientDetailsUI } from '@ui';
 
-export const IngredientDetails: FC = () => {
-  /** TODO: взять переменную из стора */
+export const IngredientDetails = (): React.JSX.Element => {
+  // TODO: Взять переменную из стора
   const ingredientData = null;
 
   if (!ingredientData) {

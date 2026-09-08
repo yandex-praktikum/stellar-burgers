@@ -1,7 +1,6 @@
-import { FC } from 'react';
+import { FeedInfoUI } from '@ui';
 
-import { TOrder } from '@utils-types';
-import { FeedInfoUI } from '../ui/feed-info';
+import type { TFeedState, TOrder } from '@utils-types';
 
 const getOrders = (orders: TOrder[], status: string): number[] =>
   orders
@@ -9,20 +8,21 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
     .map((item) => item.number)
     .slice(0, 20);
 
-export const FeedInfo: FC = () => {
-  /** TODO: взять переменные из стора */
+export const FeedInfo = (): React.JSX.Element => {
+  const feed: TFeedState = {
+    orders: [],
+    total: 0,
+    totalToday: 0,
+    isLoading: false,
+    error: null,
+  };
   const orders: TOrder[] = [];
-  const feed = {};
 
   const readyOrders = getOrders(orders, 'done');
 
   const pendingOrders = getOrders(orders, 'pending');
 
   return (
-    <FeedInfoUI
-      readyOrders={readyOrders}
-      pendingOrders={pendingOrders}
-      feed={feed}
-    />
+    <FeedInfoUI readyOrders={readyOrders} pendingOrders={pendingOrders} feed={feed} />
   );
 };

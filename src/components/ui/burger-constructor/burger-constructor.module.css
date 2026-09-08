@@ -1,24 +1,23 @@
 .burger_constructor {
-  width: 600px;
-  color: #f2f2f3;
   display: flex;
   flex-direction: column;
+  width: 600px;
   padding-bottom: 20px;
+  color: #f2f2f3;
 }
 
 .elements {
   min-height: 100px;
-
-  overflow-y: scroll;
-  list-style-type: none;
   margin: 0;
   padding: 0;
+  overflow-y: scroll;
+  list-style-type: none;
 }
 
 .total {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .cost {
@@ -27,27 +26,27 @@
 }
 
 .text {
-  font-family: Iceland;
-  font-style: normal;
   font-weight: normal;
   font-size: 48px;
+  font-family: 'Iceland', serif;
+  font-style: normal;
   line-height: 36px;
 }
 
 .noBuns {
-  box-sizing: border-box;
-  padding: 16px 24px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: var(--common-border-radius-s);
-  background: var(--background-element);
+  box-sizing: border-box;
   min-height: 80px;
-  font-family: 'Jet Brains Mono';
-  font-size: 16px;
-  line-height: 24px;
-  color: #f2f2f3;
   margin-left: 44px;
+  padding: 16px 24px;
+  color: #f2f2f3;
+  font-size: 16px;
+  font-family: 'Jet Brains Mono', serif;
+  line-height: 24px;
+  background: var(--background-element);
+  border-radius: var(--common-border-radius-s);
 }
 
 .noBunsTop {
@@ -60,17 +59,10 @@
 
 .element {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .element:last-child {
   margin-bottom: 0;
-}
-
-.element_fullwidth {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 536px;
 }
