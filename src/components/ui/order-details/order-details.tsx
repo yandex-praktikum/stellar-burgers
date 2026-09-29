@@ -9,10 +9,7 @@ export const OrderDetailsUI = ({
   orderNumber,
 }: OrderDetailsUIProps): React.JSX.Element => (
   <>
-    <h2
-      className={`${styles.title} text text_type_digits-large mt-2 mb-4`}
-      data-testid="order-number"
-    >
+    <h2 className={`${styles.title} text text_type_digits-large mt-2 mb-4`}>
       {orderNumber}
     </h2>
     <p className="text text_type_main-medium">идентификатор заказа</p>

@@ -5,5 +5,5 @@ export const ModalOverlayUI = ({
 }: {
   onClick: () => void;
 }): React.JSX.Element => (
-  <div className={styles.overlay} onClick={onClick} data-testid="modal-overlay" />
+  <div className={styles.overlay} onClick={onClick} />
 );
