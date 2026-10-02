@@ -17,9 +17,6 @@ export const LoginUI = ({
   password,
   setPassword,
 }: LoginUIProps): React.JSX.Element => (
-  /*
-    Отображение ошибок и валидация форм в "можно лучше"
-  */
   <main className={styles.container}>
     <div className={`pt-6 ${styles.wrapCenter}`}>
       <h3 className="pb-6 text text_type_main-medium">Вход</h3>

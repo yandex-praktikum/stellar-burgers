@@ -85,7 +85,6 @@
     "typescript-eslint": "^8.45.0",
     "vite": "^7.1.7",
     "vite-plugin-checker": "^0.11.0",
-    "vite-plugin-readable-classnames": "^1.5.3",
     "vite-plugin-sass-dts": "^1.3.31",
     "vite-tsconfig-paths": "^5.1.4"
   },

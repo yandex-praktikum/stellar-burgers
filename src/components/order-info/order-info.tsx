@@ -17,9 +17,6 @@ export const OrderInfo = (): React.JSX.Element => {
 
   const ingredients: TIngredient[] = [];
 
-  /**
-   * использование useMemo не обязательно
-   */
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
