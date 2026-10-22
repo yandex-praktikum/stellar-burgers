@@ -1,21 +1,50 @@
+import { useSelector } from '@/services/store';
 import { Preloader, OrderInfoUI } from '@ui';
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import type { TIngredient } from '@utils-types';
+import { getOrderByNumberApi } from '../../utils/burger-api';
+
+import type { TIngredient, TOrder } from '@utils-types';
 
 export const OrderInfo = (): React.JSX.Element => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0,
-  };
+  const { number } = useParams<{ number: string }>();
+  const orderNumber = Number(number);
 
-  const ingredients: TIngredient[] = [];
+  const [localOrder, setLocalOrder] = useState<TOrder | null>(null);
+
+  const { orders } = useSelector((state) => state.feeds);
+  const { ingredients } = useSelector((state) => state.ingredients);
+
+  /** TODO: взять переменные orderData и ingredients из стора */
+  // const orderData = {
+  //   createdAt: '',
+  //   ingredients: [],
+  //   _id: '',
+  //   status: '',
+  //   name: '',
+  //   updatedAt: 'string',
+  //   number: 0,
+  // };
+  const orderData = useMemo(() => {
+    const foundOrder = orders.find((item) => item.number === orderNumber);
+    if (foundOrder) return foundOrder;
+    return localOrder;
+  }, [orders, orderNumber, localOrder]);
+
+  // const ingredients: TIngredient[] = [];
+
+  useEffect(() => {
+    if (!orders.length && orderNumber) {
+      getOrderByNumberApi(orderNumber)
+        .then((res) => {
+          if (res.orders && res.orders.length > 0) {
+            setLocalOrder(res.orders[0]);
+          }
+        })
+        .catch((err) => console.error('Ошибка загрузки деталей заказа:', err));
+    }
+  }, [orders, orderNumber]);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

@@ -9,6 +9,5 @@ export const OrdersList = memo(function OrdersList({
   const orderByDate = [...orders].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
-
   return <OrdersListUI orderByDate={orderByDate} />;
 });
