@@ -15,8 +15,8 @@ export const ModalUI = memo(function ModalUI({
     <>
       <div className={styles.modal}>
         <div className={styles.header}>
-          <h3 className="text text_type_main-large">{title}</h3>
-          <button className={styles.button} type="button" aria-label="Закрыть">
+          <h3 className="text text_type_main-large" data-testid="modal-title">{title}</h3>
+          <button className={styles.button} type="button" aria-label="Закрыть" data-testid="modal-close-button">
             <CloseIcon type="primary" onClick={onClose} />
           </button>
         </div>
