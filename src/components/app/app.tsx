@@ -72,7 +72,7 @@ const AppContent = ({
   error,
 }: AppContentProps): React.JSX.Element => {
   if (isLoading) {
-    return <Preloader />;
+    return <Preloader data-testid="loading"/>;
   }
 
   if (error) {

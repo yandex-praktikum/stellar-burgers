@@ -8,6 +8,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 export const createOrder = createAsyncThunk(
   'burgerConstructor/createOrder',
   async (ingredientIds: string[]) => {
+    console.log(ingredientIds)
     const res = await orderBurgerApi(ingredientIds);
     console.log(7777);
     console.log(res);
@@ -23,7 +24,7 @@ type TBurgerConstructorSliceState = {
   error: string | null;
 };
 
-const initialState: TBurgerConstructorSliceState = {
+export const initialState: TBurgerConstructorSliceState = {
   bun: null,
   ingredients: [],
   orderRequest: false,
@@ -46,13 +47,6 @@ const constructorSlice = createSlice({
           state.ingredients.push(action.payload);
         }
       },
-      // const ingredient = action.payload;
-
-      // if (ingredient.type === 'bun') {
-      //   state.bun = ingredient;
-      // } else {
-      //   state.ingredients.push({ ...ingredient, id: nanoid() });
-      // }
     },
     removeIngredient: (state, action) => {
       state.ingredients = state.ingredients.filter((item) => item.id !== action.payload);

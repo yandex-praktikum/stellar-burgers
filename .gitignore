@@ -33,3 +33,9 @@ test-results
 .env
 .env.local
 .env.*.local
+
+# Playwright
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
