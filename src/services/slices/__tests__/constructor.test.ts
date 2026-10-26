@@ -20,7 +20,7 @@ describe('Тестирование редьюсера слайса constructor',
     expect(result).toEqual(initialState);
   });
 
-  test('должен обрабатывать экшен fetchIngredients.pending', () => {
+  test('должен обрабатывать экшен createOrder.pending', () => {
     // Имитируем запуск запроса
     const action = { type: createOrder.pending.type };
     const result = constructorReducer(initialState, action);

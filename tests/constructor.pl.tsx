@@ -13,6 +13,7 @@ test.describe('add ingredients to constructor works correctly', function () {
     await page.goto('/');
   })
 
+
   test('Ингредиенты успешно загружаются из моковых данных', async ({ page }) => {
      // Проверяем, что лоадер исчез
     await expect(page.getByTestId('loading')).not.toBeVisible();
@@ -62,12 +63,20 @@ test.describe('add ingredients to constructor works correctly', function () {
   test('Модалка должна открываться и закрываться по клику на крестик', async ({ page }) => {
     // Карточка булки (Первая)
     const bunCard = page.locator('[data-testid^="ingredient-bun"]').first();
+
+    //Берем имя булки до клика
+    const bunName = await bunCard.getByTestId('ingredient-name').innerText();
+
     // Клик по карточке
     await bunCard.click();
 
     // Модалка открылась
     const modalTitle = page.getByTestId('modal-title');
     await expect(modalTitle).toBeVisible();
+
+    const bunNameInModal = page.getByTestId('modal-ingredient-name');
+    await expect(bunNameInModal).toBeVisible();
+    await expect(bunNameInModal).toHaveText(bunName);
 
     // Клика на крестик
     await page.getByTestId('modal-close-button').click();
@@ -79,12 +88,19 @@ test.describe('add ingredients to constructor works correctly', function () {
   test('Модалка должна открываться и закрываться по клику на оверлэй', async ({ page }) => {
     // Карточка начинки (Первая)
     const mainCard = page.locator('[data-testid^="ingredient-main"]').first();
+    //Берем имя начинки
+    const mainName = await mainCard.getByTestId('ingredient-name').innerText();
+
     // Клик по карточке
-    await mainCard.click();
+    await mainCard.getByTestId('ingredient-name').click();
 
     // Модалка открылась
     const modalTitle = page.getByTestId('modal-title');
     await expect(modalTitle).toBeVisible();
+
+    const mainNameInModal = page.getByTestId('modal-ingredient-name');
+    await expect(mainNameInModal).toBeVisible();
+    await expect(mainNameInModal).toHaveText(mainName);
 
     // Клика на крестик
     const modalOverlay = page.getByTestId('modal-overlay');
@@ -110,29 +126,43 @@ test.describe('add ingredients to constructor works correctly', function () {
       localStorage.setItem('refreshToken', 'mock-test-refresh-token');
     });
 
-    // Перехват запроса на получение данных пользователя
-    await page.route('**/auth/user', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          user: { email: 'test-user@mail.ru', name: 'Test Test' }
-        }),
-      });
+    // // Перехват запроса на получение данных пользователя
+    // await page.route('**/auth/user', async (route) => {
+    //   await route.fulfill({
+    //     status: 200,
+    //     contentType: 'application/json',
+    //     body: JSON.stringify({
+    //       success: true,
+    //       user: { email: 'test-user@mail.ru', name: 'Test Test' }
+    //     }),
+    //   });
+    // });
+
+    // // Перехват запроса на создание заказа
+    // await page.route('**/orders', async (route) => {
+    //   await route.fulfill({
+    //     status: 200,
+    //     contentType: 'application/json',
+    //     body: JSON.stringify({
+    //       success: true,
+    //       order: { number: 9999 } // номер заказа для проверки
+    //     }),
+    //   });
+    // });
+
+    //Запрос на получение данных пользователя из моковых данных поль-ля user.har
+    await page.routeFromHAR('./e2e/hars/user.har', {
+      url: '**/auth/user',
+      update: false, // Режим записи отключен
     });
 
-    // Перехват запроса на создание заказа
-    await page.route('**/orders', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          order: { number: 9999 } // номер заказа для проверки
-        }),
-      });
+    //Запрос на создание заказа из моковых данных order.har
+    await page.routeFromHAR('./e2e/hars/order.har', {
+      url: '**/orders',
+      update: false, // Режим записи отключен
     });
+
+
 
     // Перезагружаем страницу, чтобы применились куки и сработали наши моковые роуты
     await page.reload();
